@@ -8,7 +8,7 @@ import { useThemeStore } from "@/lib/stores/use-theme-store"
 export function SystemPanel() {
   const [isOpen, setIsOpen] = useState(false)
   const [fps, setFps] = useState(60)
-  const { theme, setTheme } = useThemeStore()
+  const { isDark, setTheme } = useThemeStore()
 
   // FPS counter
   useEffect(() => {
@@ -159,12 +159,12 @@ export function SystemPanel() {
                       <span className="text-sm font-mono text-[#D8DBE2]">Theme</span>
                     </div>
                     <div className="space-y-2">
-                      {["system", "light", "dark", "auto"].map((t) => (
+                      {["light", "dark"].map((t) => (
                         <button
                           key={t}
-                          onClick={() => setTheme(t as any)}
+                          onClick={() => setTheme(t === "dark")}
                           className={`w-full px-3 py-2 rounded-lg text-xs font-mono text-left transition-colors ${
-                            theme === t
+                            (t === "dark" && isDark) || (t === "light" && !isDark)
                               ? "bg-[#58A4B0] text-[#1B1B1E]"
                               : "bg-[#373F51]/50 text-[#A9BCD0] hover:bg-[#373F51]"
                           }`}

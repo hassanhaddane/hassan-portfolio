@@ -26,12 +26,10 @@ export function ContactSection() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log("🚀 Formulaire soumis", formData)
     setIsSubmitting(true)
     setSubmitStatus('idle')
 
     try {
-      console.log("📡 Envoi de la requête à /api/contact")
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: {
@@ -40,22 +38,17 @@ export function ContactSection() {
         body: JSON.stringify(formData),
       })
 
-      console.log("📥 Réponse reçue:", response.status, response.statusText)
       const result = await response.json()
-      console.log("📋 Données de réponse:", result)
 
       if (response.ok) {
-        console.log("✅ Succès!")
         setSubmitStatus('success')
         setFormData({ name: "", email: "", subject: "", message: "" })
         alert("Message envoyé avec succès ! Je vous répondrai dans les plus brefs délais.")
       } else {
-        console.log("❌ Erreur côté serveur:", result)
         setSubmitStatus('error')
         alert(result.error || "Erreur lors de l'envoi du message. Veuillez réessayer.")
       }
     } catch (error) {
-      console.log("💥 Erreur de connexion:", error)
       setSubmitStatus('error')
       alert("Erreur de connexion. Veuillez vérifier votre connexion internet et réessayer.")
       console.error('Erreur lors de l\'envoi:', error)
@@ -88,7 +81,7 @@ export function ContactSection() {
       icon: MapPin,
       label: "Localisation",
       value: "Rennes, France",
-      action: () => {},
+      action: undefined,
     },
     {
       icon: Linkedin,

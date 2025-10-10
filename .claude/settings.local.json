@@ -6,7 +6,10 @@
       "Bash(git commit:*)",
       "Bash(pnpm add:*)",
       "Bash(git push:*)",
-      "Bash(git merge:*)"
+      "Bash(git merge:*)",
+      "Bash(pnpm run lint:*)",
+      "Bash(pnpm run:*)",
+      "Bash(npx tsc:*)"
     ],
     "deny": [],
     "ask": []

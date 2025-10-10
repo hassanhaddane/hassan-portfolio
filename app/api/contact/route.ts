@@ -5,13 +5,10 @@ const resend = new Resend(process.env.RESEND_API_KEY)
 
 export async function POST(request: NextRequest) {
   try {
-    console.log("🚀 API Contact appelée")
     const { name, email, subject, message } = await request.json()
-    console.log("📝 Données reçues:", { name, email, subject, message: message.substring(0, 50) + "..." })
 
     // Validation basique
     if (!name || !email || !subject || !message) {
-      console.log("❌ Validation échouée - champs manquants")
       return NextResponse.json(
         { error: "Tous les champs sont requis" },
         { status: 400 }
@@ -28,7 +25,6 @@ export async function POST(request: NextRequest) {
     }
 
     // Envoi de l'email
-    console.log("📧 Tentative d'envoi d'email...")
     const data = await resend.emails.send({
       from: "Portfolio Contact <onboarding@resend.dev>", // Domaine par défaut Resend
       to: ["hassanhaddane33s@gmail.com"],
@@ -59,8 +55,7 @@ export async function POST(request: NextRequest) {
       `,
     })
 
-    console.log("✅ Email envoyé avec succès:", data.id)
-    return NextResponse.json({ success: true, id: data.id })
+    return NextResponse.json({ success: true, id: data.data?.id })
   } catch (error) {
     console.error("Erreur lors de l'envoi de l'email:", error)
     return NextResponse.json(
