@@ -22,20 +22,46 @@ export function ContactSection() {
     message: "",
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    console.log("🚀 Formulaire soumis", formData)
     setIsSubmitting(true)
+    setSubmitStatus('idle')
 
-    // Simulation d'envoi (à remplacer par une vraie API)
-    await new Promise((resolve) => setTimeout(resolve, 2000))
+    try {
+      console.log("📡 Envoi de la requête à /api/contact")
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
 
-    // Reset form
-    setFormData({ name: "", email: "", subject: "", message: "" })
-    setIsSubmitting(false)
+      console.log("📥 Réponse reçue:", response.status, response.statusText)
+      const result = await response.json()
+      console.log("📋 Données de réponse:", result)
 
-    // Ici vous pourriez ajouter une notification de succès
-    alert("Message envoyé avec succès ! Je vous répondrai dans les plus brefs délais.")
+      if (response.ok) {
+        console.log("✅ Succès!")
+        setSubmitStatus('success')
+        setFormData({ name: "", email: "", subject: "", message: "" })
+        alert("Message envoyé avec succès ! Je vous répondrai dans les plus brefs délais.")
+      } else {
+        console.log("❌ Erreur côté serveur:", result)
+        setSubmitStatus('error')
+        alert(result.error || "Erreur lors de l'envoi du message. Veuillez réessayer.")
+      }
+    } catch (error) {
+      console.log("💥 Erreur de connexion:", error)
+      setSubmitStatus('error')
+      alert("Erreur de connexion. Veuillez vérifier votre connexion internet et réessayer.")
+      console.error('Erreur lors de l\'envoi:', error)
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
