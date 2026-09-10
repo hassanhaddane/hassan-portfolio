@@ -3,15 +3,12 @@ import { GeistSans } from "geist/font/sans";
 import localFont from "next/font/local";
 import "./globals.css";
 import "./hero-system.css";
-import "./work-system.css";
-import "./knowledge-system.css";
-import "./about-contact-system.css";
 import "./narrative-system.css";
 import "./theme-system.css";
 import "./professional-contact.css";
-import "./recruiter-brief.css";
 import "./entity-type-system.css";
 import "./story-motion.css";
+import "./clarity-system.css";
 import { SITE_ORIGIN } from "@/lib/seo";
 
 const barlow = localFont({

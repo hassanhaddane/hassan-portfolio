@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import {
   ArrowDownToLine,
-  ArrowRight,
   ArrowUpRight,
   Check,
   Copy,
@@ -12,8 +11,6 @@ import {
 } from "lucide-react";
 import { copy, profile } from "@/lib/portfolio-data";
 import { usePreferences } from "@/components/system/preferences";
-import { VisitControls } from "@/components/system/visit-controls";
-import { TechnologySignals } from "./technology-signals";
 import { ChapterIdentity } from "./narrative";
 
 function IdentityWord({ word, offset }: { word: string; offset: number }) {
@@ -93,21 +90,18 @@ export function Hero() {
       {entry && (
         <div className="entry-signature mono" aria-hidden="true">
           LOWKYZ<span>/</span>
-          <small>initializing interface</small>
+          <small>{locale === "fr" ? "chargement" : "loading"}</small>
         </div>
       )}
 
       <div className="hero-meta">
         <ChapterIdentity
-          index="00"
+          index="01"
           kind="now"
           compact
-          category={{ fr: "AUJOURD’HUI", en: "NOW" }}
+          category={{ fr: "ACCUEIL", en: "HOME" }}
           title={{ fr: "PROFIL PROFESSIONNEL", en: "PROFESSIONAL PROFILE" }}
         />
-        <span className="hero-system-state mono" aria-hidden="true">
-          LOWKYZ / PROFILE READY
-        </span>
       </div>
 
       <div className="identity-composition">
@@ -123,21 +117,21 @@ export function Hero() {
             {locale === "fr" ? "ans d’expérience" : "years of experience"}
           </span>
         </div>
-        <div className="identity-coordinate mono" aria-hidden="true">
-          48.1173° N<br />
-          01.6778° W
-        </div>
       </div>
 
       <div className="hero-professional-deck">
         <div className="hero-professional-summary">
           <div className="hero-role-block">
-            <span className="mono">ROLE</span>
+            <span className="mono">{locale === "fr" ? "POSTE" : "ROLE"}</span>
             <h2>
               {locale === "fr"
                 ? "Développeur Web Full-Stack"
                 : "Full-Stack Web Developer"}
             </h2>
+            <p className="hero-core-stack">
+              <span>React · Next.js · TypeScript</span>
+              <span>Python · FastAPI</span>
+            </p>
           </div>
           <a
             className="hero-opportunity"
@@ -158,6 +152,9 @@ export function Hero() {
         </div>
 
         <div className="hero-contact-module">
+          <span className="hero-contact-label mono">
+            {locale === "fr" ? "CONTACT DIRECT" : "DIRECT CONTACT"}
+          </span>
           <div className="hero-primary-actions">
             <a className="work-cta magnetic" data-cursor="VIEW" href="#projets">
               <span>{locale === "fr" ? "Voir mon travail" : "View my work"}</span>
@@ -209,7 +206,7 @@ export function Hero() {
               rel="noopener noreferrer"
             >
               <span className="mono">LINKEDIN</span>
-              <strong>LinkedIn</strong>
+              <strong>/hassanhaddane</strong>
               <ArrowUpRight aria-hidden="true" />
             </a>
             <a
@@ -223,22 +220,6 @@ export function Hero() {
             </a>
           </div>
         </div>
-      </div>
-
-      <div className="hero-exploration-band">
-        <TechnologySignals />
-        <div className="hero-story-bridge">
-          <span className="mono">01 / {locale === "fr" ? "PREUVE" : "PROOF"}</span>
-          <a href="#projets" data-cursor="VIEW">
-            <span>
-              {locale === "fr"
-                ? "Le profil est posé. Voyez maintenant ce que je construis."
-                : "The profile is clear. Now see what I build."}
-            </span>
-            <ArrowRight aria-hidden="true" />
-          </a>
-        </div>
-        <VisitControls />
       </div>
 
       <div

@@ -1,6 +1,5 @@
 "use client";
 
-import { ArrowDownRight } from "lucide-react";
 import { usePreferences } from "@/components/system/preferences";
 
 type ChapterKind =
@@ -95,31 +94,5 @@ export function ChapterIdentity({
         <strong>{title[locale]}</strong>
       </span>
     </div>
-  );
-}
-
-export function StoryBridge({
-  href,
-  next,
-  children,
-}: {
-  href: string;
-  next: LocalizedCopy;
-  children: LocalizedCopy;
-}) {
-  const { locale } = usePreferences();
-
-  return (
-    <aside className="story-bridge" aria-label={locale === "fr" ? "Suite du parcours" : "Next chapter"}>
-      <span className="story-bridge-line" aria-hidden="true">
-        <i />
-      </span>
-      <p>{children[locale]}</p>
-      <a href={href} data-cursor="VIEW">
-        <span className="mono">{locale === "fr" ? "CHAPITRE SUIVANT" : "NEXT CHAPTER"}</span>
-        <strong>{next[locale]}</strong>
-        <ArrowDownRight aria-hidden="true" />
-      </a>
-    </aside>
   );
 }

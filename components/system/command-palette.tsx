@@ -10,10 +10,11 @@ import {
   GraduationCap,
   Globe,
   Mail,
-  Lightbulb,
+  Moon,
   Orbit,
   Pause,
   Route,
+  Sun,
   Terminal,
 } from "lucide-react";
 import {
@@ -59,35 +60,34 @@ export function CommandPalette() {
     });
   const actions = [
     {
-      label: locale === "fr" ? "À propos de Hassan" : "About Hassan",
-      keywords: "about profil",
-      target: "about",
-      icon: CircleUserRound,
-    },
-    {
-      label: copy.work[locale],
+      label: locale === "fr" ? "Projet" : "Project",
       keywords: "projects projets work",
       target: "projets",
       icon: Folder,
     },
     {
-      label: locale === "fr" ? "Knowledge Graph" : "Knowledge Graph",
-      keywords: "skills stack technologies system graph graphe",
-      target: "stack",
-      icon: Code2,
-    },
-    {
-      label:
-        locale === "fr" ? "Mes expériences" : "My experience",
+      label: locale === "fr" ? "Expériences" : "Experience",
       keywords: "experience parcours journey professionnel timeline",
       target: "experience",
       icon: Route,
     },
     {
-      label: locale === "fr" ? "Ma formation" : "My education",
+      label: locale === "fr" ? "Compétences" : "Skills",
+      keywords: "skills stack technologies compétences",
+      target: "stack",
+      icon: Code2,
+    },
+    {
+      label: locale === "fr" ? "Formation" : "Education",
       keywords: "formation education EPSI foundation RNCP",
       target: "education",
       icon: GraduationCap,
+    },
+    {
+      label: locale === "fr" ? "À propos" : "About",
+      keywords: "about profil hassan",
+      target: "about",
+      icon: CircleUserRound,
     },
     {
       label: "Contact",
@@ -137,8 +137,8 @@ export function CommandPalette() {
       title={copy.commandTitle[locale]}
       description={
         locale === "fr"
-          ? "Naviguer et personnaliser votre visite."
-          : "Navigate and personalise your visit."
+          ? "Accéder à une section ou une action."
+          : "Open a section or action."
       }
     >
       <div className="palette-brand mono">
@@ -159,7 +159,7 @@ export function CommandPalette() {
       ) : null}
       <CommandList>
         <CommandEmpty>{copy.noResults[locale]}</CommandEmpty>
-        <CommandGroup heading={locale === "fr" ? "Explorer" : "Explore"}>
+        <CommandGroup heading={locale === "fr" ? "Sections" : "Sections"}>
           {actions.map((action) => (
             <CommandItem
               key={action.target}
@@ -180,7 +180,7 @@ export function CommandPalette() {
           </CommandItem>
         </CommandGroup>
         <CommandSeparator />
-        <CommandGroup heading={locale === "fr" ? "Commandes système" : "System commands"}>
+        <CommandGroup heading={locale === "fr" ? "Raccourcis" : "Shortcuts"}>
           <CommandItem value="whoami hassan haddane developer rennes" onSelect={() => setCommandOutput("whoami")}>
             <Terminal aria-hidden="true" />
             <span className="command-token">whoami</span>
@@ -192,12 +192,12 @@ export function CommandPalette() {
           }}>
             <Terminal aria-hidden="true" />
             <span className="command-token">stack</span>
-            <CommandShortcut>03</CommandShortcut>
+            <CommandShortcut>04</CommandShortcut>
           </CommandItem>
           <CommandItem value="hire contact recruter email" onSelect={() => navigate("contact")}>
             <Terminal aria-hidden="true" />
             <span className="command-token">hire</span>
-            <CommandShortcut>06</CommandShortcut>
+            <CommandShortcut>07</CommandShortcut>
           </CommandItem>
         </CommandGroup>
         <CommandSeparator />
@@ -241,7 +241,7 @@ export function CommandPalette() {
         </CommandGroup>
         <CommandSeparator />
         <CommandGroup
-          heading={locale === "fr" ? "Votre expérience" : "Your experience"}
+          heading={locale === "fr" ? "Préférences" : "Preferences"}
         >
           <CommandItem
             value="toggle mode recruiter explore"
@@ -250,28 +250,25 @@ export function CommandPalette() {
             }
           >
             <Orbit aria-hidden="true" />
-            {locale === "fr" ? "Passer en mode" : "Switch to"}{" "}
-            {mode === "recruiter" ? "Explore" : "Recruiter"}
+            {mode === "recruiter"
+              ? locale === "fr" ? "Activer le mode interactif" : "Enable interactive mode"
+              : locale === "fr" ? "Activer la lecture rapide" : "Enable quick view"}
           </CommandItem>
           <CommandItem
             value="language langue français english FR EN"
             onSelect={() => run(() => setLocale(locale === "fr" ? "en" : "fr"))}
           >
             <Globe aria-hidden="true" />
-            {locale === "fr" ? "Switch to English" : "Passer en français"}
+            {locale === "fr" ? "Afficher le site en anglais" : "Display the site in French"}
           </CommandItem>
           <CommandItem
-            value="theme light dark lampe lumière"
+            value="theme light dark clair sombre"
             onSelect={() => run(toggleTheme)}
           >
-            <Lightbulb aria-hidden="true" />
+            {theme === "light" ? <Moon aria-hidden="true" /> : <Sun aria-hidden="true" />}
             {theme === "light"
-              ? locale === "fr"
-                ? "Éteindre la lampe"
-                : "Turn the lamp off"
-              : locale === "fr"
-                ? "Allumer la lampe"
-                : "Turn the lamp on"}
+              ? locale === "fr" ? "Mode sombre" : "Dark mode"
+              : locale === "fr" ? "Mode clair" : "Light mode"}
             <CommandShortcut>{theme === "light" ? "DARK" : "LIGHT"}</CommandShortcut>
           </CommandItem>
           <CommandItem

@@ -1,13 +1,10 @@
 import { PreferencesProvider } from "@/components/system/preferences";
 import { Navigation } from "@/components/system/navigation";
 import { CommandPalette } from "@/components/system/command-palette";
-import { ThemeLamp } from "@/components/system/theme-lamp";
 import { Constellation } from "@/components/system/constellation";
 import { MotionSystem } from "@/components/system/motion-system";
 import { EasterEggs } from "@/components/system/easter-eggs";
-import { ProfessionalContactDock } from "@/components/system/professional-contact-dock";
 import { Hero } from "@/components/portfolio/hero";
-import { RecruiterBrief } from "@/components/portfolio/recruiter-brief";
 import { Projects } from "@/components/portfolio/projects";
 import { KnowledgeSystem } from "@/components/portfolio/knowledge-system";
 import { About } from "@/components/portfolio/about";
@@ -83,11 +80,8 @@ export function PortfolioExperience({ locale }: { locale: Locale }) {
         <MotionSystem />
         <EasterEggs />
       <Navigation />
-      <ThemeLamp />
-        <ProfessionalContactDock />
         <main id="main" tabIndex={-1}>
           <Hero />
-          <RecruiterBrief />
           <Projects />
           <KnowledgeSystem />
           <About />

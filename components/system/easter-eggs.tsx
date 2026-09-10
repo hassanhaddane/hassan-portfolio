@@ -24,9 +24,11 @@ export function EasterEggs() {
 
   useEffect(() => {
     console.info(
-      "LOWKYZ SYSTEM\nBuilt by Hassan Haddane\nGitHub: https://github.com/hassanhaddane\nContact: hassanhaddane33s@gmail.com",
+      locale === "fr"
+        ? "LOWKYZ / PORTFOLIO\nConçu et développé par Hassan Haddane\nGitHub: https://github.com/hassanhaddane\nContact: hassanhaddane33s@gmail.com"
+        : "LOWKYZ / PORTFOLIO\nDesigned and developed by Hassan Haddane\nGitHub: https://github.com/hassanhaddane\nContact: hassanhaddane33s@gmail.com",
     );
-  }, []);
+  }, [locale]);
 
   useEffect(() => {
     const keydown = (event: KeyboardEvent) => {
@@ -56,8 +58,8 @@ export function EasterEggs() {
 
   return (
     <div className="debug-hud mono" data-visible={debug} role="status" aria-live="polite">
-      <span>DEBUG MODE</span>
-      <span>{locale === "fr" ? "TRACE DES SIGNAUX · 12 S" : "SIGNAL TRACE · 12 S"}</span>
+      <span>{locale === "fr" ? "MODE DEBUG" : "DEBUG MODE"}</span>
+      <span>{locale === "fr" ? "ACTIF · 12 S" : "ACTIVE · 12 S"}</span>
       <i aria-hidden="true" />
     </div>
   );

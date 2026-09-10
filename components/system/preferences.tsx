@@ -230,9 +230,10 @@ export function PreferencesProvider({
       const targetStyle = getComputedStyle(target);
       const padding = Number.parseFloat(rootStyle.scrollPaddingTop) || 0;
       const margin = Number.parseFloat(targetStyle.scrollMarginTop) || 0;
+      const navigationOffset = Math.max(padding, margin);
       const destination = Math.max(
         0,
-        target.getBoundingClientRect().top + scrollY - padding - margin,
+        target.getBoundingClientRect().top + scrollY - navigationOffset,
       );
       stopScroll();
       disableNativeSmooth();

@@ -1,0 +1,1026 @@
+/* Strict UX layer: seven explicit chapters, one reading level, no fixed content heights. */
+
+.clarity-section {
+  position: relative;
+  z-index: 2;
+  min-width: 0;
+  overflow: clip;
+  scroll-margin-top: 6.5rem;
+  border-top: 1px solid var(--border-strong);
+  background: var(--background);
+}
+
+.clarity-project,
+.clarity-skills,
+.clarity-about {
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--primary) 3%, transparent), transparent 32rem),
+    var(--surface);
+}
+
+.clarity-section-header {
+  display: grid;
+  grid-template-columns: minmax(18rem, 0.72fr) minmax(24rem, 1.28fr);
+  gap: clamp(3rem, 8vw, 9rem);
+  align-items: start;
+  margin-bottom: clamp(4rem, 8vw, 8rem);
+}
+
+.clarity-section .chapter-identity {
+  position: sticky;
+  top: 96px;
+  width: 100%;
+}
+
+.clarity-section .chapter-identity-copy {
+  grid-template-columns: 1fr;
+  gap: 0.25rem;
+}
+
+.clarity-section-heading {
+  min-width: 0;
+}
+
+.clarity-section-heading > .mono {
+  display: block;
+  margin-bottom: 1.1rem;
+  color: var(--primary);
+  font-size: clamp(0.78rem, 0.16vw + 0.74rem, 0.9rem);
+  font-weight: 650;
+}
+
+.clarity-section-heading h2 {
+  max-width: 16ch;
+  font-family: var(--display);
+  font-size: clamp(3.5rem, 6.4vw, 7.8rem);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 0.88;
+  text-wrap: balance;
+}
+
+.clarity-section-heading > p {
+  max-width: 42rem;
+  margin-top: clamp(1.5rem, 2.5vw, 2.4rem);
+  color: var(--text-secondary);
+  font-size: clamp(1rem, 0.32vw + 0.92rem, 1.22rem);
+  line-height: 1.7;
+}
+
+/* Main project */
+.clarity-project-case {
+  min-width: 0;
+  padding-top: clamp(2rem, 4vw, 4rem);
+  border-top: 2px solid var(--foreground);
+}
+
+.clarity-project-title {
+  display: grid;
+  grid-template-columns: minmax(13rem, 0.45fr) minmax(22rem, 1fr) auto;
+  gap: clamp(2rem, 5vw, 6rem);
+  align-items: end;
+}
+
+.clarity-project-title > div {
+  min-width: 0;
+}
+
+.clarity-project-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 1.5rem;
+  color: var(--text-secondary);
+  font-size: clamp(0.78rem, 0.16vw + 0.74rem, 0.9rem);
+}
+
+.clarity-project-title h3 {
+  margin-top: 0.6rem;
+  font-family: var(--display);
+  font-size: clamp(5rem, 10vw, 12rem);
+  letter-spacing: -0.04em;
+  line-height: 0.8;
+}
+
+.clarity-project-title > div > p:last-child {
+  max-width: 42rem;
+  margin-top: 1.35rem;
+  color: var(--text-secondary);
+  font-size: clamp(1rem, 0.3vw + 0.94rem, 1.2rem);
+  line-height: 1.65;
+}
+
+.clarity-project-title > a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  min-width: 12rem;
+  min-height: 3.5rem;
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--border-strong);
+  background: var(--surface-raised);
+  font-weight: 650;
+}
+
+.clarity-project-title > a:hover,
+.clarity-project-title > a:focus-visible {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.clarity-project-preview {
+  margin: clamp(3rem, 6vw, 6rem) 0 0;
+  border: 1px solid var(--border-strong);
+  background: var(--surface-raised);
+}
+
+.clarity-preview-bar {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 3rem;
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-secondary);
+  font-size: clamp(0.75rem, 0.14vw + 0.72rem, 0.84rem);
+}
+
+.clarity-preview-image {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--surface-soft);
+}
+
+.clarity-preview-image img {
+  object-fit: cover;
+  object-position: top center;
+}
+
+.project-image-mobile {
+  display: none;
+}
+
+.clarity-project-preview figcaption {
+  padding: 0.9rem 1rem;
+  border-top: 1px solid var(--border);
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+.clarity-project-details {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: clamp(3rem, 6vw, 6rem);
+  border-block: 1px solid var(--border-strong);
+}
+
+.clarity-project-details > section {
+  min-width: 0;
+  padding: clamp(1.5rem, 3vw, 3rem);
+  border-right: 1px solid var(--border);
+}
+
+.clarity-project-details > section:last-child {
+  border-right: 0;
+}
+
+.clarity-project-details .mono,
+.clarity-technology-context > .mono,
+.clarity-about-grid .mono {
+  color: var(--primary);
+  font-size: clamp(0.75rem, 0.14vw + 0.72rem, 0.84rem);
+  font-weight: 650;
+}
+
+.clarity-project-details h4,
+.clarity-about-grid h3 {
+  margin-top: 0.8rem;
+  font-size: clamp(1.35rem, 1.35vw, 1.9rem);
+  line-height: 1.25;
+}
+
+.clarity-project-details p,
+.clarity-project-details li,
+.clarity-about-grid p {
+  color: var(--text-secondary);
+  font-size: clamp(0.94rem, 0.18vw + 0.9rem, 1.05rem);
+  line-height: 1.65;
+}
+
+.clarity-project-details p,
+.clarity-project-details ul {
+  margin-top: 1rem;
+}
+
+.clarity-project-details ul,
+.clarity-proof-list,
+.clarity-inline-list,
+.clarity-skill-groups ul,
+.clarity-about-grid ul {
+  margin-bottom: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.clarity-project-details > section:not(:last-child) li,
+.clarity-proof-list li {
+  position: relative;
+  padding-left: 1.25rem;
+}
+
+.clarity-project-details > section:not(:last-child) li::before,
+.clarity-proof-list li::before {
+  content: "";
+  position: absolute;
+  top: 0.72em;
+  left: 0;
+  width: 0.38rem;
+  height: 0.38rem;
+  background: var(--primary);
+}
+
+.clarity-project-details li + li,
+.clarity-proof-list li + li {
+  margin-top: 0.65rem;
+}
+
+.clarity-inline-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.clarity-inline-list li {
+  padding: 0.45rem 0.7rem;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--surface-raised) 78%, transparent);
+  color: var(--foreground);
+  font-size: 0.86rem;
+  line-height: 1.3;
+}
+
+/* Professional experience */
+.clarity-experience-list {
+  border-top: 2px solid var(--foreground);
+}
+
+.clarity-experience-entry {
+  display: grid;
+  grid-template-columns: minmax(13rem, 0.42fr) minmax(0, 1fr);
+  gap: clamp(2rem, 6vw, 7rem);
+  padding-block: clamp(3rem, 6vw, 6rem);
+  border-bottom: 1px solid var(--border-strong);
+}
+
+.clarity-experience-entry[data-primary="true"] {
+  background: linear-gradient(90deg, color-mix(in srgb, var(--primary) 5%, transparent), transparent 48%);
+}
+
+.clarity-experience-entry > .entity-type-marker {
+  align-self: start;
+}
+
+.clarity-experience-main,
+.clarity-experience-main header > div {
+  min-width: 0;
+}
+
+.clarity-experience-main > header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.clarity-experience-main h3 {
+  font-family: var(--display);
+  font-size: clamp(3.4rem, 7vw, 8.5rem);
+  letter-spacing: -0.035em;
+  line-height: 0.86;
+  text-wrap: balance;
+}
+
+.clarity-experience-main header p {
+  margin-top: 0.65rem;
+  color: var(--text-secondary);
+  font-size: clamp(1rem, 0.28vw + 0.94rem, 1.18rem);
+}
+
+.clarity-experience-main time {
+  padding-top: 0.55rem;
+  color: var(--primary);
+  font-size: clamp(0.8rem, 0.18vw + 0.76rem, 0.92rem);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.clarity-experience-role {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1rem;
+  margin-top: 1.6rem;
+  font-size: clamp(1rem, 0.24vw + 0.95rem, 1.15rem);
+}
+
+.clarity-experience-role span {
+  color: var(--signal);
+  font-weight: 700;
+}
+
+.clarity-experience-context {
+  max-width: 52rem;
+  margin-top: 1.15rem;
+  color: var(--text-secondary);
+  font-size: clamp(1rem, 0.2vw + 0.95rem, 1.1rem);
+  line-height: 1.65;
+}
+
+.clarity-proof-list {
+  max-width: 56rem;
+  margin-top: 1.6rem;
+  color: var(--text-secondary);
+}
+
+.clarity-proof-list li {
+  font-size: clamp(0.94rem, 0.15vw + 0.91rem, 1.04rem);
+  line-height: 1.6;
+}
+
+.clarity-technology-context {
+  margin-top: 2rem;
+  padding-top: 1.3rem;
+  border-top: 1px solid var(--border);
+}
+
+.clarity-technology-context .clarity-inline-list {
+  margin-top: 0.8rem;
+}
+
+/* Skills */
+.clarity-skill-groups {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-top: 2px solid var(--foreground);
+  border-left: 1px solid var(--border);
+}
+
+.clarity-skill-groups > section {
+  min-width: 0;
+  min-height: 18rem;
+  padding: clamp(1.5rem, 3vw, 3rem);
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.clarity-skill-groups > section > .mono {
+  color: var(--primary);
+  font-size: 0.8rem;
+}
+
+.clarity-skill-groups h3 {
+  margin-top: 0.8rem;
+  font-family: var(--display);
+  font-size: clamp(2.2rem, 3.4vw, 4.2rem);
+  line-height: 0.9;
+}
+
+.clarity-skill-groups ul {
+  margin-top: 1.5rem;
+}
+
+.clarity-skill-groups li {
+  padding-block: 0.42rem;
+  color: var(--text-secondary);
+  font-size: clamp(0.98rem, 0.18vw + 0.94rem, 1.08rem);
+  line-height: 1.45;
+}
+
+/* Education */
+.clarity-education-record {
+  display: grid;
+  grid-template-columns: minmax(13rem, 0.45fr) minmax(14rem, 0.55fr) minmax(24rem, 1fr);
+  gap: clamp(2rem, 5vw, 6rem);
+  align-items: start;
+  padding-block: clamp(3rem, 5vw, 5rem);
+  border-block: 2px solid var(--foreground);
+}
+
+.clarity-education-name > .mono {
+  color: var(--primary);
+  font-size: 0.82rem;
+}
+
+.clarity-education-name h3 {
+  margin-top: 0.8rem;
+  font-family: var(--display);
+  font-size: clamp(4rem, 7vw, 8rem);
+  line-height: 0.82;
+}
+
+.clarity-education-name p {
+  margin-top: 0.8rem;
+  color: var(--text-secondary);
+  font-size: 1rem;
+}
+
+.clarity-education-record ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.clarity-education-record li {
+  display: grid;
+  grid-template-columns: 5.5rem minmax(0, 1fr);
+  gap: 1.5rem;
+  padding-block: 1.6rem;
+  border-top: 1px solid var(--border-strong);
+}
+
+.clarity-education-record li:last-child {
+  border-bottom: 1px solid var(--border-strong);
+}
+
+.clarity-education-record li > strong {
+  color: var(--primary);
+  font-size: 1rem;
+}
+
+.clarity-education-record h4 {
+  font-size: clamp(1.15rem, 0.75vw + 0.95rem, 1.6rem);
+  line-height: 1.35;
+}
+
+.clarity-education-record li p {
+  margin-top: 0.45rem;
+  color: var(--text-secondary);
+  font-size: 0.92rem;
+}
+
+/* About */
+.clarity-about-grid {
+  display: grid;
+  grid-template-columns: minmax(18rem, 0.8fr) minmax(24rem, 1.2fr);
+  border-top: 2px solid var(--foreground);
+}
+
+.clarity-about-grid > section {
+  min-width: 0;
+  padding: clamp(2rem, 4vw, 4rem);
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.clarity-about-grid > section:last-child {
+  border-right: 0;
+}
+
+.clarity-about-grid dl {
+  margin: 1.5rem 0 0;
+}
+
+.clarity-about-grid dl > div {
+  display: grid;
+  grid-template-columns: minmax(7rem, 1fr) minmax(8rem, 1fr);
+  gap: 1rem;
+  padding-block: 0.8rem;
+  border-top: 1px solid var(--border);
+}
+
+.clarity-about-grid dt,
+.clarity-about-grid dd {
+  font-size: 1rem;
+}
+
+.clarity-about-grid dd {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+.clarity-about-grid > section > p {
+  max-width: 42rem;
+  margin-top: 1.2rem;
+}
+
+.clarity-about-grid ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem 1.2rem;
+  margin-top: 1.6rem;
+}
+
+.clarity-about-grid li {
+  padding-bottom: 0.2rem;
+  border-bottom: 1px solid var(--border-strong);
+  font-size: 0.96rem;
+}
+
+/* Contact */
+.clarity-availability {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 0.65rem;
+  color: var(--signal) !important;
+}
+
+.clarity-availability i {
+  width: 0.48rem;
+  height: 0.48rem;
+  border-radius: 50%;
+  background: var(--signal);
+}
+
+.clarity-contact-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-top: 2px solid var(--foreground);
+  border-left: 1px solid var(--border);
+}
+
+.clarity-contact-actions a {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.5rem 1rem;
+  min-height: 9rem;
+  padding: clamp(1.5rem, 3vw, 3rem);
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: color-mix(in srgb, var(--surface-raised) 70%, transparent);
+}
+
+.clarity-contact-actions a:hover,
+.clarity-contact-actions a:focus-visible {
+  background: var(--accent);
+}
+
+.clarity-contact-actions .mono {
+  color: var(--primary);
+  font-size: 0.8rem;
+}
+
+.clarity-contact-actions strong {
+  grid-column: 1;
+  min-width: 0;
+  font-size: clamp(1.1rem, 1vw + 0.85rem, 1.65rem);
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.clarity-contact-actions small {
+  grid-column: 1;
+  color: var(--text-secondary);
+  font-size: clamp(0.82rem, 0.16vw + 0.78rem, 0.94rem);
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.clarity-contact-actions > a:first-child strong {
+  font-size: clamp(0.95rem, 0.7vw + 0.78rem, 1.4rem);
+}
+
+.hero-contact-rail > a,
+.hero-contact-rail > button,
+.hero-contact-rail strong {
+  overflow: visible;
+}
+
+.hero-contact-rail strong {
+  text-overflow: clip;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.clarity-contact-actions svg {
+  grid-column: 2;
+  grid-row: 1 / -1;
+  align-self: center;
+}
+
+.clarity-contact-facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: clamp(2rem, 4vw, 4rem) 0 0;
+  border-block: 1px solid var(--border-strong);
+}
+
+.clarity-contact-facts > div {
+  padding: 1.25rem 1.5rem;
+  border-right: 1px solid var(--border);
+}
+
+.clarity-contact-facts > div:last-child {
+  border-right: 0;
+}
+
+.clarity-contact-facts dt {
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+}
+
+.clarity-contact-facts dd {
+  margin: 0.4rem 0 0;
+  font-size: 1rem;
+  font-weight: 650;
+}
+
+.clarity-footer {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 2rem;
+  align-items: center;
+  min-height: 7rem;
+  padding-block: 1.5rem;
+  padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
+  border-top: 1px solid var(--border-strong);
+  background: var(--background);
+}
+
+.clarity-footer > strong {
+  font-family: var(--display);
+  font-size: 1.35rem;
+}
+
+.clarity-footer > a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  min-height: 44px;
+}
+
+/* Navigation and permanent section indicator */
+.clarity-masthead .masthead-links {
+  gap: clamp(0.8rem, 1.4vw, 1.7rem);
+  margin-inline: auto;
+}
+
+.clarity-masthead .masthead-links a {
+  color: var(--text-secondary);
+  font-size: clamp(0.75rem, 0.16vw + 0.71rem, 0.86rem);
+  font-weight: 560;
+  white-space: nowrap;
+}
+
+.clarity-masthead .masthead-links a[aria-current] {
+  color: var(--foreground);
+  font-weight: 720;
+}
+
+.clarity-masthead .masthead-utilities {
+  gap: 0.8rem;
+}
+
+.theme-switch {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  padding-inline: 0.75rem;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--surface-raised) 76%, transparent);
+  color: var(--foreground);
+  font-size: 0.78rem;
+  font-weight: 650;
+  white-space: nowrap;
+}
+
+.theme-switch:hover,
+.theme-switch:focus-visible {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.theme-switch svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.theme-switch-mobile {
+  display: none;
+}
+
+.hero-contact-module::before {
+  display: none;
+}
+
+.hero-contact-label {
+  position: absolute;
+  top: -2rem;
+  right: 0;
+  color: var(--text-secondary);
+  font-size: 0.76rem;
+  letter-spacing: 0.045em;
+}
+
+.hero-core-stack {
+  display: grid;
+  gap: 0.12rem;
+  margin-top: 0.75rem;
+  color: var(--text-secondary);
+  font-size: clamp(0.8rem, 0.16vw + 0.76rem, 0.9rem);
+  line-height: 1.45;
+}
+
+.clarity-chapter-indicator {
+  position: fixed;
+  z-index: 20;
+  top: 50%;
+  bottom: auto;
+  left: 1rem;
+  width: 8.5rem;
+  height: auto;
+  translate: 0 -50%;
+}
+
+html[data-theme] .chapter-rail.clarity-chapter-indicator {
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.clarity-chapter-indicator > a {
+  display: grid;
+  gap: 0.35rem;
+  min-height: 5.5rem;
+  padding: 1rem;
+  border: 1px solid var(--border-strong);
+  background: var(--surface-translucent);
+  box-shadow: 0 0.7rem 2.5rem var(--shadow-color);
+  backdrop-filter: blur(16px);
+}
+
+.clarity-chapter-indicator .mono {
+  color: var(--primary);
+  font-size: 0.78rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.clarity-chapter-indicator strong {
+  font-size: 0.9rem;
+  line-height: 1.25;
+  text-transform: uppercase;
+}
+
+.clarity-chapter-indicator i {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 2px;
+  margin-top: 0.35rem;
+  overflow: hidden;
+  background: var(--border);
+}
+
+.clarity-chapter-indicator i::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: var(--chapter-progress);
+  background: var(--primary);
+}
+
+@media (min-width: 1181px) {
+  .clarity-section {
+    padding-left: max(var(--gutter), 11rem);
+  }
+}
+
+@media (max-width: 1180px) {
+  .clarity-masthead .masthead-links {
+    display: none;
+  }
+
+  .clarity-masthead .menu-trigger {
+    display: flex;
+  }
+
+  .theme-switch-desktop {
+    display: none;
+  }
+
+  .navigation-dialog .theme-switch-mobile {
+    display: flex;
+    width: 100%;
+    margin-top: 1.25rem;
+  }
+
+  .clarity-chapter-indicator {
+    top: auto;
+    right: 1rem;
+    bottom: 0.75rem;
+    left: 1rem;
+    width: auto;
+    height: auto;
+    padding: 0;
+    translate: 0;
+    display: block;
+    border: 0;
+    background: transparent;
+    pointer-events: none;
+  }
+
+  .clarity-chapter-indicator > a {
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0.2rem 0.8rem;
+    width: fit-content;
+    max-width: 100%;
+    min-height: 3.5rem;
+    padding: 0.65rem 0.9rem;
+    pointer-events: auto;
+  }
+
+  .clarity-chapter-indicator strong {
+    align-self: center;
+  }
+
+  .clarity-chapter-indicator i {
+    grid-column: 1 / -1;
+    margin-top: 0;
+  }
+
+  .clarity-section-header,
+  .clarity-project-title,
+  .clarity-education-record {
+    grid-template-columns: 1fr;
+  }
+
+  .clarity-section .chapter-identity {
+    position: relative;
+    top: auto;
+  }
+
+  .clarity-project-title > a {
+    width: fit-content;
+  }
+
+  .clarity-experience-entry {
+    grid-template-columns: 1fr;
+    gap: 1.6rem;
+  }
+
+  .clarity-experience-main > header {
+    grid-template-columns: 1fr;
+    gap: 0.7rem;
+  }
+
+  .clarity-skill-groups {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .clarity-section {
+    overflow: hidden;
+    scroll-margin-top: 5.5rem;
+  }
+
+  .clarity-section-header {
+    gap: 2.5rem;
+    margin-bottom: 3.5rem;
+  }
+
+  .hero-contact-label {
+    display: none;
+  }
+
+  .clarity-section-heading h2 {
+    max-width: none;
+    font-size: clamp(3.25rem, 15vw, 5.5rem);
+    line-height: 0.9;
+  }
+
+  .clarity-section-heading > p {
+    font-size: 1rem;
+  }
+
+  .clarity-project-title {
+    gap: 1.5rem;
+  }
+
+  .clarity-project-title h3 {
+    font-size: clamp(4.2rem, 21vw, 7rem);
+    line-height: 0.84;
+  }
+
+  .clarity-project-title > a {
+    width: 100%;
+  }
+
+  .project-image-desktop {
+    display: none;
+  }
+
+  .project-image-mobile {
+    display: block;
+    aspect-ratio: 9 / 16;
+  }
+
+  .clarity-preview-bar span:last-child {
+    display: none;
+  }
+
+  .clarity-project-details,
+  .clarity-skill-groups,
+  .clarity-about-grid,
+  .clarity-contact-actions,
+  .clarity-contact-facts {
+    grid-template-columns: 1fr;
+  }
+
+  .clarity-project-details > section,
+  .clarity-about-grid > section,
+  .clarity-contact-facts > div {
+    border-right: 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .clarity-experience-entry {
+    grid-template-columns: 1fr;
+    gap: 1.6rem;
+  }
+
+  .clarity-experience-main > header {
+    grid-template-columns: 1fr;
+    gap: 0.7rem;
+  }
+
+  .clarity-experience-main h3 {
+    font-size: clamp(3.25rem, 15vw, 5.2rem);
+    line-height: 0.9;
+  }
+
+  .clarity-experience-main time {
+    padding-top: 0;
+    white-space: normal;
+  }
+
+  .clarity-skill-groups > section {
+    min-height: 0;
+  }
+
+  .clarity-education-record {
+    gap: 2rem;
+  }
+
+  .clarity-education-record li {
+    grid-template-columns: 4.5rem minmax(0, 1fr);
+    gap: 1rem;
+  }
+
+  .clarity-about-grid dl > div {
+    grid-template-columns: minmax(6rem, 0.8fr) minmax(8rem, 1.2fr);
+  }
+
+  .clarity-contact-actions a {
+    min-height: 7rem;
+  }
+
+  .clarity-contact-facts {
+    border-bottom: 0;
+  }
+
+  .clarity-footer {
+    grid-template-columns: 1fr auto;
+    padding-bottom: 6rem;
+  }
+
+  .clarity-footer > a {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 430px) {
+  .clarity-section-heading h2,
+  .clarity-experience-main h3 {
+    overflow-wrap: normal;
+    word-break: normal;
+    hyphens: none;
+  }
+
+  .clarity-project-details > section,
+  .clarity-about-grid > section,
+  .clarity-contact-actions a {
+    padding-inline: 1.25rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .clarity-section *,
+  .clarity-masthead,
+  .clarity-chapter-indicator * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+html[data-motion="off"] .clarity-section *,
+html[data-motion="off"] .clarity-masthead,
+html[data-motion="off"] .clarity-chapter-indicator * {
+  animation: none !important;
+  transition: none !important;
+}

@@ -39,11 +39,11 @@ export default function Image() {
 
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: 18, letterSpacing: "1px" }}>
         <span style={{ display: "flex", fontWeight: 700, fontSize: 27 }}>LOWKYZ<span style={{ color: "#3267ff" }}>/</span></span>
-        <span style={{ color: "#94a8d7", fontSize: 13 }}>INTERACTIVE DEVELOPER SYSTEM · 2026</span>
+        <span style={{ color: "#94a8d7", fontSize: 13 }}>PORTFOLIO · 2026</span>
       </div>
 
       <div style={{ display: "flex", flexDirection: "column", marginTop: 68 }}>
-        <span style={{ color: "#8ba7ff", fontSize: 17, letterSpacing: "3px" }}>FULL-STACK DEVELOPER</span>
+        <span style={{ color: "#8ba7ff", fontSize: 17, letterSpacing: "3px" }}>FULL-STACK WEB DEVELOPER</span>
         <div style={{ display: "flex", flexDirection: "column", marginTop: 14, fontSize: 94, lineHeight: 0.84, fontWeight: 800, letterSpacing: "-6px" }}>
           <span>HASSAN</span>
           <span>HADDANE<span style={{ color: "#3267ff" }}>.</span></span>
