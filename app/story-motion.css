@@ -1,0 +1,812 @@
+/* One narrative signal, expressed differently by each chapter.
+   This layer is intentionally last: it coordinates motion without changing content geometry. */
+
+:root {
+  --story-progress: 0;
+  --story-velocity: 0;
+  --story-stroke: 2px;
+  --story-glow: 6px;
+  --story-stretch: 1;
+  --section-progress: 0;
+  --section-shift: 0px;
+  --story-dash: 1120;
+  --signal-shift: 0px;
+  --pointer-drift-x: 0px;
+  --pointer-drift-y: 0px;
+  --pointer-tilt-x: 0deg;
+  --pointer-tilt-y: 0deg;
+}
+
+html,
+body {
+  overflow-x: clip;
+}
+
+.foreground-filament .foreground-filament-ambient {
+  opacity: 0.34;
+}
+
+.foreground-filament .story-signal-base,
+.foreground-filament .story-signal-pulse {
+  fill: none;
+  vector-effect: non-scaling-stroke;
+}
+
+.foreground-filament .story-signal-base {
+  stroke: var(--primary);
+  stroke-width: 1.15;
+  stroke-dasharray: 2 11;
+  opacity: 0.72;
+}
+
+.foreground-filament .story-signal-pulse {
+  stroke: var(--signal);
+  stroke-width: var(--story-stroke);
+  stroke-linecap: round;
+  stroke-dasharray: 88 1032;
+  stroke-dashoffset: var(--story-dash);
+  opacity: 0.92;
+  filter: drop-shadow(
+    0 0 var(--story-glow)
+      color-mix(in srgb, var(--signal) 52%, transparent)
+  );
+  transform: translateY(var(--signal-shift))
+    scaleX(var(--story-stretch));
+  transition: stroke 0.35s ease;
+}
+
+.story-signal-head {
+  opacity: 0.9;
+  transition: opacity 0.35s ease;
+}
+
+.story-signal-head-core {
+  fill: var(--signal);
+  filter: drop-shadow(0 0 6px var(--signal));
+}
+
+.story-signal-head-halo {
+  fill: none;
+  stroke: var(--primary);
+  stroke-width: 1;
+  opacity: calc(0.28 + var(--story-velocity));
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+html[data-mode="explore"][data-motion="on"] .story-signal-head-halo {
+  animation: story-head-breathe 1.9s ease-in-out infinite;
+}
+
+@keyframes story-head-breathe {
+  50% {
+    transform: scale(1.34);
+    opacity: 0.08;
+  }
+}
+
+html[data-story-direction="up"] .foreground-filament .story-signal-pulse {
+  stroke: var(--primary);
+}
+
+.foreground-filament.stage-projets {
+  transform: translateX(-1.8vw) scaleX(0.95);
+}
+
+.foreground-filament.stage-experience .story-signal-base,
+.foreground-filament.stage-experience .story-signal-pulse {
+  stroke-dasharray: 34 8;
+}
+
+.foreground-filament.stage-stack .story-signal-base {
+  stroke-dasharray: 2 6;
+}
+
+.foreground-filament.stage-education .story-signal-base {
+  stroke-width: 1.7;
+  stroke-dasharray: 1 9;
+}
+
+.foreground-filament.stage-about .story-signal-base {
+  stroke-dasharray: 46 18;
+}
+
+.foreground-filament.stage-contact .story-signal-base,
+.foreground-filament.stage-contact .story-signal-pulse {
+  stroke-width: 2.4;
+  opacity: 1;
+}
+
+/* GreeCheck: the product surface receives the same signal as a factual data flow. */
+.product-stage-wrap {
+  --product-x: 0px;
+  --product-y: 0px;
+  --product-image-x: 0px;
+  --product-image-y: 0px;
+  --product-rx: 0deg;
+  --product-ry: 0deg;
+  perspective: 1500px;
+}
+
+html[data-mode="explore"][data-motion="on"] .product-stage-wrap[data-interactive="true"] .product-stage {
+  transform: translate3d(var(--product-x), var(--product-y), 0)
+    rotateX(var(--product-rx)) rotateY(var(--product-ry));
+  transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
+  transform-style: preserve-3d;
+}
+
+html[data-mode="explore"][data-motion="on"] .product-stage-wrap[data-interactive="true"]:hover .product-stage {
+  border-color: color-mix(in srgb, var(--primary) 58%, var(--border));
+}
+
+html[data-mode="explore"][data-motion="on"] .product-stage-wrap[data-interactive="true"] .product-capture[data-active="true"] .capture-image {
+  transform: translate3d(
+    var(--product-image-x),
+    var(--product-image-y),
+    16px
+  ) scale(1.012);
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.product-stage::before {
+  content: "";
+  position: absolute;
+  z-index: 4;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      90deg,
+      transparent 0 18%,
+      color-mix(in srgb, var(--primary) 18%, transparent) 50%,
+      transparent 82% 100%
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent 0 54px,
+      color-mix(in srgb, var(--signal) 10%, transparent) 55px,
+      transparent 56px
+    );
+  mask-image: linear-gradient(180deg, transparent, #000 18% 76%, transparent);
+  opacity: calc(0.12 + var(--section-progress) * 0.16);
+  transform: translateY(var(--section-shift));
+}
+
+.product-data-flow {
+  display: grid;
+  grid-template-columns: minmax(9rem, 0.34fr) 1fr;
+  gap: 1rem;
+  align-items: center;
+  margin-top: 1.2rem;
+  color: var(--text-tertiary);
+  font-size: clamp(0.68rem, 0.1vw + 0.66rem, 0.76rem);
+}
+
+.product-data-flow > span {
+  letter-spacing: 0.06em;
+}
+
+.product-data-flow ol {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.product-data-flow ol::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  right: 2px;
+  top: 5px;
+  height: 1px;
+  background: var(--border);
+}
+
+.product-data-flow li {
+  position: relative;
+  display: grid;
+  gap: 0.45rem;
+  color: var(--text-tertiary);
+  transition: color 0.28s ease, opacity 0.28s ease;
+}
+
+.product-data-flow li i {
+  position: relative;
+  z-index: 1;
+  width: 11px;
+  height: 11px;
+  border: 1px solid var(--border-strong);
+  border-radius: 50%;
+  background: var(--surface);
+  transition: border-color 0.28s ease, background-color 0.28s ease, box-shadow 0.28s ease, transform 0.28s ease;
+}
+
+.product-data-flow li b {
+  font-size: inherit;
+  font-weight: 500;
+}
+
+.product-data-flow li[data-active="true"] {
+  color: var(--primary);
+}
+
+.product-data-flow li[data-active="true"] i {
+  border-color: var(--primary);
+  background: var(--primary);
+}
+
+.product-data-flow li[data-current="true"] {
+  color: var(--foreground);
+}
+
+.product-data-flow li[data-current="true"] i {
+  border-color: var(--signal);
+  background: var(--signal);
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--signal) 13%, transparent), 0 0 15px color-mix(in srgb, var(--signal) 44%, transparent);
+  transform: scale(1.08);
+}
+
+html[data-mode="explore"][data-motion="on"] .product-data-flow li[data-current="true"] i::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border: 1px solid var(--signal);
+  border-radius: inherit;
+  animation: product-flow-pulse 1.6s ease-out infinite;
+}
+
+@keyframes product-flow-pulse {
+  to { transform: scale(1.8); opacity: 0; }
+}
+
+.story-chapter {
+  position: relative;
+}
+
+.story-chapter::before {
+  content: "";
+  position: absolute;
+  left: -2.1rem;
+  top: 50%;
+  width: 1.1rem;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--primary));
+  opacity: 0.38;
+}
+
+html[data-mode="explore"][data-motion="on"] .stage-caption [data-stage-value] {
+  animation: stage-value-enter 0.42s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes stage-value-enter {
+  from { opacity: 0; transform: translateY(5px); filter: blur(2px); }
+  to { opacity: 1; transform: none; filter: blur(0); }
+}
+
+/* Experience: selection changes the proof panel and draws in only its actual stack. */
+html[data-mode="explore"][data-motion="on"] .timeline-readout {
+  animation: timeline-readout-enter 0.48s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes timeline-readout-enter {
+  from { opacity: 0.65; transform: translateY(11px); filter: blur(3px); }
+  to { opacity: 1; transform: none; filter: blur(0); }
+}
+
+.timeline-stack {
+  align-items: center;
+}
+
+.timeline-stack small {
+  width: 100%;
+  color: var(--text-tertiary);
+  font-size: clamp(0.66rem, 0.08vw + 0.64rem, 0.73rem);
+  letter-spacing: 0.06em;
+}
+
+html[data-mode="explore"][data-motion="on"] .timeline-readout .timeline-stack span {
+  animation: timeline-tech-enter 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+html[data-mode="explore"][data-motion="on"] .timeline-readout .timeline-stack span:nth-of-type(2) { animation-delay: 45ms; }
+html[data-mode="explore"][data-motion="on"] .timeline-readout .timeline-stack span:nth-of-type(3) { animation-delay: 90ms; }
+html[data-mode="explore"][data-motion="on"] .timeline-readout .timeline-stack span:nth-of-type(4) { animation-delay: 135ms; }
+html[data-mode="explore"][data-motion="on"] .timeline-readout .timeline-stack span:nth-of-type(5) { animation-delay: 180ms; }
+html[data-mode="explore"][data-motion="on"] .timeline-readout .timeline-stack span:nth-of-type(n + 6) { animation-delay: 225ms; }
+
+@keyframes timeline-tech-enter {
+  from { opacity: 0; transform: translateX(-8px); }
+  to { opacity: 1; transform: none; }
+}
+
+.timeline-band-technologies {
+  position: absolute;
+  z-index: 5;
+  left: calc(100% + 10px);
+  top: 50%;
+  display: flex;
+  width: max-content;
+  max-width: 122px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  opacity: 0;
+  transform: translate3d(-8px, -50%, 0);
+  pointer-events: none;
+  transition: opacity 0.24s ease, transform 0.48s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.timeline-band-technologies > span {
+  display: block;
+  border-left: 1px solid var(--timeline-type-accent, var(--signal));
+  padding: 3px 6px;
+  background: color-mix(in srgb, var(--surface-raised) 94%, transparent);
+  color: var(--foreground);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: clamp(0.66rem, 0.08vw + 0.64rem, 0.72rem);
+  line-height: 1.25;
+  white-space: nowrap;
+}
+
+html[data-mode="explore"] .timeline-band[data-active="true"] .timeline-band-technologies,
+html[data-mode="explore"] .timeline-band:hover .timeline-band-technologies,
+html[data-mode="explore"] .timeline-band:focus-visible .timeline-band-technologies {
+  opacity: 1;
+  transform: translate3d(0, -50%, 0);
+}
+
+html[data-mode="explore"][data-motion="on"] .timeline-band[data-active="true"] .timeline-band-technologies > span {
+  animation: timeline-satellite-enter 0.46s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: var(--technology-delay);
+}
+
+@keyframes timeline-satellite-enter {
+  from {
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+}
+
+/* Stack: the graph remains fixed and readable; the whole relation plane only shifts in depth. */
+html[data-mode="explore"][data-motion="on"] .knowledge-canvas {
+  transform: perspective(1800px) rotateX(var(--pointer-tilt-x)) rotateY(var(--pointer-tilt-y));
+  transform-origin: center;
+  transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
+}
+
+html[data-mode="explore"][data-motion="on"] .knowledge-canvas:hover {
+  box-shadow: 0 28px 90px var(--shadow-color);
+}
+
+.knowledge-canvas .active-edge {
+  filter: drop-shadow(0 0 3px color-mix(in srgb, var(--primary) 50%, transparent));
+}
+
+/* Foundation: several signals settle on one stable base. */
+.education-foundation {
+  position: relative;
+}
+
+.education-foundation > :not(.foundation-convergence) {
+  position: relative;
+  z-index: 1;
+}
+
+.foundation-convergence {
+  position: absolute;
+  z-index: 0;
+  top: clamp(90px, 9vw, 155px);
+  left: 4%;
+  width: 92%;
+  height: min(62vw, 720px);
+  overflow: visible;
+  opacity: 0.66;
+  pointer-events: none;
+}
+
+.foundation-convergence path,
+.foundation-convergence circle {
+  vector-effect: non-scaling-stroke;
+}
+
+.foundation-convergence g path {
+  fill: none;
+  stroke: color-mix(in srgb, var(--primary) 31%, transparent);
+  stroke-width: 0.72;
+  stroke-dasharray: 1;
+  stroke-dashoffset: calc(1 - var(--section-progress));
+}
+
+.foundation-convergence g circle {
+  fill: var(--primary);
+  opacity: calc(0.18 + var(--section-progress));
+}
+
+.foundation-base-line,
+.foundation-output {
+  fill: none;
+  stroke: color-mix(in srgb, var(--signal) 56%, var(--primary));
+  stroke-width: 1.3;
+  stroke-dasharray: 1;
+  stroke-dashoffset: calc(1 - var(--section-progress));
+}
+
+.foundation-core-node {
+  fill: var(--signal);
+  opacity: calc(0.35 + var(--section-progress));
+  filter: drop-shadow(0 0 5px var(--signal));
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+html[data-mode="explore"][data-motion="on"] .foundation-core-node {
+  animation: foundation-core-breathe 2.6s ease-in-out infinite;
+}
+
+@keyframes foundation-core-breathe {
+  50% { transform: scale(1.55); }
+}
+
+.education-foundation::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: 50%;
+  bottom: 8%;
+  width: min(62vw, 900px);
+  height: min(28vw, 340px);
+  border: 1px solid color-mix(in srgb, var(--primary) 24%, transparent);
+  border-radius: 50%;
+  transform: translateX(-50%) scaleX(0.94);
+  opacity: calc(0.25 + var(--section-progress));
+  box-shadow: inset 0 0 70px color-mix(in srgb, var(--primary) 8%, transparent);
+  pointer-events: none;
+}
+
+/* Human chapter: the signal breathes around interests, without moving the copy. */
+.about-audio-wave {
+  stroke-dasharray: 12 5;
+  stroke-dashoffset: calc(var(--section-progress) * -120);
+}
+
+html[data-mode="explore"][data-motion="on"] .foreground-filament.stage-about {
+  animation: human-field-breath 5.4s ease-in-out infinite;
+}
+
+@keyframes human-field-breath {
+  50% { transform: scale(0.58) translateY(-5px); opacity: 0.09; }
+}
+
+.personal-side-signal li {
+  font-size: clamp(0.72rem, 0.12vw + 0.69rem, 0.82rem);
+  line-height: 1.35;
+  transition: color 0.24s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.24s ease;
+}
+
+.interest-readout {
+  display: block;
+  min-height: 1.2em;
+  margin-top: 18px;
+  color: var(--signal);
+  font-size: clamp(0.68rem, 0.08vw + 0.66rem, 0.74rem);
+  letter-spacing: 0.06em;
+}
+
+.personal-side-signal li button {
+  border: 0;
+  padding: 5px 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-transform: inherit;
+}
+
+.personal-side-signal li:has(button[aria-pressed="true"]) {
+  color: var(--foreground);
+  transform: translateY(-3px);
+}
+
+.personal-side-signal li:has(button[aria-pressed="true"])::before {
+  color: var(--signal);
+}
+
+.about-audio-wave,
+.personal-side-signal circle {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: stroke 0.35s ease, stroke-width 0.35s ease, transform 0.55s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
+}
+
+.personal-side-signal[data-interest="physical"] .about-audio-wave {
+  stroke: var(--signal);
+  stroke-width: 1.65;
+  transform: scaleY(1.18);
+}
+
+.personal-side-signal[data-interest="context"] .about-audio-wave {
+  stroke-dasharray: 4 7;
+  transform: scaleY(0.72);
+}
+
+.personal-side-signal[data-interest="audio"] .about-audio-wave {
+  stroke-width: 1.75;
+  transform: scaleY(1.34);
+}
+
+.personal-side-signal[data-interest="audio"] circle {
+  transform: scale(1.45);
+}
+
+html[data-mode="explore"] .personal-side-signal ul:has(li:hover) li:not(:hover) {
+  opacity: 0.48;
+}
+
+html[data-mode="explore"] .personal-side-signal li:hover {
+  color: var(--foreground);
+  transform: translateY(-3px);
+}
+
+/* Contact: the entire narrative collapses into the useful action. */
+.contact-system::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  right: -8vw;
+  bottom: -26vw;
+  width: min(70vw, 1180px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: repeating-radial-gradient(
+    circle,
+    color-mix(in srgb, var(--primary) 13%, transparent) 0 1px,
+    transparent 1px 46px
+  );
+  transform: translate3d(
+      var(--contact-target-x, 0px),
+      var(--contact-target-y, 0px),
+      0
+    )
+    scale(0.88);
+  opacity: calc(0.24 + var(--section-progress));
+  transition: transform 0.28s ease-out;
+  pointer-events: none;
+}
+
+html[data-mode="explore"][data-motion="on"] .foreground-filament.stage-contact {
+  transform: translate3d(
+      var(--contact-target-x, 0px),
+      var(--contact-target-y, 0px),
+      0
+    )
+    scale(var(--contact-scale, 0.25));
+}
+
+.contact-system > * {
+  position: relative;
+  z-index: 1;
+}
+
+html[data-mode="explore"][data-motion="on"] .contact-email-target:hover .contact-copy-icon,
+html[data-mode="explore"][data-motion="on"] .contact-email-target:focus-visible .contact-copy-icon {
+  transform: scale(1.08) rotate(-4deg);
+  border-color: var(--signal);
+  box-shadow: 0 0 0 8px color-mix(in srgb, var(--signal) 8%, transparent);
+}
+
+.contact-copy-icon {
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease, box-shadow 0.35s ease;
+}
+
+/* Reveal grammar: each variant illustrates the section's function. */
+html[data-mode="explore"][data-motion="on"] .reveal[data-reveal] {
+  transition:
+    opacity 0.62s ease,
+    transform 0.78s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.62s ease,
+    clip-path 0.82s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html[data-mode="explore"][data-motion="on"] .reveal[data-reveal="mask"][data-revealed="false"] {
+  opacity: 0.76;
+  transform: translateY(0.65rem) scaleY(0.985);
+  transform-origin: bottom;
+  clip-path: inset(0);
+  filter: blur(0.6px);
+}
+
+html[data-mode="explore"][data-motion="on"] .reveal[data-reveal="focus"][data-revealed="false"] {
+  opacity: 0.74;
+  transform: translateX(-0.6rem);
+  filter: blur(0.8px);
+  clip-path: inset(0);
+}
+
+html[data-mode="explore"][data-motion="on"] .reveal[data-reveal="graph"][data-revealed="false"] {
+  opacity: 0.76;
+  transform: scale(0.99);
+  filter: blur(0.65px);
+  clip-path: inset(0);
+}
+
+html[data-mode="explore"][data-motion="on"] .reveal[data-reveal="foundation"][data-revealed="false"] {
+  opacity: 0.76;
+  transform: translateY(-0.5rem) scaleX(0.985);
+  transform-origin: bottom;
+  filter: blur(0.6px);
+}
+
+html[data-mode="explore"][data-motion="on"] .reveal[data-reveal="human"][data-revealed="false"] {
+  opacity: 0.76;
+  transform: translateY(0.45rem) scale(0.995);
+  filter: blur(0.65px);
+}
+
+html[data-mode="explore"][data-motion="on"] .reveal[data-reveal="converge"][data-revealed="false"] {
+  opacity: 0.74;
+  transform: scale(1.01);
+  filter: blur(0.8px);
+  clip-path: inset(0);
+}
+
+html[data-mode="explore"][data-motion="on"] .reveal[data-reveal][data-revealed="true"] {
+  opacity: 1;
+  transform: none;
+  filter: none;
+  clip-path: inset(0);
+}
+
+/* Mode choice states its tradeoff on roomy screens. */
+.visit-toggle [data-slot="toggle-group-item"] {
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  height: 42px;
+  padding-inline: 0.7rem;
+  line-height: 1.05;
+}
+
+.visit-toggle [data-slot="toggle-group-item"] > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.38rem;
+  font-size: 0.72rem;
+}
+
+.visit-toggle [data-slot="toggle-group-item"] small {
+  max-width: 8.5rem;
+  overflow: hidden;
+  color: var(--text-tertiary);
+  font-size: 0.66rem;
+  font-weight: 450;
+  line-height: 1.1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-transform: none;
+}
+
+.visit-toggle [data-state="on"] small {
+  color: var(--text-secondary);
+}
+
+@media (max-width: 1240px) {
+  .visit-toggle [data-slot="toggle-group-item"] {
+    height: 42px;
+  }
+}
+
+@media (max-width: 1180px) {
+  .timeline-band-technologies {
+    display: none;
+  }
+}
+
+@media (max-width: 360px) {
+  .visit-toggle [data-slot="toggle-group-item"] {
+    padding-inline: 0.55rem;
+  }
+  .visit-toggle [data-slot="toggle-group-item"] small {
+    font-size: 0.62rem;
+  }
+}
+
+@media (max-width: 780px) {
+  .foreground-filament .story-signal-base,
+  .foreground-filament .story-signal-pulse {
+    opacity: 0.45;
+  }
+
+  .product-data-flow {
+    grid-template-columns: 1fr;
+    gap: 0.6rem;
+    margin-top: 1rem;
+  }
+
+  .product-data-flow > span {
+    display: none;
+  }
+
+  .product-data-flow li b {
+    font-size: 0.62rem;
+    overflow-wrap: anywhere;
+  }
+
+  .story-chapter::before {
+    display: none;
+  }
+
+  .education-foundation::after {
+    bottom: 4%;
+    width: 92vw;
+    height: 48vw;
+  }
+
+  .foundation-convergence {
+    top: 130px;
+    left: -8%;
+    width: 116%;
+    height: 680px;
+    opacity: 0.4;
+  }
+
+  .contact-system::after {
+    right: -48vw;
+    bottom: -8vw;
+    width: 125vw;
+  }
+}
+
+html[data-mode="recruiter"] .story-signal-pulse,
+html[data-mode="recruiter"] .story-signal-head-halo,
+html[data-mode="recruiter"] .product-data-flow li[data-current="true"] i::after,
+html[data-mode="recruiter"] .capture-scanline {
+  animation: none;
+}
+
+html[data-mode="recruiter"] .knowledge-canvas,
+html[data-mode="recruiter"] .product-stage {
+  transform: none;
+}
+
+html[data-mode="recruiter"] .story-chapter {
+  min-height: auto;
+  padding-block: clamp(2.75rem, 5vh, 4.5rem);
+}
+
+html[data-mode="recruiter"] .foundation-convergence g path,
+html[data-mode="recruiter"] .foundation-base-line,
+html[data-mode="recruiter"] .foundation-output {
+  stroke-dashoffset: 0.35;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .story-signal-pulse,
+  .story-signal-head-halo,
+  .about-audio-wave,
+  .foreground-filament,
+  .timeline-readout,
+  .timeline-stack span,
+  .product-data-flow li i::after {
+    animation: none !important;
+    transform: none !important;
+  }
+
+  .product-stage,
+  .capture-image,
+  .knowledge-canvas {
+    transform: none !important;
+  }
+
+  .foundation-convergence g path,
+  .foundation-base-line,
+  .foundation-output {
+    stroke-dashoffset: 0 !important;
+  }
+
+  .foundation-core-node {
+    animation: none !important;
+    transform: none !important;
+  }
+}

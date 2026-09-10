@@ -1,48 +1,58 @@
-import type React from "react"
-import type { Metadata } from "next"
-import { GeistSans } from "geist/font/sans"
-import { GeistMono } from "geist/font/mono"
-import { Analytics } from "@vercel/analytics/next"
-import "./globals.css"
-import { Suspense } from "react"
+import type { Metadata, Viewport } from "next";
+import { GeistSans } from "geist/font/sans";
+import localFont from "next/font/local";
+import "./globals.css";
+import "./hero-system.css";
+import "./work-system.css";
+import "./knowledge-system.css";
+import "./about-contact-system.css";
+import "./narrative-system.css";
+import "./theme-system.css";
+import "./professional-contact.css";
+import "./recruiter-brief.css";
+import "./entity-type-system.css";
+import "./story-motion.css";
+import { SITE_ORIGIN } from "@/lib/seo";
+
+const barlow = localFont({
+  src: "./fonts/barlow-condensed-latin-800-normal.woff2",
+  weight: "800",
+  style: "normal",
+  variable: "--font-barlow",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
-  title: "Hassan Haddane - Développeur Web Full-Stack",
+  metadataBase: new URL(SITE_ORIGIN),
+  applicationName: "LOWKYZ // Hassan Haddane",
+  title: {
+    default: "Hassan Haddane — Full-Stack Web Developer",
+    template: "%s // LOWKYZ",
+  },
   description:
-    "Portfolio de Hassan Haddane, développeur web spécialisé en React, Next.js, TypeScript et technologies modernes. Découvrez mes projets et compétences.",
-  keywords: ["Hassan Haddane", "Développeur Web", "React", "Next.js", "TypeScript", "Full-Stack", "Portfolio"],
+    "Hassan Haddane, développeur Web Full-Stack à Rennes. React, Next.js, TypeScript, Python, qualité et DevOps.",
   authors: [{ name: "Hassan Haddane" }],
-  creator: "Hassan Haddane",
-  openGraph: {
-    title: "Hassan Haddane - Développeur Web Full-Stack",
-    description: "Portfolio professionnel de Hassan Haddane, développeur web passionné par les technologies modernes.",
-    url: "https://lowkyz.xyz",
-    siteName: "Hassan Haddane Portfolio",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Hassan Haddane - Développeur Web Full-Stack",
-    description: "Portfolio professionnel de Hassan Haddane, développeur web passionné par les technologies modernes.",
-  },
-  robots: {
-    index: true,
-    follow: true,
-  },
-    generator: 'v0.app'
-}
-
+  category: "technology",
+};
+export const viewport: Viewport = {
+  themeColor: "#f2f0e9",
+  colorScheme: "light dark",
+};
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="fr">
-      <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable} antialiased`}>
-        <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
-        <Analytics />
+    <html lang="fr" className={barlow.variable} suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: "try{var l=location.pathname.split('/')[1];if(l==='fr'||l==='en')document.documentElement.lang=l;var p=JSON.parse(localStorage.getItem('lowkyz.preferences.v1')||'{}');var t=p.theme==='dark'?'dark':'light';document.documentElement.dataset.theme=t;document.documentElement.style.colorScheme=t}catch(e){document.documentElement.dataset.theme='light';document.documentElement.style.colorScheme='light'}",
+          }}
+        />
+      </head>
+      <body className={GeistSans.variable}>
+        {children}
       </body>
     </html>
-  )
+  );
 }

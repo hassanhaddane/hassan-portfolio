@@ -1,278 +1,78 @@
-# Portfolio Hassan Haddane - lowkyz.xyz
+# LOWKYZ // Interactive Developer System
 
-Portfolio personnel moderne et minimaliste présentant mes compétences, expériences et projets en tant que Développeur Full-Stack.
+Portfolio bilingue de Hassan Haddane, développeur Web Full-Stack à Rennes. Le site combine une lecture rapide pour les recruteurs et une exploration plus expressive, avec trois moments centraux : le Digital Organism du hero, le récit produit de GreeCheck et le Knowledge Graph qui relie technologies, projets, expériences et pratiques.
 
-## 🎯 Objectif du projet
+## Démarrage
 
-Ce portfolio a été conçu pour :
-- Présenter mon profil professionnel de manière moderne et attractive
-- Valoriser mon CV avec une expérience utilisateur optimale
-- Démontrer ma maîtrise des technologies web modernes (2025)
-- Faciliter la prise de contact avec les recruteurs et entreprises
+Le projet utilise Node.js 22, pnpm 10, Next.js 15 et React 19.
 
-## 🚀 Technologies utilisées
+```sh
+pnpm install
+pnpm dev
+```
 
-### Frontend
-- **Next.js 15** - Framework React avec App Router pour des performances optimales
-- **React 19** - Bibliothèque UI avec les dernières fonctionnalités
-- **TypeScript** - Typage statique pour un code robuste et maintenable
-- **Tailwind CSS v4** - Framework CSS utility-first pour un design moderne
-- **Shadcn/ui** - Composants UI accessibles et personnalisables
+La version de production se valide ainsi :
 
-### Outils de développement
-- **ESLint** - Linting pour maintenir la qualité du code
-- **Git** - Contrôle de version
-- **Vercel** - Plateforme de déploiement optimisée pour Next.js
+```sh
+pnpm lint
+pnpm test
+pnpm typecheck
+pnpm build
+pnpm start
+```
 
-## 📋 Choix techniques justifiés
+Aucun secret ni service distant n'est requis pour lancer le portfolio.
 
-### Pourquoi Next.js 15 ?
-- **Performance** : Server-Side Rendering (SSR) et Static Site Generation (SSG) pour un chargement ultra-rapide
-- **SEO optimisé** : Rendu côté serveur pour un meilleur référencement
-- **App Router** : Architecture moderne avec layouts imbriqués et loading states
-- **Image Optimization** : Composant Image natif pour des performances optimales
-- **Écosystème mature** : Large communauté et documentation complète
+## Routes
 
-### Pourquoi TypeScript ?
-- **Sécurité du code** : Détection des erreurs à la compilation
-- **Autocomplétion** : Meilleure expérience développeur avec IntelliSense
-- **Maintenabilité** : Code auto-documenté et refactoring facilité
-- **Standard industrie** : Compétence recherchée en 2025
+- `/` redirige vers `/fr`
+- `/fr` contient la version française et ses métadonnées dédiées
+- `/en` contient la version anglaise et ses métadonnées dédiées
+- `/opengraph-image` génère l'image sociale LOWKYZ
+- `/robots.txt` et `/sitemap.xml` sont générés par Next.js
+- `/cv-hassan-haddane.pdf` sert le CV actuel
 
-### Pourquoi Tailwind CSS v4 ?
-- **Productivité** : Développement rapide avec classes utilitaires
-- **Cohérence** : Design system intégré avec tokens de design
-- **Performance** : CSS optimisé et tree-shaking automatique
-- **Responsive** : Mobile-first avec breakpoints intuitifs
-- **Dark mode** : Support natif du mode sombre
+## Expérience
 
-### Pourquoi Shadcn/ui ?
-- **Accessibilité** : Composants conformes WCAG avec ARIA
-- **Personnalisable** : Code source accessible et modifiable
-- **Moderne** : Design minimaliste et professionnel
-- **Pas de dépendance** : Composants copiés dans le projet (ownership total)
+- **Récit en sept chapitres** : `00 NOW`, `01 PROJET`, `02 EXPÉRIENCE`, `03 COMPÉTENCES`, `04 FORMATION`, `05 À PROPOS`, `06 CONTACT`. Chaque chapitre possède un marqueur lisible, une transition vers le suivant et un signal graphique issu du même organisme numérique.
+- **Repère permanent** : un rail latéral sur desktop et une barre compacte sur mobile synchronisent le numéro et la catégorie avec la position réelle, y compris sur les liens profonds et après un changement de mode.
+- **Recruiter Mode** affiche une synthèse immédiate du profil et une lecture claire de la stack.
+- **Explore Mode** charge Three.js à la demande et active le Digital Organism, les réactions aux technologies, le curseur contextuel et les transitions enrichies.
+- **Lampe LOWKYZ** pilote deux thèmes dessinés séparément. Le thème clair minéral est l'état par défaut, le thème sombre profond correspond à la lampe éteinte et le choix est restauré localement sans flash d'hydratation.
+- **Performance adaptative** choisit un rendu high, normal, low ou reduced selon le mouvement préféré, la taille d'écran, la mémoire, le nombre de cœurs et l'économiseur de données.
+- **Ctrl/Cmd+K** ouvre une palette accessible avec navigation, `whoami`, `stack`, `hire`, langue, mode et mouvement.
+- **GreeCheck** utilise des captures publiques réelles et un mode système interactif. Les expériences médicales restent des représentations abstraites explicitement légendées.
+- **Knowledge Graph** relie uniquement des technologies et contextes déclarés dans le CV et les informations fournies.
+- **Contact** permet de copier l'email, appeler, ouvrir les profils ou télécharger le CV sans formulaire serveur.
 
-## 🎨 Design System
+## Architecture
 
-### Palette de couleurs "Dev Geek"
-Le design adopte une esthétique minimaliste inspirée des IDE modernes et des terminaux :
+```text
+app/                            Routes, styles, métadonnées, OG, sitemap et robots
+components/portfolio/           Hero, récit projet, expériences, Knowledge Graph, formation, About et Contact
+components/system/              Préférences, navigation, palette, motion, Easter eggs et canvas
+components/ui/                  Primitives Radix/cmdk strictement nécessaires
+lib/portfolio-data.ts           Données professionnelles et contenus bilingues
+lib/work-data.ts                Storytelling et relations factuelles de GreeCheck
+lib/knowledge-data.ts           Nœuds et connexions du Knowledge Graph
+lib/constellation-*.ts          Géométrie et moteur WebGL différé
+public/projects/                Captures publiques optimisées de GreeCheck
+public/cv-hassan-haddane.pdf    CV courant
+scripts/generate-cv.py          Génération reproductible du CV avec ReportLab
+scripts/validate-production.mjs Contrôles de production ciblés
+docs/                           Audit initial, UX, direction et décisions techniques
+```
 
-- **Background** : `#0a0a0a` - Noir profond pour réduire la fatigue oculaire
-- **Foreground** : `#ededed` - Blanc cassé pour un contraste optimal
-- **Primary** : `#00ff9f` - Cyan néon pour les accents principaux
-- **Secondary** : `#ff006e` - Rose néon pour les accents secondaires
-- **Muted** : `#1a1a1a` - Gris foncé pour les backgrounds secondaires
+Les fontes Barlow Condensed et Geist sont auto-hébergées. Le CSS est centralisé par système visuel, avec une couche finale de tokens light/dark et de garde-fous typographiques fluides. Three.js est exclu du chemin critique et importé uniquement pour les appareils capables d'exécuter l'expérience enrichie.
 
-### Typographie
-- **Font principale** : Geist Sans - Police moderne et lisible
-- **Font monospace** : Geist Mono - Pour le code et les accents techniques
-- **Hiérarchie claire** : Tailles et poids cohérents pour une lecture optimale
+## Contenu et confidentialité
 
-### Principes de design
-- **Minimalisme** : Interfaces épurées sans éléments superflus
-- **Contraste élevé** : Lisibilité optimale sur fond sombre
-- **Espacement généreux** : Respiration visuelle pour une meilleure UX
-- **Animations subtiles** : Micro-interactions pour enrichir l'expérience
+Le portfolio n'affiche ni score de compétence arbitraire, ni statistique inventée. GreeCheck est présenté avec ses fonctions réelles : scan, recherche, comparaison, GreeScore local et explicable, trois langues, historique, favoris, critères et listes. Les travaux iAudiogram, Santé Respiratoire France et Biosency sont décrits sans données internes ni captures fictives.
 
-## 📁 Structure du projet
+Pour mettre à jour le profil, modifier les données dans `lib/portfolio-data.ts`, `lib/work-data.ts` et `lib/knowledge-data.ts`. Le CV se régénère avec `python scripts/generate-cv.py`.
 
-\`\`\`
-portfolio/
-├── app/                      # App Router Next.js
-│   ├── layout.tsx           # Layout principal avec fonts
-│   ├── page.tsx             # Page d'accueil (toutes les sections)
-│   └── globals.css          # Styles globaux et design tokens
-├── components/              # Composants React
-│   ├── ui/                  # Composants Shadcn/ui
-│   ├── navigation.tsx       # Navigation sticky avec scroll
-│   ├── hero-section.tsx     # Section présentation
-│   ├── about-section.tsx    # Section à propos
-│   ├── projects-section.tsx # Section projets
-│   ├── skills-section.tsx   # Section compétences
-│   ├── experience-section.tsx # Section expériences
-│   ├── education-section.tsx  # Section formation
-│   ├── contact-section.tsx    # Section contact
-│   └── footer.tsx           # Footer
-├── lib/                     # Utilitaires
-│   └── utils.ts            # Fonctions helpers (cn, etc.)
-├── public/                  # Assets statiques
-│   └── cv-hassan-haddane.pdf # CV téléchargeable
-└── README.md               # Documentation du projet
-\`\`\`
+## Accessibilité et qualité
 
-## 🏗️ Architecture
+Toutes les informations importantes restent disponibles sans WebGL. Les sections sont focalisables depuis la palette, la navigation comporte un lien d'évitement, les dialogues gèrent le focus et Escape, les interactions disposent d'états clavier et les animations respectent `prefers-reduced-motion`. Les rendus mobile utilisent une composition et un explorateur adaptés plutôt qu'une réduction du graphe desktop.
 
-### Single Page Application (SPA)
-Le portfolio est une page unique avec plusieurs sections :
-- Navigation fluide avec scroll automatique
-- Effet de "plusieurs pages" grâce au scroll
-- Performance optimale (pas de rechargement)
-- Expérience utilisateur moderne
-
-### Composants modulaires
-Chaque section est un composant indépendant :
-- **Réutilisabilité** : Composants isolés et testables
-- **Maintenabilité** : Modifications localisées
-- **Performance** : Lazy loading possible si nécessaire
-- **Lisibilité** : Code organisé et documenté
-
-### Gestion du state
-- **Client Components** : Pour les interactions (navigation, formulaires)
-- **Server Components** : Pour le contenu statique (par défaut)
-- **Pas de state management** : Application simple sans Redux/Zustand
-
-## 🎯 Fonctionnalités
-
-### Navigation
-- Menu sticky qui suit le scroll
-- Indicateur de section active
-- Scroll smooth vers les sections
-- Responsive avec menu mobile
-
-### Section Hero
-- Présentation avec nom et titre
-- Badge de disponibilité (Recherche CDI)
-- Boutons d'action (CV, Contact)
-- Liens sociaux (LinkedIn, GitHub)
-- Carte d'informations avec langues et centres d'intérêt
-
-### Section À propos
-- Valeurs professionnelles avec icônes
-- Approche et philosophie de travail
-- Situation actuelle et stack favorite
-- Design en grille responsive
-
-### Section Projets
-- Showcase des projets principaux
-- Cartes avec images, descriptions et technologies
-- Liens vers démos et repositories
-- Filtrage par technologie (optionnel)
-
-### Section Compétences
-- Catégorisation (Front-End, Back-End, Outils)
-- Badges visuels pour chaque technologie
-- Niveaux de maîtrise
-- Design en grille responsive
-
-### Section Expérience
-- Timeline verticale avec points
-- Cartes détaillées par expérience
-- Réalisations et technologies utilisées
-- Indicateur "En cours" pour l'alternance actuelle
-- Résumé statistique du parcours
-
-### Section Formation
-- Parcours académique complet
-- Diplômes avec spécialisations
-- Certifications (si applicable)
-- Design cohérent avec la section expérience
-
-### Section Contact
-- Formulaire de contact fonctionnel
-- Informations de contact directes
-- Liens sociaux
-- Design accessible et responsive
-
-### Footer
-- Copyright et mentions légales
-- Liens rapides vers sections
-- Liens sociaux
-- Design minimaliste
-
-## 🔧 Installation et développement
-
-### Prérequis
-- Node.js 18+ 
-- npm ou yarn ou pnpm
-
-### Installation
-\`\`\`bash
-# Cloner le repository
-git clone https://github.com/hassanhaddane/portfolio.git
-
-# Installer les dépendances
-npm install
-
-# Lancer le serveur de développement
-npm run dev
-\`\`\`
-
-Le site sera accessible sur `http://localhost:3000`
-
-### Scripts disponibles
-\`\`\`bash
-npm run dev      # Serveur de développement
-npm run build    # Build de production
-npm run start    # Serveur de production
-npm run lint     # Linting du code
-\`\`\`
-
-## 🚀 Déploiement
-
-### Vercel (recommandé)
-1. Connecter le repository GitHub à Vercel
-2. Configurer le domaine personnalisé (lowkyz.xyz)
-3. Déploiement automatique à chaque push
-
-### Variables d'environnement
-Aucune variable d'environnement requise pour ce projet.
-
-## 📱 Responsive Design
-
-Le portfolio est entièrement responsive avec 3 breakpoints principaux :
-- **Mobile** : < 768px
-- **Tablet** : 768px - 1024px
-- **Desktop** : > 1024px
-
-Toutes les sections s'adaptent automatiquement à la taille de l'écran.
-
-## ♿ Accessibilité
-
-Le portfolio respecte les standards WCAG 2.1 niveau AA :
-- Contraste de couleurs suffisant (> 4.5:1)
-- Navigation au clavier complète
-- Attributs ARIA sur les composants interactifs
-- Textes alternatifs sur les images
-- Structure sémantique HTML5
-
-## 🎨 Personnalisation
-
-### Modifier les couleurs
-Éditer `app/globals.css` dans la section `@theme inline` :
-\`\`\`css
-@theme inline {
-  --color-primary: #00ff9f;
-  --color-secondary: #ff006e;
-  /* ... autres couleurs */
-}
-\`\`\`
-
-### Modifier les fonts
-Éditer `app/layout.tsx` pour changer les polices Google Fonts.
-
-### Ajouter du contenu
-Chaque section est dans un fichier séparé dans `components/`. Modifier le contenu directement dans les composants.
-
-## 📄 Licence
-
-Ce projet est sous licence MIT. Vous êtes libre de l'utiliser comme template pour votre propre portfolio.
-
-## 👤 Auteur
-
-**Hassan Haddane**
-- Portfolio : [lowkyz.xyz](https://lowkyz.xyz)
-- LinkedIn : [/hassanhaddane](https://linkedin.com/in/hassanhaddane)
-- GitHub : [/hassanhaddane](https://github.com/hassanhaddane)
-- Email : hassanhaddane33s@gmail.com
-
-## 🙏 Remerciements
-
-- [Next.js](https://nextjs.org/) pour le framework
-- [Shadcn/ui](https://ui.shadcn.com/) pour les composants
-- [Tailwind CSS](https://tailwindcss.com/) pour le styling
-- [Lucide](https://lucide.dev/) pour les icônes
-- [Vercel](https://vercel.com/) pour l'hébergement
-
----
-
-**Note** : Ce portfolio a été développé en 2025 avec les dernières technologies web pour démontrer ma maîtrise des standards modernes du développement front-end.
+La publication n'est pas automatique : cette refonte reste locale tant qu'elle n'est pas déployée explicitement.
