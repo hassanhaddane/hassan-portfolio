@@ -146,7 +146,6 @@ export function PreferencesProvider({
       for (const section of sections) {
         const box = section.getBoundingClientRect();
         if (box.top <= readingLine) current = section.id;
-        if (box.top <= readingLine && box.bottom > readingLine) break;
       }
       setActiveSection((previous) => (previous === current ? previous : current));
     };

@@ -6,7 +6,7 @@ LOWKYZ est un portfolio personnel de développeur Full-Stack avec la rigueur d'u
 
 ## Source de vérité
 
-Les primitives transversales et l'action réutilisable sont dans `app/globals.css`. Les couleurs sémantiques et les deux thèmes sont dans `app/theme-system.css`. `app/hero-system.css` possède l'identité et la navigation ; `app/professional-contact.css` la disposition des actions et contacts du hero ; `app/clarity-system.css` les sections et projets. Ajouter une règle dans le fichier propriétaire avant d'envisager une nouvelle feuille. Les anciennes règles `.work-cta` et `.contact-cta` ont été retirées après migration vers `CreativeAction`.
+Les primitives transversales et l'action réutilisable sont dans `app/globals.css`. Les couleurs sémantiques et les deux thèmes sont dans `app/theme-system.css`. `app/hero-system.css` possède désormais le hero, le signal et la navigation responsive ; `app/clarity-system.css` les sections et projets. L'ancienne feuille `app/professional-contact.css`, consacrée à des classes qui n'existent plus dans les composants, a été retirée. Ajouter une règle dans le fichier propriétaire avant d'envisager une nouvelle feuille.
 
 ## Tokens
 
@@ -34,7 +34,7 @@ Mouvement : `--ease-out-expo`, `--ease-in-out`, `--duration-fast` (180 ms), `--d
 
 `CreativeAction` (`components/ui/creative-action.tsx`) accepte `href` pour un lien ou les propriétés natives d'un bouton. Ses variantes sont `primary` (cobalt), `secondary` (surface bordée), `text` (action légère) et `icon` (contrôle carré avec nom accessible). Sa structure commune contient deux copies visuelles du libellé pour le décalage, un pictogramme mobile et un fond interne qui se révèle. Le libellé accessible est fourni une seule fois avec `aria-label`; la duplication visuelle est cachée aux lecteurs d'écran. Les états hover, focus-visible, active et disabled sont distincts. Un lien vers une action indisponible ne doit pas être rendu : utiliser un bouton `disabled`.
 
-La navigation garde les sept chapitres et le rail de progression. Les cartes projet sont des dossiers éditoriaux : index, contexte, résumé, preuve et lien externe clairement indiqué. Les surfaces partagent les couleurs et traits sémantiques ; une grille technique très faible apparaît uniquement derrière certaines sections. Le hero garde son moteur graphique existant et ses contenus vérifiés.
+Le hero utilise le nom comme masque typographique, puis présente le poste Full-Stack, une accroche, des faits vérifiés et les accès projets/CV/contact. Le filament existant reste son seul objet graphique : il répond au pointeur et au scroll, avec un SVG de secours quand WebGL n'est pas disponible. La grille technique reste faible et cantonnée à l'arrière-plan. La navigation compacte propose six destinations principales ; Accueil et Formation sont aussi accessibles dans le menu mobile, le rail et la palette de commandes. « Lab » cible la partie audio et associative documentée dans À propos, sans dupliquer de projet. Les huit repères du rail reflètent ces ancres. Les cartes projet restent des dossiers éditoriaux : index, contexte, résumé, preuve et lien externe clairement indiqué.
 
 ## Responsive et accessibilité
 

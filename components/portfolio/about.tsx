@@ -45,9 +45,9 @@ export function About() {
           </dl>
         </section>
 
-        <section aria-labelledby="about-interests">
-          <span className="mono">02 / {locale === "fr" ? "EN DEHORS DU TRAVAIL" : "OUTSIDE WORK"}</span>
-          <h3 id="about-interests">{locale === "fr" ? "En dehors du développement" : "Outside development"}</h3>
+        <section id="lab" data-section tabIndex={-1} aria-labelledby="about-interests">
+          <span className="mono">02 / LAB</span>
+          <h3 id="about-interests">{locale === "fr" ? "Culture, son et projets associatifs" : "Culture, sound and community work"}</h3>
           <p>{interests.map((interest, index) => (
             <span key={interest.en} className="about-interest">{index > 0 ? " · " : ""}{interest[locale]}</span>
           ))}</p>

@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import {
   ArrowDownToLine,
   ArrowUpRight,
+  AudioLines,
   CircleUserRound,
   Code2,
   Folder,
@@ -29,6 +30,10 @@ import {
 } from "@/components/ui/command";
 import { usePreferences, useCommand } from "./preferences";
 import { copy, profile } from "@/lib/portfolio-data";
+
+const visibleCommandTrigger = () =>
+  [...document.querySelectorAll<HTMLElement>("[data-command-trigger], [data-mobile-menu-trigger]")]
+    .find((element) => element.getClientRects().length > 0);
 
 export function CommandPalette() {
   const [commandOutput, setCommandOutput] = useState<"whoami" | null>(null);
@@ -90,6 +95,12 @@ export function CommandPalette() {
       icon: CircleUserRound,
     },
     {
+      label: "Lab",
+      keywords: "lab audio 808bloom culture son sound association",
+      target: "lab",
+      icon: AudioLines,
+    },
+    {
       label: "Contact",
       keywords: "email mail contact",
       target: "contact",
@@ -113,9 +124,7 @@ export function CommandPalette() {
           requestAnimationFrame(() => target.focus({ preventScroll: true }));
           return;
         }
-        const fallback = document.querySelector<HTMLElement>(
-          "[data-command-trigger]:not([hidden]), [data-mobile-menu-trigger]",
-        );
+        const fallback = visibleCommandTrigger();
         if (fallback) {
           event.preventDefault();
           requestAnimationFrame(() => fallback.focus({ preventScroll: true }));
@@ -127,9 +136,7 @@ export function CommandPalette() {
           setCommandOutput(null);
           window.setTimeout(() => {
             if (document.activeElement !== document.body) return;
-            const fallback = document.querySelector<HTMLElement>(
-              "[data-command-trigger]:not([hidden]), [data-mobile-menu-trigger]",
-            );
+            const fallback = visibleCommandTrigger();
             fallback?.focus({ preventScroll: true });
           }, 240);
         }

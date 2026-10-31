@@ -1,30 +1,28 @@
 "use client";
 
 import { useEffect, useRef, useState, type CSSProperties } from "react";
-import { Menu, Moon, Sun } from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { useActiveSection, usePreferences } from "./preferences";
-import { CreativeAction } from "@/components/ui/creative-action";
+import { ArrowDownToLine, ArrowUpRight, Menu, Moon, Search, Sun } from "lucide-react";
+import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { profile } from "@/lib/portfolio-data";
+import { useActiveSection, useCommand, usePreferences } from "./preferences";
 import { ReplayIntro, SoundToggle } from "@/components/intro/intro-controls";
 
 const chapters = [
-  { id: "profil", index: "01", label: { fr: "Accueil", en: "Home" } },
-  { id: "projets", index: "02", label: { fr: "Projets", en: "Projects" } },
-  { id: "experience", index: "03", label: { fr: "Expériences", en: "Experience" } },
-  { id: "stack", index: "04", label: { fr: "Compétences", en: "Skills" } },
-  { id: "education", index: "05", label: { fr: "Formation", en: "Education" } },
-  { id: "about", index: "06", label: { fr: "À propos", en: "About" } },
-  { id: "contact", index: "07", label: { fr: "Contact", en: "Contact" } },
+  { id: "profil", label: { fr: "Accueil", en: "Home" } },
+  { id: "projets", label: { fr: "Projets", en: "Work" } },
+  { id: "experience", label: { fr: "Expérience", en: "Experience" } },
+  { id: "stack", label: { fr: "Expertise", en: "Expertise" } },
+  { id: "education", label: { fr: "Formation", en: "Education" } },
+  { id: "about", label: { fr: "À propos", en: "About" } },
+  { id: "lab", label: { fr: "Lab", en: "Lab" } },
+  { id: "contact", label: { fr: "Contact", en: "Contact" } },
 ] as const;
+
+const primaryChapters = chapters.filter(({ id }) => !["profil", "education"].includes(id));
 
 export function Navigation() {
   const { locale, setLocale, theme, toggleTheme } = usePreferences();
+  const { setCommandOpen } = useCommand();
   const activeSection = useActiveSection();
   const [menuOpen, setMenuOpen] = useState(false);
   const header = useRef<HTMLElement>(null);
@@ -40,7 +38,7 @@ export function Navigation() {
     const update = () => {
       if (frame) return;
       frame = requestAnimationFrame(() => {
-        if (header.current) header.current.dataset.floating = String(scrollY > 80);
+        if (header.current) header.current.dataset.floating = String(scrollY > 72);
         frame = 0;
       });
     };
@@ -52,18 +50,21 @@ export function Navigation() {
     };
   }, []);
 
+  const openCommand = () => {
+    setMenuOpen(false);
+    requestAnimationFrame(() => setCommandOpen(true));
+  };
+
   return (
     <>
-      <a className="skip-link" href="#main">
-        {locale === "fr" ? "Aller au contenu" : "Skip to content"}
-      </a>
-      <header ref={header} className="site-masthead clarity-masthead">
-        <a className="wordmark" href="#profil" aria-label="LOWKYZ — Hassan Haddane">
+      <a className="skip-link" href="#main">{locale === "fr" ? "Aller au contenu" : "Skip to content"}</a>
+      <header ref={header} className="site-masthead signal-masthead">
+        <a className="wordmark signal-masthead__brand" href="#profil" aria-label="LOWKYZ — Hassan Haddane">
           <b>LOWKYZ</b><span aria-hidden="true">/</span>
         </a>
 
         <nav className="masthead-links" aria-label={locale === "fr" ? "Navigation principale" : "Main navigation"}>
-          {chapters.map(({ id, label }) => (
+          {primaryChapters.map(({ id, label }) => (
             <a key={id} href={`#${id}`} aria-current={activeSection === id ? "location" : undefined}>
               {label[locale]}
             </a>
@@ -71,29 +72,21 @@ export function Navigation() {
         </nav>
 
         <div className="masthead-utilities">
-          <CreativeAction className="masthead-cta" variant="text" href="#contact" label={locale === "fr" ? "Échanger" : "Get in touch"} />
-          <button
-            type="button"
-            className="theme-switch theme-switch-desktop"
-            onClick={toggleTheme}
-            aria-label={themeLabel}
-            title={themeLabel}
-          >
+          <button type="button" className="signal-masthead__command" data-command-trigger onClick={() => setCommandOpen(true)} aria-label={locale === "fr" ? "Ouvrir la recherche et les commandes" : "Open search and commands"} title="Cmd / Ctrl + K">
+            <Search aria-hidden="true" /><kbd>⌘ K</kbd>
+          </button>
+          <button type="button" className="theme-switch theme-switch-desktop" onClick={toggleTheme} aria-label={themeLabel} title={themeLabel}>
             <ThemeIcon aria-hidden="true" />
-            <span>{themeLabel}</span>
           </button>
           <SoundToggle />
           <ReplayIntro />
-          <button className="locale-switch mono" onClick={() => setLocale(locale === "fr" ? "en" : "fr")}>
-            <span data-current={locale === "fr"}>FR</span>
-            <span aria-hidden="true">/</span>
-            <span data-current={locale === "en"}>EN</span>
-            <span className="sr-only">{locale === "fr" ? "Switch to English" : "Passer en français"}</span>
+          <button type="button" className="locale-switch mono" onClick={() => setLocale(locale === "fr" ? "en" : "fr")} aria-label={locale === "fr" ? "Switch to English" : "Passer en français"}>
+            <span data-current={locale === "fr"}>FR</span><span aria-hidden="true">/</span><span data-current={locale === "en"}>EN</span>
           </button>
 
           <Dialog open={menuOpen} onOpenChange={setMenuOpen}>
             <DialogTrigger asChild>
-              <button className="menu-trigger" data-mobile-menu-trigger aria-label={locale === "fr" ? "Ouvrir le menu" : "Open menu"}>
+              <button type="button" className="menu-trigger" data-mobile-menu-trigger aria-label={locale === "fr" ? "Ouvrir le menu" : "Open menu"} aria-expanded={menuOpen}>
                 <Menu aria-hidden="true" />
               </button>
             </DialogTrigger>
@@ -112,34 +105,34 @@ export function Navigation() {
                 requestAnimationFrame(() => document.getElementById(target)?.focus({ preventScroll: true }));
               }}
             >
-              <DialogTitle className="wordmark">LOWKYZ/</DialogTitle>
-              <DialogDescription>{locale === "fr" ? "Choisissez une section." : "Choose a section."}</DialogDescription>
+              <div className="navigation-dialog__intro">
+                <DialogTitle className="wordmark">LOWKYZ<span aria-hidden="true">/</span></DialogTitle>
+                <DialogDescription>{locale === "fr" ? "Choisir une destination" : "Choose a destination"}</DialogDescription>
+              </div>
               <nav aria-label={locale === "fr" ? "Navigation mobile" : "Mobile navigation"}>
-                {chapters.map(({ id, index, label }) => (
-                  <a
-                    key={id}
-                    href={`#${id}`}
-                    aria-current={activeSection === id ? "location" : undefined}
-                    onClick={() => {
-                      menuTarget.current = id;
-                      setMenuOpen(false);
-                    }}
-                  >
-                    <span className="mono">{index}</span>
-                    {label[locale]}
+                {primaryChapters.map(({ id, label }, index) => (
+                  <a key={id} href={`#${id}`} aria-current={activeSection === id ? "location" : undefined} onClick={() => {
+                    menuTarget.current = id;
+                    setMenuOpen(false);
+                  }}>
+                    <span className="mono">{String(index + 1).padStart(2, "0")}</span>
+                    <strong>{label[locale]}</strong>
+                    <ArrowUpRight aria-hidden="true" />
                   </a>
                 ))}
               </nav>
-              <button
-                type="button"
-                className="theme-switch theme-switch-mobile"
-                onClick={toggleTheme}
-                aria-label={themeLabel}
-              >
-                <ThemeIcon aria-hidden="true" />
-                <span>{themeLabel}</span>
-              </button>
-              <ReplayIntro mobile onReplay={() => setMenuOpen(false)} />
+              <div className="navigation-dialog__bottom">
+                <div className="navigation-dialog__secondary">
+                  <a href="#profil" aria-current={activeSection === "profil" ? "location" : undefined} onClick={() => { menuTarget.current = "profil"; setMenuOpen(false); }}>{chapters[0].label[locale]}</a>
+                  <a href="#education" aria-current={activeSection === "education" ? "location" : undefined} onClick={() => { menuTarget.current = "education"; setMenuOpen(false); }}>{chapters[4].label[locale]}</a>
+                  <a href={profile.cv} download="CV-Hassan-Haddane.pdf">CV <ArrowDownToLine aria-hidden="true" /></a>
+                </div>
+                <div className="navigation-dialog__controls">
+                  <button type="button" className="signal-masthead__command" onClick={openCommand}><Search aria-hidden="true" />{locale === "fr" ? "Rechercher" : "Search"}<kbd>⌘ K</kbd></button>
+                  <button type="button" className="theme-switch theme-switch-mobile" onClick={toggleTheme} aria-label={themeLabel}><ThemeIcon aria-hidden="true" /><span>{themeLabel}</span></button>
+                  <ReplayIntro mobile onReplay={() => setMenuOpen(false)} />
+                </div>
+              </div>
             </DialogContent>
           </Dialog>
         </div>
@@ -158,7 +151,7 @@ function ChapterRail() {
   return (
     <nav className="chapter-rail clarity-chapter-indicator" aria-label={locale === "fr" ? "Section actuelle" : "Current section"}>
       <a href={`#${chapter.id}`} aria-current="location">
-        <span className="mono">{chapter.index} / 07</span>
+        <span className="mono">{String(index + 1).padStart(2, "0")} / {String(chapters.length).padStart(2, "0")}</span>
         <strong>{chapter.label[locale]}</strong>
         <i aria-hidden="true" style={{ "--chapter-progress": `${((index + 1) / chapters.length) * 100}%` } as CSSProperties} />
       </a>
