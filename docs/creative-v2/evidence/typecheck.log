@@ -1,0 +1,17 @@
+
+> lowkyz-interactive-system@1.0.0 typecheck C:\Users\hassa\IdeaProjects\hassan-portfolio
+> tsc --noEmit
+
+error TS6053: File 'C:/Users/hassa/IdeaProjects/hassan-portfolio/.next/types/app/fr/page.ts' not found.
+  The file is in the program because:
+    Matched by include pattern '.next/types/**/*.ts' in 'C:/Users/hassa/IdeaProjects/hassan-portfolio/tsconfig.json'
+error TS6053: File 'C:/Users/hassa/IdeaProjects/hassan-portfolio/.next/types/app/layout.ts' not found.
+  The file is in the program because:
+    Matched by include pattern '.next/types/**/*.ts' in 'C:/Users/hassa/IdeaProjects/hassan-portfolio/tsconfig.json'
+error TS6053: File 'C:/Users/hassa/IdeaProjects/hassan-portfolio/.next/types/app/page.ts' not found.
+  The file is in the program because:
+    Matched by include pattern '.next/types/**/*.ts' in 'C:/Users/hassa/IdeaProjects/hassan-portfolio/tsconfig.json'
+error TS6053: File 'C:/Users/hassa/IdeaProjects/hassan-portfolio/.next/types/cache-life.d.ts' not found.
+  The file is in the program because:
+    Matched by include pattern '.next/types/**/*.ts' in 'C:/Users/hassa/IdeaProjects/hassan-portfolio/tsconfig.json'
+ ELIFECYCLE  Command failed with exit code 2.

@@ -1,0 +1,77 @@
+{
+  "baselineCommit": "66f0d0e0f90cd5f40f5ad2d64cf9d2d92f705302",
+  "files": [
+    {
+      "path": "app/layout.tsx",
+      "beforeSha256": "FD152AC251D4091D77CE4FDFA1978E5B7833C7D5D1B35E237CA1F751E1098873",
+      "afterSha256": "FD152AC251D4091D77CE4FDFA1978E5B7833C7D5D1B35E237CA1F751E1098873",
+      "unchanged": true
+    },
+    {
+      "path": "app/story-motion.css",
+      "beforeSha256": "6E9A3D28D337A6206F488656E5D165C40E7F5FB560919956D03BB028B1022A19",
+      "afterSha256": "6E9A3D28D337A6206F488656E5D165C40E7F5FB560919956D03BB028B1022A19",
+      "unchanged": true
+    },
+    {
+      "path": "components/portfolio/about.tsx",
+      "beforeSha256": "3DA7E51158133C62CBAF6642F130430A39187C9827AE5C92CBE183EFB2E96F43",
+      "afterSha256": "3DA7E51158133C62CBAF6642F130430A39187C9827AE5C92CBE183EFB2E96F43",
+      "unchanged": true
+    },
+    {
+      "path": "components/portfolio/contact.tsx",
+      "beforeSha256": "213580DDD0469B8DB16189C21EBF973A141A958D53444EA9DFC171DF41C91296",
+      "afterSha256": "213580DDD0469B8DB16189C21EBF973A141A958D53444EA9DFC171DF41C91296",
+      "unchanged": true
+    },
+    {
+      "path": "components/portfolio/hero.tsx",
+      "beforeSha256": "DEF0621F1F4B540FA5D89AE7F6CD6F1490747A1021E31EF5D3B3D17FC5C24E19",
+      "afterSha256": "DEF0621F1F4B540FA5D89AE7F6CD6F1490747A1021E31EF5D3B3D17FC5C24E19",
+      "unchanged": true
+    },
+    {
+      "path": "components/portfolio/knowledge-system.tsx",
+      "beforeSha256": "AE9EBD029CA2BB1F08E8337BE01389A3CFB5D21BE7B0810F30BF69BBFC6CAC51",
+      "afterSha256": "AE9EBD029CA2BB1F08E8337BE01389A3CFB5D21BE7B0810F30BF69BBFC6CAC51",
+      "unchanged": true
+    },
+    {
+      "path": "components/portfolio/projects.tsx",
+      "beforeSha256": "4C1F112E1088A1F6B5A2BFC2F6E5FD54CF40012EB9E848FC6169EF352F72046E",
+      "afterSha256": "4C1F112E1088A1F6B5A2BFC2F6E5FD54CF40012EB9E848FC6169EF352F72046E",
+      "unchanged": true
+    },
+    {
+      "path": "components/system/constellation.tsx",
+      "beforeSha256": "87FAC8C6D39F00CA94CE6A792EBEE95A4B868F6584310315EDE005B97AD2C419",
+      "afterSha256": "87FAC8C6D39F00CA94CE6A792EBEE95A4B868F6584310315EDE005B97AD2C419",
+      "unchanged": true
+    },
+    {
+      "path": "components/system/motion-system.tsx",
+      "beforeSha256": "EFA7449A23761061988AE94E5BEF1017A12C82E6C760EE6B52F0DF812AA67B52",
+      "afterSha256": "EFA7449A23761061988AE94E5BEF1017A12C82E6C760EE6B52F0DF812AA67B52",
+      "unchanged": true
+    },
+    {
+      "path": "components/system/preferences.tsx",
+      "beforeSha256": "5B8A55E302784ED6B92904542DDEB373C424A2708EAACCEF39B4A707DAFA6203",
+      "afterSha256": "5B8A55E302784ED6B92904542DDEB373C424A2708EAACCEF39B4A707DAFA6203",
+      "unchanged": true
+    },
+    {
+      "path": "lib/constellation-engine.ts",
+      "beforeSha256": "6094FF39E7903DA6B3BA84447AAFAA9040294FA7981AF4F97BF78E79D13A7F39",
+      "afterSha256": "6094FF39E7903DA6B3BA84447AAFAA9040294FA7981AF4F97BF78E79D13A7F39",
+      "unchanged": true
+    },
+    {
+      "path": "lib/field-signal.ts",
+      "beforeSha256": "5F8E307BEA296B8FDF882E2EA6E4206D65593B3135A57C1CC9207653C2D93172",
+      "afterSha256": "5F8E307BEA296B8FDF882E2EA6E4206D65593B3135A57C1CC9207653C2D93172",
+      "unchanged": true
+    }
+  ]
+}
