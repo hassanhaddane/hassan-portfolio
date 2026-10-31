@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { useActiveSection, usePreferences } from "./preferences";
 import { CreativeAction } from "@/components/ui/creative-action";
+import { ReplayIntro, SoundToggle } from "@/components/intro/intro-controls";
 
 const chapters = [
   { id: "profil", index: "01", label: { fr: "Accueil", en: "Home" } },
@@ -81,6 +82,8 @@ export function Navigation() {
             <ThemeIcon aria-hidden="true" />
             <span>{themeLabel}</span>
           </button>
+          <SoundToggle />
+          <ReplayIntro />
           <button className="locale-switch mono" onClick={() => setLocale(locale === "fr" ? "en" : "fr")}>
             <span data-current={locale === "fr"}>FR</span>
             <span aria-hidden="true">/</span>
@@ -136,6 +139,7 @@ export function Navigation() {
                 <ThemeIcon aria-hidden="true" />
                 <span>{themeLabel}</span>
               </button>
+              <ReplayIntro mobile onReplay={() => setMenuOpen(false)} />
             </DialogContent>
           </Dialog>
         </div>

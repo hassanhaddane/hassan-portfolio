@@ -360,8 +360,7 @@ html[data-theme="light"] body::after {
 
 html[data-theme="light"] .site-masthead[data-floating="true"],
 html[data-theme="light"] .site-masthead,
-html[data-theme="light"] .chapter-rail,
-html[data-theme="light"] .entry-signature {
+html[data-theme="light"] .chapter-rail {
   background: rgba(247, 246, 241, 0.92);
   border-color: var(--border);
   box-shadow: 0 12px 38px rgba(22, 30, 43, 0.1);
@@ -376,7 +375,6 @@ html[data-theme="light"] .tech-divider,
 html[data-theme="light"] .signal-caption,
 html[data-theme="light"] .hero-location span:last-child,
 html[data-theme="light"] .motion-switch,
-html[data-theme="light"] .entry-signature small,
 html[data-theme="light"] .navigation-dialog nav a > span,
 html[data-theme="light"] .mobile-command-link,
 html[data-theme="light"] .footer-credit,

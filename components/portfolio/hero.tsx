@@ -30,36 +30,8 @@ function IdentityWord({ word, offset }: { word: string; offset: number }) {
 
 export function Hero() {
   const { locale } = usePreferences();
-  const [entry, setEntry] = useState(false);
   const [emailCopied, setEmailCopied] = useState(false);
   const copyTimer = useRef<number | null>(null);
-
-  useEffect(() => {
-    if (
-      matchMedia("(prefers-reduced-motion: reduce)").matches ||
-      matchMedia("(max-width: 700px)").matches
-    )
-      return;
-    try {
-      const saved = JSON.parse(
-        localStorage.getItem("lowkyz.preferences.v1") || "{}",
-      );
-      if (saved.motion === false || sessionStorage.getItem("lowkyz.intro.v2"))
-        return;
-    } catch {
-      /* A blocked store must never block the interface. */
-    }
-    setEntry(true);
-    const timer = window.setTimeout(() => {
-      setEntry(false);
-      try {
-        sessionStorage.setItem("lowkyz.intro.v2", "seen");
-      } catch {
-        /* Optional session memory. */
-      }
-    }, 850);
-    return () => clearTimeout(timer);
-  }, []);
 
   useEffect(
     () => () => {
@@ -85,15 +57,8 @@ export function Hero() {
       data-section
       tabIndex={-1}
       className="hero-stage"
-      data-entry={entry}
       aria-labelledby="hero-title"
     >
-      {entry && (
-        <div className="entry-signature mono" aria-hidden="true">
-          LOWKYZ<span>/</span>
-          <small>{locale === "fr" ? "chargement" : "loading"}</small>
-        </div>
-      )}
 
       <div className="hero-meta">
         <ChapterIdentity

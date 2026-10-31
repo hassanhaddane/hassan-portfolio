@@ -558,67 +558,6 @@ html {
 .next-chapter:hover svg {
   transform: translateY(4px);
 }
-.entry-signature {
-  position: fixed;
-  top: 26px;
-  left: 5vw;
-  z-index: 40;
-  background: #080a0e;
-  padding-right: 18px;
-  display: flex;
-  align-items: baseline;
-  gap: 5px;
-  font-size: 22px;
-  animation: entry-signature 0.85s both;
-}
-.entry-signature > span {
-  color: var(--primary);
-}
-.entry-signature small {
-  margin-left: 12px;
-  color: #a4adbd;
-  font-size: 9px;
-}
-.hero-stage[data-entry="true"] .letter-mask > span {
-  animation: identity-reveal 0.57s var(--motion-ease) both;
-  animation-delay: calc(var(--letter) * 22ms);
-}
-.hero-stage[data-entry="true"] .hero-lower {
-  animation: content-reveal 0.65s 0.1s var(--motion-ease) both;
-}
-@keyframes identity-reveal {
-  from {
-    transform: translate3d(0, 110%, -20px) rotateX(-16deg);
-    filter: blur(7px);
-  }
-  to {
-    transform: none;
-    filter: blur(0);
-  }
-}
-@keyframes content-reveal {
-  from {
-    transform: translateY(12px);
-    filter: blur(3px);
-    opacity: 0.25;
-  }
-  to {
-    transform: none;
-    filter: blur(0);
-    opacity: 1;
-  }
-}
-@keyframes entry-signature {
-  0%,
-  45% {
-    opacity: 1;
-    transform: none;
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(-12px);
-  }
-}
 .organism-field,
 .foreground-filament {
   position: fixed;
@@ -1174,15 +1113,6 @@ html[data-performance="reduced"] .organism-vector { transform: none !important; 
   .foreground-filament.is-intro {
     opacity: 0.16;
   }
-  .entry-signature {
-    top: 21px;
-    left: 22px;
-    font-size: 20px;
-  }
-  .entry-signature small {
-    font-size: 8px;
-    margin-left: 4px;
-  }
   .profile-brief {
     padding-top: 70px;
   }
@@ -1214,24 +1144,12 @@ html[data-performance="reduced"] .organism-vector { transform: none !important; 
     gap: 8px;
   }
 }
-@media (max-width: 700px) {
-  .hero-stage[data-entry="true"] .letter-mask > span,
-  .hero-stage[data-entry="true"] .hero-lower {
-    animation: none;
-  }
-}
 html[data-motion="off"] .hero-stage *,
 html[data-motion="off"] .organism-field * {
   animation: none !important;
   transition: none !important;
 }
-html[data-motion="off"] .entry-signature {
-  display: none;
-}
 @media (prefers-reduced-motion: reduce) {
-  .entry-signature {
-    display: none;
-  }
   .hero-stage *,
   .organism-field *,
   .site-masthead,

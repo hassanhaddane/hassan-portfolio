@@ -13,6 +13,8 @@ import { profile, type Locale } from "@/lib/portfolio-data";
 import { education } from "@/lib/knowledge-data";
 import { greeCheck } from "@/lib/work-data";
 import { SITE_ORIGIN } from "@/lib/seo";
+import { IntroProvider } from "@/components/intro/intro-context";
+import { Intro } from "@/components/intro/intro";
 
 export function PortfolioExperience({ locale }: { locale: Locale }) {
   const personId = `${SITE_ORIGIN}/#person`;
@@ -71,22 +73,25 @@ export function PortfolioExperience({ locale }: { locale: Locale }) {
   return (
     <div lang={locale}>
       <PreferencesProvider initialLocale={locale}>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, "\\u003c") }}
-        />
-        <Constellation />
-        <MotionSystem />
-        <EasterEggs />
-      <Navigation />
-        <main id="main" tabIndex={-1}>
-          <Hero />
-          <Projects />
-          <KnowledgeSystem />
-          <About />
-          <Contact />
-        </main>
-        <CommandPalette />
+        <IntroProvider>
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, "\\u003c") }}
+          />
+          <Constellation />
+          <MotionSystem />
+          <EasterEggs />
+          <Navigation />
+          <Intro />
+          <main id="main" tabIndex={-1}>
+            <Hero />
+            <Projects />
+            <KnowledgeSystem />
+            <About />
+            <Contact />
+          </main>
+          <CommandPalette />
+        </IntroProvider>
       </PreferencesProvider>
     </div>
   );

@@ -9,6 +9,7 @@ import "./professional-contact.css";
 import "./entity-type-system.css";
 import "./story-motion.css";
 import "./clarity-system.css";
+import "./intro-system.css";
 import { SITE_ORIGIN, seoContent } from "@/lib/seo";
 
 const barlow = localFont({
@@ -42,7 +43,7 @@ export default function RootLayout({
       <head>
         <script
           dangerouslySetInnerHTML={{
-            __html: "try{var l=location.pathname.split('/')[1];if(l==='fr'||l==='en')document.documentElement.lang=l;var p=JSON.parse(localStorage.getItem('lowkyz.preferences.v1')||'{}');var t=p.theme==='light'?'light':'dark';document.documentElement.dataset.theme=t;document.documentElement.style.colorScheme=t}catch(e){document.documentElement.dataset.theme='dark';document.documentElement.style.colorScheme='dark'}",
+            __html: "try{var l=location.pathname.split('/')[1];if(l==='fr'||l==='en')document.documentElement.lang=l;var p=JSON.parse(localStorage.getItem('lowkyz.preferences.v1')||'{}');var t=p.theme==='light'?'light':'dark';document.documentElement.dataset.theme=t;document.documentElement.style.colorScheme=t;if(!sessionStorage.getItem('lowkyz.cinematic.v1')&&!location.hash&&p.motion!==false&&!matchMedia('(prefers-reduced-motion: reduce)').matches&&!navigator.connection?.saveData)document.documentElement.dataset.introPending='true'}catch(e){document.documentElement.dataset.theme='dark';document.documentElement.style.colorScheme='dark'}",
           }}
         />
       </head>
