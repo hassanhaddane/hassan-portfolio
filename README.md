@@ -1,78 +1,44 @@
-# LOWKYZ // Interactive Developer System
+# LOWKYZ // Hassan Haddane
 
-Portfolio bilingue de Hassan Haddane, développeur Web Full-Stack à Rennes. Le site combine une lecture rapide pour les recruteurs et une exploration plus expressive, avec trois moments centraux : le Digital Organism du hero, le récit produit de GreeCheck et le Knowledge Graph qui relie technologies, projets, expériences et pratiques.
+Portfolio bilingue (FR/EN) de Hassan Haddane, développeur Full-Stack à Rennes. Le site présente ses expériences en santé, ses projets documentés, sa formation et ses moyens de contact. La direction Creative V2 est décrite dans [`docs/creative-v2/MASTERPLAN.md`](docs/creative-v2/MASTERPLAN.md) ; le site utilise le code Next.js existant.
 
-## Démarrage
+## Démarrage et validation
 
-Le projet utilise Node.js 22, pnpm 10, Next.js 15 et React 19.
+Node.js 22, pnpm 10, Next.js 15, React 19 et TypeScript.
 
 ```sh
 pnpm install
 pnpm dev
-```
-
-La version de production se valide ainsi :
-
-```sh
 pnpm lint
 pnpm test
 pnpm typecheck
 pnpm build
-pnpm start
 ```
 
-Aucun secret ni service distant n'est requis pour lancer le portfolio.
+`/` redirige vers `/fr`. Les pages `/fr` et `/en` sont pré-rendues. Le site sert aussi `/opengraph-image`, `/robots.txt`, `/sitemap.xml` et `/cv-hassan-haddane.pdf`. L'origine canonique est `https://www.lowkyz.dev`, hôte final de la redirection depuis `lowkyz.dev` constatée lors de l'audit.
 
-## Routes
+## Modifier le contenu
 
-- `/` redirige vers `/fr`
-- `/fr` contient la version française et ses métadonnées dédiées
-- `/en` contient la version anglaise et ses métadonnées dédiées
-- `/opengraph-image` génère l'image sociale LOWKYZ
-- `/robots.txt` et `/sitemap.xml` sont générés par Next.js
-- `/cv-hassan-haddane.pdf` sert le CV actuel
+| Fichier | Source de vérité |
+| --- | --- |
+| `lib/portfolio-data.ts` | Identité, coordonnées, positionnement, traductions communes, types et provenance |
+| `lib/work-data.ts` | Expériences, projets, contributions et étapes de GreeCheck |
+| `lib/knowledge-data.ts` | Compétences et leurs liens documentés, formation, certification, langues et intérêts |
+| `lib/seo.ts` | Origine canonique et métadonnées FR/EN |
+| `public/cv-hassan-haddane.pdf` | Copie du CV 2026 fourni par Hassan |
 
-## Expérience
+Les objets `Evidence` associent chaque affirmation détaillée à une source. Les compétences déclarées dans le CV n'ont un lien vers un projet ou une expérience que si ce lien est documenté. Les composants consomment ces données sans réécrire les dates, les technologies ou les diplômes.
 
-- **Récit en sept chapitres** : `00 NOW`, `01 PROJET`, `02 EXPÉRIENCE`, `03 COMPÉTENCES`, `04 FORMATION`, `05 À PROPOS`, `06 CONTACT`. Chaque chapitre possède un marqueur lisible, une transition vers le suivant et un signal graphique issu du même organisme numérique.
-- **Repère permanent** : un rail latéral sur desktop et une barre compacte sur mobile synchronisent le numéro et la catégorie avec la position réelle, y compris sur les liens profonds et après un changement de mode.
-- **Recruiter Mode** affiche une synthèse immédiate du profil et une lecture claire de la stack.
-- **Explore Mode** charge Three.js à la demande et active le Digital Organism, les réactions aux technologies, le curseur contextuel et les transitions enrichies.
-- **Lampe LOWKYZ** pilote deux thèmes dessinés séparément. Le thème clair minéral est l'état par défaut, le thème sombre profond correspond à la lampe éteinte et le choix est restauré localement sans flash d'hydratation.
-- **Performance adaptative** choisit un rendu high, normal, low ou reduced selon le mouvement préféré, la taille d'écran, la mémoire, le nombre de cœurs et l'économiseur de données.
-- **Ctrl/Cmd+K** ouvre une palette accessible avec navigation, `whoami`, `stack`, `hire`, langue, mode et mouvement.
-- **GreeCheck** utilise des captures publiques réelles et un mode système interactif. Les expériences médicales restent des représentations abstraites explicitement légendées.
-- **Knowledge Graph** relie uniquement des technologies et contextes déclarés dans le CV et les informations fournies.
-- **Contact** permet de copier l'email, appeler, ouvrir les profils ou télécharger le CV sans formulaire serveur.
+Le PDF public est le CV 2026 fourni, pas un PDF généré à partir du contenu du site. Pour le mettre à jour, remplacer explicitement ce fichier par un nouveau CV approuvé et vérifier son contenu et son rendu. L'ancien script `generate-cv.py` a été retiré : il contenait des dates, diplômes et une URL obsolètes et aurait pu écraser le CV fourni.
+
+Les sources et les limites de vérification de cette synchronisation sont décrites dans [`docs/creative-v2/CONTENT-SOURCES.md`](docs/creative-v2/CONTENT-SOURCES.md). Tech Express figure comme réalisation locale sans lien public : le dépôt distant n'est pas accessible publiquement et aucune publication du site n'a été validée. Le projet 808BLOOM est présenté comme une participation associative, pas comme un emploi salarié.
 
 ## Architecture
 
-```text
-app/                            Routes, styles, métadonnées, OG, sitemap et robots
-components/portfolio/           Hero, récit projet, expériences, Knowledge Graph, formation, About et Contact
-components/system/              Préférences, navigation, palette, motion, Easter eggs et canvas
-components/ui/                  Primitives Radix/cmdk strictement nécessaires
-lib/portfolio-data.ts           Données professionnelles et contenus bilingues
-lib/work-data.ts                Storytelling et relations factuelles de GreeCheck
-lib/knowledge-data.ts           Nœuds et connexions du Knowledge Graph
-lib/constellation-*.ts          Géométrie et moteur WebGL différé
-public/projects/                Captures publiques optimisées de GreeCheck
-public/cv-hassan-haddane.pdf    CV courant
-scripts/generate-cv.py          Génération reproductible du CV avec ReportLab
-scripts/validate-production.mjs Contrôles de production ciblés
-docs/                           Audit initial, UX, direction et décisions techniques
-```
+- `app/` : routes, métadonnées, sitemap, robots et CSS existant.
+- `components/portfolio/` : hero, projets, expériences, compétences, formation, About et contact.
+- `components/system/` : navigation, préférences, palette et animation. Le moteur Three.js est chargé à la demande ; le contenu HTML et le fallback restent disponibles.
+- `lib/` : données professionnelles et signaux visuels.
+- `public/projects/greecheck/` : captures du produit.
 
-Les fontes Barlow Condensed et Geist sont auto-hébergées. Le CSS est centralisé par système visuel, avec une couche finale de tokens light/dark et de garde-fous typographiques fluides. Three.js est exclu du chemin critique et importé uniquement pour les appareils capables d'exécuter l'expérience enrichie.
-
-## Contenu et confidentialité
-
-Le portfolio n'affiche ni score de compétence arbitraire, ni statistique inventée. GreeCheck est présenté avec ses fonctions réelles : scan, recherche, comparaison, GreeScore local et explicable, trois langues, historique, favoris, critères et listes. Les travaux iAudiogram, Santé Respiratoire France et Biosency sont décrits sans données internes ni captures fictives.
-
-Pour mettre à jour le profil, modifier les données dans `lib/portfolio-data.ts`, `lib/work-data.ts` et `lib/knowledge-data.ts`. Le CV se régénère avec `python scripts/generate-cv.py`.
-
-## Accessibilité et qualité
-
-Toutes les informations importantes restent disponibles sans WebGL. Les sections sont focalisables depuis la palette, la navigation comporte un lien d'évitement, les dialogues gèrent le focus et Escape, les interactions disposent d'états clavier et les animations respectent `prefers-reduced-motion`. Les rendus mobile utilisent une composition et un explorateur adaptés plutôt qu'une réduction du graphe desktop.
-
-La publication n'est pas automatique : cette refonte reste locale tant qu'elle n'est pas déployée explicitement.
+Le site garde ses liens GitHub et LinkedIn, le téléchargement du CV, les commandes clavier, les thèmes et le respect de `prefers-reduced-motion`. Aucun déploiement n'est lancé par les scripts ci-dessus.

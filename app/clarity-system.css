@@ -74,6 +74,26 @@
   border-top: 2px solid var(--foreground);
 }
 
+.clarity-project-secondary-list {
+  display: grid;
+  gap: clamp(3rem, 6vw, 6rem);
+  margin-top: clamp(3rem, 6vw, 6rem);
+}
+
+.clarity-project-secondary .clarity-project-title h3 {
+  font-size: clamp(3.4rem, 7vw, 7rem);
+  overflow-wrap: anywhere;
+}
+
+.clarity-project-secondary .clarity-project-details {
+  margin-top: clamp(1.5rem, 3vw, 3rem);
+}
+
+.clarity-education-certification {
+  margin-top: 1rem;
+  color: var(--text-secondary);
+}
+
 .clarity-project-title {
   display: grid;
   grid-template-columns: minmax(13rem, 0.45fr) minmax(22rem, 1fr) auto;

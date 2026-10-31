@@ -111,10 +111,10 @@ export function Hero() {
         </h1>
         <div className="identity-experience">
           <strong>
-            03<span>+</span>
+            {String(profile.experienceYearsMinimum).padStart(2, "0")}<span>+</span>
           </strong>
           <span className="mono">
-            {locale === "fr" ? "ans d’expérience" : "years of experience"}
+            {locale === "fr" ? "ans d’expérience professionnelle" : "years of professional experience"}
           </span>
         </div>
       </div>
@@ -124,10 +124,9 @@ export function Hero() {
           <div className="hero-role-block">
             <span className="mono">{locale === "fr" ? "POSTE" : "ROLE"}</span>
             <h2>
-              {locale === "fr"
-                ? "Développeur Web Full-Stack"
-                : "Full-Stack Web Developer"}
+              {profile.role[locale]}
             </h2>
+            <p className="hero-credential mono">{profile.educationLevel[locale]}</p>
             <p className="hero-core-stack">
               <span>React · Next.js · TypeScript</span>
               <span>Python · FastAPI</span>
@@ -136,17 +135,17 @@ export function Hero() {
           <a
             className="hero-opportunity"
             href={`mailto:${profile.email}?subject=${encodeURIComponent(
-              locale === "fr" ? "Opportunité CDI" : "Permanent role opportunity",
+              locale === "fr" ? "Échange professionnel" : "Professional enquiry",
             )}`}
             data-cursor="CONTACT"
           >
             <span className="hero-opportunity-status mono">
               <i aria-hidden="true" />
-              {locale === "fr" ? "RECHERCHE CDI" : "OPEN TO PERMANENT ROLES"}
+              {locale === "fr" ? "OUVERT AUX ÉCHANGES" : "OPEN TO CONVERSATION"}
             </span>
             <strong>Full-Stack / Front-End</strong>
             <small>
-              Rennes · {locale === "fr" ? "Bretagne" : "Brittany"} · Nantes
+              {profile.location[locale]} · {profile.mobility[locale]}
             </small>
           </a>
         </div>

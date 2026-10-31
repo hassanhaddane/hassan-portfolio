@@ -9,7 +9,7 @@ import "./professional-contact.css";
 import "./entity-type-system.css";
 import "./story-motion.css";
 import "./clarity-system.css";
-import { SITE_ORIGIN } from "@/lib/seo";
+import { SITE_ORIGIN, seoContent } from "@/lib/seo";
 
 const barlow = localFont({
   src: "./fonts/barlow-condensed-latin-800-normal.woff2",
@@ -23,11 +23,10 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_ORIGIN),
   applicationName: "LOWKYZ // Hassan Haddane",
   title: {
-    default: "Hassan Haddane — Full-Stack Web Developer",
+    default: seoContent.fr.title,
     template: "%s // LOWKYZ",
   },
-  description:
-    "Hassan Haddane, développeur Web Full-Stack à Rennes. React, Next.js, TypeScript, Python, qualité et DevOps.",
+  description: seoContent.fr.description,
   authors: [{ name: "Hassan Haddane" }],
   category: "technology",
 };

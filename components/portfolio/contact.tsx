@@ -25,7 +25,7 @@ export function Contact() {
             title={{ fr: "COORDONNÉES", en: "CONTACT DETAILS" }}
           />
           <div className="clarity-section-heading">
-            <span className="mono clarity-availability"><i aria-hidden="true" />{locale === "fr" ? "RECHERCHE CDI" : "OPEN TO PERMANENT ROLES"}</span>
+            <span className="mono clarity-availability"><i aria-hidden="true" />{locale === "fr" ? "ÉCHANGEONS" : "LET’S TALK"}</span>
             <h2 id="contact-title">
               {locale === "fr"
                 ? "VOUS RECRUTEZ UN DÉVELOPPEUR FULL-STACK OU FRONT-END ?"
@@ -33,8 +33,8 @@ export function Contact() {
             </h2>
             <p>
               {locale === "fr"
-                ? "Je suis basé à Rennes et mobile en Bretagne et à Nantes. Je suis disponible pour échanger."
-                : "I’m based in Rennes and open to roles across Brittany and Nantes. I’m available to discuss a permanent position."}
+                ? `Basé à ${profile.location.fr}, mobile en ${profile.mobility.fr}. Échangeons sur votre projet.`
+                : `Based in ${profile.location.en}, open to opportunities in ${profile.mobility.en}. Let’s discuss your project.`}
             </p>
           </div>
         </header>
@@ -56,6 +56,11 @@ export function Contact() {
             <strong>/hassanhaddane</strong>
             <ArrowUpRight aria-hidden="true" />
           </a>
+          <a href={profile.github} target="_blank" rel="noopener noreferrer" data-cursor="OPEN">
+            <span className="mono">GITHUB</span>
+            <strong>/hassanhaddane</strong>
+            <ArrowUpRight aria-hidden="true" />
+          </a>
           <a href={profile.cv} download="CV-Hassan-Haddane.pdf" data-cursor="DOWNLOAD">
             <span className="mono">CV</span>
             <strong>{locale === "fr" ? "Télécharger mon CV" : "Download my résumé"}</strong>
@@ -64,9 +69,9 @@ export function Contact() {
         </nav>
 
         <dl className="clarity-contact-facts">
-          <div><dt>{locale === "fr" ? "Localisation" : "Location"}</dt><dd>Rennes</dd></div>
-          <div><dt>{locale === "fr" ? "Mobilité" : "Mobility"}</dt><dd>{locale === "fr" ? "Bretagne / Nantes" : "Brittany / Nantes"}</dd></div>
-          <div><dt>{locale === "fr" ? "Permis" : "Driving licence"}</dt><dd>B</dd></div>
+          <div><dt>{locale === "fr" ? "Localisation" : "Location"}</dt><dd>{profile.location[locale]}</dd></div>
+          <div><dt>{locale === "fr" ? "Mobilité" : "Mobility"}</dt><dd>{profile.mobility[locale]}</dd></div>
+          <div><dt>{locale === "fr" ? "Permis" : "Driving licence"}</dt><dd>{profile.drivingLicence}</dd></div>
         </dl>
       </section>
 

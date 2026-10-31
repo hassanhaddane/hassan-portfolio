@@ -64,6 +64,12 @@
   text-wrap: balance;
 }
 
+.hero-credential {
+  margin-top: 0.35rem;
+  color: var(--text-secondary);
+  font-size: clamp(0.72rem, 0.14vw + 0.7rem, 0.82rem);
+}
+
 .hero-opportunity {
   position: relative;
   isolation: isolate;

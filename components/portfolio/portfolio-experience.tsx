@@ -10,6 +10,8 @@ import { KnowledgeSystem } from "@/components/portfolio/knowledge-system";
 import { About } from "@/components/portfolio/about";
 import { Contact } from "@/components/portfolio/contact";
 import { profile, type Locale } from "@/lib/portfolio-data";
+import { education } from "@/lib/knowledge-data";
+import { greeCheck } from "@/lib/work-data";
 import { SITE_ORIGIN } from "@/lib/seo";
 
 export function PortfolioExperience({ locale }: { locale: Locale }) {
@@ -23,13 +25,13 @@ export function PortfolioExperience({ locale }: { locale: Locale }) {
         name: profile.name,
         alternateName: profile.alias,
         url: `${SITE_ORIGIN}/${locale}`,
-        jobTitle: locale === "fr" ? "Développeur Web Full-Stack" : "Full-Stack Web Developer",
+        jobTitle: profile.role[locale],
         email: `mailto:${profile.email}`,
         telephone: profile.phoneHref,
         sameAs: [profile.github, profile.linkedin],
         homeLocation: {
           "@type": "Place",
-          name: "Rennes, France",
+          name: profile.location[locale],
         },
         knowsLanguage: ["French", "Arabic", "English"],
         knowsAbout: [
@@ -43,7 +45,7 @@ export function PortfolioExperience({ locale }: { locale: Locale }) {
         ],
         alumniOf: {
           "@type": "EducationalOrganization",
-          name: "EPSI",
+          name: education.school,
         },
       },
       {
@@ -56,14 +58,11 @@ export function PortfolioExperience({ locale }: { locale: Locale }) {
       },
       {
         "@type": "SoftwareApplication",
-        "@id": "https://gree-check.vercel.app/#application",
-        name: "GreeCheck",
-        url: "https://gree-check.vercel.app/fr",
-        applicationCategory: "HealthApplication",
+        "@id": `${greeCheck.url}#application`,
+        name: greeCheck.name,
+        url: greeCheck.url,
         operatingSystem: "Web",
-        description: locale === "fr"
-          ? "PWA d’aide au choix pour scanner, rechercher et comparer des produits alimentaires."
-          : "A PWA for scanning, searching and comparing food products.",
+        description: greeCheck.summary[locale],
         author: { "@id": personId },
       },
     ],

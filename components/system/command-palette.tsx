@@ -153,8 +153,8 @@ export function CommandPalette() {
         <div className="command-output" role="status" aria-live="polite">
           <span className="mono">$ whoami</span>
           <strong>Hassan Haddane</strong>
-          <span>{locale === "fr" ? "Développeur Web Full-Stack" : "Full-Stack Web Developer"}</span>
-          <small>Rennes · France</small>
+          <span>{profile.role[locale]}</span>
+          <small>{profile.location[locale]}</small>
         </div>
       ) : null}
       <CommandList>
