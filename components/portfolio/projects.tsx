@@ -1,8 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { ArrowUpRight } from "lucide-react";
 import { usePreferences } from "@/components/system/preferences";
+import { CreativeAction } from "@/components/ui/creative-action";
 import { bloom, greeCheck, greeCheckStorySteps, techExpress } from "@/lib/work-data";
 import { ChapterIdentity, EntityTypeMarker } from "./narrative";
 
@@ -42,10 +42,7 @@ export function Projects() {
             <h3>GREECHECK</h3>
             <p>{greeCheck.summary[locale]}</p>
           </div>
-          <a href={greeCheck.url} target="_blank" rel="noopener noreferrer" data-cursor="OPEN">
-            {locale === "fr" ? "Ouvrir le projet" : "Open project"}
-            <ArrowUpRight aria-hidden="true" />
-          </a>
+          <CreativeAction variant="secondary" href={greeCheck.url} target="_blank" rel="noopener noreferrer" data-cursor="OPEN" label={locale === "fr" ? "Ouvrir le projet" : "Open project"} />
         </header>
 
         <figure className="clarity-project-preview">
@@ -110,7 +107,7 @@ export function Projects() {
                 <h3>{project.name.toUpperCase()}</h3>
                 <p>{project.summary[locale]}</p>
               </div>
-              {project.url ? <a href={project.url} target="_blank" rel="noopener noreferrer" data-cursor="OPEN">{locale === "fr" ? "Voir le site" : "Visit website"}<ArrowUpRight aria-hidden="true" /></a> : null}
+              {project.url ? <CreativeAction variant="secondary" href={project.url} target="_blank" rel="noopener noreferrer" data-cursor="OPEN" label={locale === "fr" ? "Voir le site" : "Visit website"} /> : null}
             </header>
             <div className="clarity-project-details">
               <section>

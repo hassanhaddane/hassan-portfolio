@@ -31,7 +31,7 @@ export const metadata: Metadata = {
   category: "technology",
 };
 export const viewport: Viewport = {
-  themeColor: "#f2f0e9",
+  themeColor: "#080a0e",
   colorScheme: "light dark",
 };
 export default function RootLayout({
@@ -42,7 +42,7 @@ export default function RootLayout({
       <head>
         <script
           dangerouslySetInnerHTML={{
-            __html: "try{var l=location.pathname.split('/')[1];if(l==='fr'||l==='en')document.documentElement.lang=l;var p=JSON.parse(localStorage.getItem('lowkyz.preferences.v1')||'{}');var t=p.theme==='dark'?'dark':'light';document.documentElement.dataset.theme=t;document.documentElement.style.colorScheme=t}catch(e){document.documentElement.dataset.theme='light';document.documentElement.style.colorScheme='light'}",
+            __html: "try{var l=location.pathname.split('/')[1];if(l==='fr'||l==='en')document.documentElement.lang=l;var p=JSON.parse(localStorage.getItem('lowkyz.preferences.v1')||'{}');var t=p.theme==='light'?'light':'dark';document.documentElement.dataset.theme=t;document.documentElement.style.colorScheme=t}catch(e){document.documentElement.dataset.theme='dark';document.documentElement.style.colorScheme='dark'}",
           }}
         />
       </head>

@@ -10,10 +10,11 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useActiveSection, usePreferences } from "./preferences";
+import { CreativeAction } from "@/components/ui/creative-action";
 
 const chapters = [
   { id: "profil", index: "01", label: { fr: "Accueil", en: "Home" } },
-  { id: "projets", index: "02", label: { fr: "Projet", en: "Project" } },
+  { id: "projets", index: "02", label: { fr: "Projets", en: "Projects" } },
   { id: "experience", index: "03", label: { fr: "Expériences", en: "Experience" } },
   { id: "stack", index: "04", label: { fr: "Compétences", en: "Skills" } },
   { id: "education", index: "05", label: { fr: "Formation", en: "Education" } },
@@ -69,6 +70,7 @@ export function Navigation() {
         </nav>
 
         <div className="masthead-utilities">
+          <CreativeAction className="masthead-cta" variant="text" href="#contact" label={locale === "fr" ? "Échanger" : "Get in touch"} />
           <button
             type="button"
             className="theme-switch theme-switch-desktop"

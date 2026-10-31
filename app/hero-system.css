@@ -1,7 +1,7 @@
 /* LOWKYZ — identity, filament field and chapter navigation. */
 :root {
   --hero-gutter: clamp(126px, 9.2vw, 176px);
-  --motion-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --motion-ease: var(--ease-out-expo);
 }
 html {
   scroll-padding-top: 110px;
@@ -12,13 +12,15 @@ html {
   top: 0;
   left: 0;
   right: 0;
-  height: 84px;
+  height: var(--header-height);
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 32px;
   padding: 0 clamp(32px, 5vw, 96px);
-  border: 1px solid transparent;
+  border-bottom: var(--line-subtle);
+  background: color-mix(in srgb, var(--background) 92%, transparent);
+  backdrop-filter: blur(18px);
   transition:
     inset 0.55s var(--motion-ease),
     height 0.55s var(--motion-ease),
@@ -33,8 +35,8 @@ html {
   right: max(28px, calc((100vw - 1240px) / 2));
   height: 62px;
   padding-inline: 26px;
-  background: #0b0e14f5;
-  border-color: #303746;
+  background: var(--surface-translucent);
+  border-color: var(--border);
   box-shadow: 0 12px 40px #0005;
 }
 .wordmark {
@@ -93,7 +95,7 @@ html {
   font-size: 12px;
   position: relative;
   padding-block: 13px;
-  color: #b3b7c2;
+  color: var(--muted-foreground);
 }
 .masthead-links a::after {
   content: "";
@@ -362,41 +364,6 @@ html {
   gap: 14px;
   margin-top: 24px;
   align-items: stretch;
-}
-.work-cta {
-  position: relative;
-  isolation: isolate;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 42px;
-  background: #2859f5;
-  padding: 18px 24px;
-  font-size: 12px;
-  font-weight: 500;
-  min-width: 248px;
-  overflow: clip;
-}
-.work-cta::before {
-  position: absolute;
-  content: "";
-  inset: 0;
-  z-index: -1;
-  background: #4679ff;
-  transform: translateY(102%);
-  transition: transform 0.5s var(--motion-ease);
-}
-.work-cta:hover::before,
-.work-cta:focus-visible::before {
-  transform: translateY(0);
-}
-.work-cta svg {
-  width: 26px;
-  height: 26px;
-  transition: transform 0.45s var(--motion-ease);
-}
-.work-cta:hover svg {
-  transform: translate(3px, -3px);
 }
 .cv-cta {
   display: flex;
@@ -880,9 +847,6 @@ html[data-performance="reduced"] .organism-vector { transform: none !important; 
   .identity-actions {
     margin-top: 17px;
   }
-  .work-cta {
-    padding-block: 13px;
-  }
   .hero-baseline {
     margin-top: 5px;
     padding-top: 10px;
@@ -917,11 +881,6 @@ html[data-performance="reduced"] .organism-vector { transform: none !important; 
   .hero-lower {
     grid-template-columns: 1fr 1fr;
     gap: 24px;
-  }
-  .work-cta {
-    min-width: 200px;
-    gap: 12px;
-    padding-inline: 16px;
   }
   .identity-experience {
     left: 80%;
@@ -1090,17 +1049,6 @@ html[data-performance="reduced"] .organism-vector { transform: none !important; 
     order: 3;
     margin-top: 16px;
     gap: 10px;
-  }
-  .work-cta {
-    min-width: 0;
-    flex: 1;
-    padding: 14px 17px;
-    font-size: 12px;
-    min-height: 52px;
-  }
-  .work-cta svg {
-    width: 23px;
-    height: 23px;
   }
   .cv-cta {
     width: 58px;

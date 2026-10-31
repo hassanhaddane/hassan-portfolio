@@ -3,6 +3,34 @@
 @source "../app";
 
 :root {
+  /* Creative V2 primitives and layout contract. Semantic colors live in theme-system.css. */
+  --color-obsidian: #080a0e;
+  --color-cobalt: #3267ff;
+  --color-mineral: #f3f1eb;
+  --color-slate: #a0a7b7;
+  --color-lime: #c4f578;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-24: 6rem;
+  --space-32: 8rem;
+  --content-width: 120rem;
+  --reading-width: 42rem;
+  --header-height: 5.25rem;
+  --line-subtle: 1px solid var(--border);
+  --line-emphasis: 1px solid var(--border-strong);
+  --radius-control: 0.25rem;
+  --radius-surface: 0.5rem;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.76, 0, 0.24, 1);
+  --duration-fast: 180ms;
+  --duration-normal: 360ms;
+  --duration-expressive: 620ms;
   --background: #080a0e;
   --foreground: #f3f1eb;
   --surface: #10141c;
@@ -132,9 +160,97 @@ p {
   z-index: 1;
   width: 100%;
   padding-inline: var(--gutter);
-  max-width: 1920px;
+  max-width: var(--content-width);
   margin-inline: auto;
 }
+
+/* One action anatomy serves hero, project, navigation and utility controls. */
+.creative-action {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(1rem, 2vw, 2.5rem);
+  min-height: 3.25rem;
+  padding: 0.75rem 1rem;
+  overflow: hidden;
+  border: var(--line-emphasis);
+  border-radius: var(--radius-control);
+  color: var(--foreground);
+  background: var(--surface-raised);
+  font-size: 0.84rem;
+  font-weight: 650;
+  line-height: 1.2;
+  text-align: left;
+  white-space: nowrap;
+  transition: color var(--duration-fast), border-color var(--duration-fast), transform var(--duration-fast);
+}
+.creative-action::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--action-fill, var(--accent));
+  transform: translateY(101%);
+  transition: transform var(--duration-expressive) var(--ease-out-expo);
+}
+.creative-action__label {
+  display: grid;
+  height: 1.25em;
+  overflow: clip;
+}
+.creative-action__label > span {
+  grid-area: 1 / 1;
+  transition: transform var(--duration-normal) var(--ease-out-expo);
+}
+.creative-action__label > span + span { transform: translateY(125%); }
+.creative-action__icon {
+  display: grid;
+  place-items: center;
+  width: 1.4rem;
+  height: 1.4rem;
+  transition: transform var(--duration-normal) var(--ease-out-expo);
+}
+.creative-action__icon svg { width: 1.15rem; height: 1.15rem; }
+.creative-action:is(:hover, :focus-visible)::before { transform: translateY(0); }
+.creative-action:is(:hover, :focus-visible) .creative-action__label > span:first-child { transform: translateY(-125%); }
+.creative-action:is(:hover, :focus-visible) .creative-action__label > span + span { transform: translateY(0); }
+.creative-action:is(:hover, :focus-visible) .creative-action__icon { transform: translate(0.2rem, -0.2rem); }
+.creative-action:active { transform: translateY(2px); }
+.creative-action:focus-visible { outline: 2px solid var(--ring); outline-offset: 4px; }
+.creative-action:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+.creative-action:disabled::before,
+.creative-action:disabled .creative-action__label > span,
+.creative-action:disabled .creative-action__icon { transform: none; }
+.creative-action--primary { --action-fill: color-mix(in srgb, var(--primary) 80%, black); background: var(--primary); border-color: var(--primary); color: var(--primary-foreground); }
+.creative-action--secondary { --action-fill: var(--accent); }
+.creative-action--secondary::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  pointer-events: none;
+  border: 1px solid color-mix(in srgb, var(--primary) 58%, transparent);
+  opacity: 0;
+  transform: scale(0.96);
+  transition: opacity var(--duration-normal), transform var(--duration-normal) var(--ease-out-expo);
+}
+.creative-action--secondary:is(:hover, :focus-visible)::after { opacity: 1; transform: scale(1); }
+.creative-action--text { --action-fill: transparent; padding-inline: 0; border-color: transparent; background: transparent; color: var(--cobalt-light); }
+.creative-action--text:hover { color: var(--foreground); }
+.creative-action--icon { width: 3.25rem; min-width: 3.25rem; justify-content: center; padding: 0; }
+.creative-action--icon .creative-action__label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.creative-action--icon .creative-action__icon { width: 100%; height: 100%; }
+
+@media (prefers-reduced-motion: reduce) {
+  .creative-action, .creative-action::before, .creative-action::after, .creative-action__label > span, .creative-action__icon { transition-duration: 0.01ms; }
+  .creative-action__label > span + span { display: none; }
+}
+html[data-motion="off"] .creative-action,
+html[data-motion="off"] .creative-action::before,
+html[data-motion="off"] .creative-action::after,
+html[data-motion="off"] .creative-action__label > span,
+html[data-motion="off"] .creative-action__icon { transition-duration: 0.01ms; }
 .section-space {
   padding-block: clamp(80px, 9vw, 150px);
 }

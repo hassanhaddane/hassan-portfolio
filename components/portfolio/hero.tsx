@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { copy, profile } from "@/lib/portfolio-data";
 import { usePreferences } from "@/components/system/preferences";
+import { CreativeAction } from "@/components/ui/creative-action";
 import { ChapterIdentity } from "./narrative";
 
 function IdentityWord({ word, offset }: { word: string; offset: number }) {
@@ -155,18 +156,8 @@ export function Hero() {
             {locale === "fr" ? "CONTACT DIRECT" : "DIRECT CONTACT"}
           </span>
           <div className="hero-primary-actions">
-            <a className="work-cta magnetic" data-cursor="VIEW" href="#projets">
-              <span>{locale === "fr" ? "Voir mon travail" : "View my work"}</span>
-              <ArrowUpRight aria-hidden="true" />
-            </a>
-            <a
-              className="contact-cta magnetic"
-              data-cursor="OPEN"
-              href={`mailto:${profile.email}`}
-            >
-              <Mail aria-hidden="true" />
-              <span>{locale === "fr" ? "Me contacter" : "Contact me"}</span>
-            </a>
+            <CreativeAction variant="primary" data-cursor="VIEW" href="#projets" label={locale === "fr" ? "Voir mon travail" : "View my work"} />
+            <CreativeAction variant="secondary" data-cursor="OPEN" href={`mailto:${profile.email}`} label={locale === "fr" ? "Me contacter" : "Contact me"} icon={<Mail aria-hidden="true" />} />
           </div>
 
           <div

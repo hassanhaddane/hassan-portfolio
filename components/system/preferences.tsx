@@ -44,7 +44,7 @@ export function PreferencesProvider({
   const [locale, setLocaleState] = useState<Locale>(initialLocale);
   const [mode, setMode] = useState<Mode>("recruiter");
   const [motionEnabled, setMotionEnabled] = useState(true);
-  const [theme, setTheme] = useState<Theme>("light");
+  const [theme, setTheme] = useState<Theme>("dark");
   const [systemReduced, setSystemReduced] = useState(false);
   const [ready, setReady] = useState(false);
   const [activeSection, setActiveSection] = useState("profil");
