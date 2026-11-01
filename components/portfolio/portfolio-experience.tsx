@@ -9,8 +9,10 @@ import { ProjectsV2 } from "@/components/portfolio/projects-v2";
 import "@/app/work-showcase.css";
 import { JourneyExpertiseV2 } from "@/components/portfolio/journey-expertise-v2";
 import "@/app/journey-expertise-v2.css";
-import { About } from "@/components/portfolio/about";
-import { Contact } from "@/components/portfolio/contact";
+import { AboutV2 } from "@/components/portfolio/about-v2";
+import { CreativeLabV2 } from "@/components/portfolio/creative-lab-v2";
+import { ContactV2 } from "@/components/portfolio/contact-v2";
+import "@/app/personal-lab-contact-v2.css";
 import { profile, type Locale } from "@/lib/portfolio-data";
 import { education } from "@/lib/knowledge-data";
 import { greeCheck } from "@/lib/work-data";
@@ -89,8 +91,9 @@ export function PortfolioExperience({ locale }: { locale: Locale }) {
             <Hero />
             <ProjectsV2 />
             <JourneyExpertiseV2 />
-            <About />
-            <Contact />
+            <AboutV2 />
+            <CreativeLabV2 />
+            <ContactV2 />
           </main>
           <CommandPalette />
         </IntroProvider>

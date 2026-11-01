@@ -9,6 +9,7 @@ type ChapterKind =
   | "stack"
   | "education"
   | "about"
+  | "lab"
   | "contact";
 
 type LocalizedCopy = { fr: string; en: string };
