@@ -5,7 +5,8 @@ import { Constellation } from "@/components/system/constellation";
 import { MotionSystem } from "@/components/system/motion-system";
 import { EasterEggs } from "@/components/system/easter-eggs";
 import { Hero } from "@/components/portfolio/hero";
-import { Projects } from "@/components/portfolio/projects";
+import { ProjectsV2 } from "@/components/portfolio/projects-v2";
+import "@/app/work-showcase.css";
 import { KnowledgeSystem } from "@/components/portfolio/knowledge-system";
 import { About } from "@/components/portfolio/about";
 import { Contact } from "@/components/portfolio/contact";
@@ -85,7 +86,7 @@ export function PortfolioExperience({ locale }: { locale: Locale }) {
           <Intro />
           <main id="main" tabIndex={-1}>
             <Hero />
-            <Projects />
+            <ProjectsV2 />
             <KnowledgeSystem />
             <About />
             <Contact />

@@ -3,7 +3,7 @@ export type Localized = Record<Locale, string>;
 export const text = (fr: string, en: string): Localized => ({ fr, en });
 
 // Provenance stays in data, never in the public copy.
-export type SourceId = "cv2026" | "portfolio" | "greecheck" | "bloom" | "techExpress";
+export type SourceId = "cv2026" | "portfolio" | "greecheck" | "bloom" | "techExpress" | "ceo19";
 export type EvidenceTargetId =
   | "iaudiogram" | "sante" | "biosency"
   | "greecheck" | "bloom" | "tech-express";
@@ -14,7 +14,8 @@ export const sources: Record<SourceId, string> = {
   portfolio: "Existing hassan-portfolio repository and public GreeCheck screenshots",
   greecheck: "https://github.com/hassanhaddane/GreeCheck and https://gree-check.vercel.app/fr",
   bloom: "C:/Users/hassa/Documents/808Bloom and https://808bloom.vercel.app/fr",
-  techExpress: "C:/Users/hassa/Documents/TechExpress (local redesign branch; public deployment unverified)",
+  techExpress: "C:/Users/hassa/Documents/TechExpress and public GitHub Pages TechExpress / TechExpressProject deployments, inspected 2026-11-01",
+  ceo19: "https://github.com/hassanhaddane/ceo19 (public source); https://ceo19.vercel.app/en paused with HTTP 503 on 2026-11-01",
 };
 
 export const profile = {
