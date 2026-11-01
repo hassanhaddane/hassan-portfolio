@@ -31,6 +31,10 @@
   --duration-fast: 180ms;
   --duration-normal: 360ms;
   --duration-expressive: 620ms;
+  --motion-micro: 180ms;
+  --motion-reveal: 680ms;
+  --motion-editorial: 920ms;
+  --motion-idle: 20s;
   --background: #080a0e;
   --foreground: #f3f1eb;
   --surface: #10141c;
@@ -543,6 +547,31 @@ html[data-mode="explore"][data-motion="on"] .reveal[data-revealed="false"] {
   opacity: 0;
   transform: translateY(22px);
 }
+/* A reveal never owns visibility until the observer has marked an offscreen element. */
+html[data-motion="on"] .reveal[data-revealed="false"] {
+  opacity: 0.76;
+  transform: translateY(0.7rem);
+  transition: opacity var(--motion-reveal) ease, transform var(--motion-reveal) var(--ease-out-expo), clip-path var(--motion-reveal) var(--ease-out-expo);
+}
+html[data-motion="on"] .reveal[data-reveal="mask"][data-revealed="false"] { clip-path: inset(0 0 12% 0); }
+html[data-motion="on"] .reveal[data-reveal="line"][data-revealed="false"] { clip-path: inset(0 5% 0 0); }
+html[data-motion="on"] .reveal[data-reveal="image"][data-revealed="false"] { clip-path: inset(0 0 18% 0); }
+html[data-motion="on"] .reveal[data-revealed="true"] {
+  opacity: 1;
+  transform: none;
+  clip-path: inset(0);
+  transition: opacity var(--motion-reveal) ease, transform var(--motion-reveal) var(--ease-out-expo), clip-path var(--motion-reveal) var(--ease-out-expo);
+}
+html[data-motion="on"] [data-motion-stagger][data-revealed="false"] > * {
+  opacity: 0.7;
+  translate: 0 0.5rem;
+}
+html[data-motion="on"] [data-motion-stagger] > * {
+  transition: opacity var(--motion-reveal) ease, translate var(--motion-reveal) var(--ease-out-expo);
+  transition-delay: calc(var(--stagger-index, 0) * 60ms);
+}
+.motion-parallax { translate: 0 var(--motion-parallax-y, 0px); }
+.magnetic { transition: translate var(--motion-micro) var(--ease-out-expo); }
 html[data-motion="off"] {
   scroll-behavior: auto;
 }

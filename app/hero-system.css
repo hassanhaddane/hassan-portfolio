@@ -186,7 +186,42 @@ html {
   z-index: 0;
   opacity: 0.9;
   transition: opacity 0.8s;
+  --field-glow-x: 72%;
+  --field-glow-y: 36%;
 }
+.organism-field::before,
+.organism-field::after {
+  content: "";
+  position: absolute;
+  inset: -5%;
+  pointer-events: none;
+}
+.organism-field::before {
+  z-index: 0;
+  background-image:
+    radial-gradient(circle, color-mix(in srgb, var(--primary) 19%, transparent) 0 0.7px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--primary) 9%, transparent) 1px, transparent 1px),
+    linear-gradient(0deg, color-mix(in srgb, var(--primary) 9%, transparent) 1px, transparent 1px);
+  background-size: 31px 31px, 124px 124px, 124px 124px;
+  opacity: 0.32;
+  mask-image: radial-gradient(ellipse 76% 88% at 68% 45%, #000, transparent);
+  transform: translate3d(calc(var(--field-x, 0px) * 0.45), calc(var(--field-y, 0px) * 0.45), 0) skew(var(--pointer-tilt-y, 0deg), var(--pointer-tilt-x, 0deg));
+  transition: transform var(--motion-editorial) var(--ease-out-expo), opacity var(--motion-editorial) ease;
+}
+.organism-field::after {
+  z-index: 1;
+  background: radial-gradient(ellipse 35% 48% at var(--field-glow-x) var(--field-glow-y), color-mix(in srgb, var(--primary) 13%, transparent), transparent 80%);
+  opacity: 0.7;
+  transform: translate3d(calc(var(--field-x, 0px) * -0.25), calc(var(--field-y, 0px) * -0.25), 0);
+  transition: transform var(--motion-editorial) var(--ease-out-expo), background-position var(--motion-editorial) ease;
+}
+.organism-field.stage-projets { --field-glow-x: 60%; --field-glow-y: 48%; }
+.organism-field.stage-experience { --field-glow-x: 78%; --field-glow-y: 40%; }
+.organism-field.stage-stack { --field-glow-x: 67%; --field-glow-y: 54%; }
+.organism-field.stage-education { --field-glow-x: 75%; --field-glow-y: 64%; }
+.organism-field.stage-about,
+.organism-field.stage-lab { --field-glow-x: 78%; --field-glow-y: 48%; }
+.organism-field.stage-contact { --field-glow-x: 82%; --field-glow-y: 66%; }
 .organism-vector,
 .organism-canvas {
   position: absolute;
@@ -195,10 +230,18 @@ html {
   height: 100%;
 }
 .organism-vector {
+  z-index: 2;
   transform: translate(var(--field-x, 0px), var(--field-y, 0px));
   transition:
     transform 1.2s var(--motion-ease),
     opacity 0.8s;
+}
+.organism-canvas { z-index: 3; }
+.organism-living { transform-box: fill-box; transform-origin: center; }
+html[data-motion="on"] .organism-living { animation: organism-idle var(--motion-idle) ease-in-out infinite alternate; }
+.webgl-ready:not(:has(canvas[data-failed])) .organism-living { animation: none; }
+@keyframes organism-idle {
+  to { transform: translate(1.2%, -0.8%) scale(1.018); }
 }
 .fiber-path {
   stroke: #3267ff;
@@ -276,6 +319,7 @@ html[data-motion="on"] .organism-field:not([data-signal="-1"]) .fiber-trail {
 .organism-field.stage-about .organism-vector {
   transform: scale(0.55);
 }
+.organism-field.stage-lab .organism-vector { transform: scale(0.6) rotate(8deg); }
 .organism-field.stage-education .organism-vector {
   transform: scale(0.68) rotate(9deg);
 }
@@ -286,6 +330,7 @@ html[data-motion="on"] .organism-field:not([data-signal="-1"]) .fiber-trail {
 }
 .organism-field[data-performance="low"] .fiber-trail { display: none; }
 .organism-field[data-performance="low"] .fiber-node { opacity: 0.42; }
+.organism-field[data-performance="low"]::before { opacity: 0.18; }
 html[data-performance="reduced"] .organism-field { opacity: 0.2; }
 html[data-performance="reduced"] .organism-vector { transform: none !important; }
 .foreground-filament {
@@ -652,6 +697,8 @@ html[data-motion="off"] .signal-hero__technical-grid,
 html[data-motion="off"] .signal-masthead,
 html[data-motion="off"] .navigation-dialog nav a svg,
 html[data-motion="off"] .organism-field * { transform: none !important; transition: none !important; }
+html[data-motion="off"] .organism-field::before,
+html[data-motion="off"] .organism-field::after { transform: none !important; transition: none !important; }
 html[data-motion="off"] .signal-hero__aside { translate: none !important; }
 html[data-motion="off"] .navigation-dialog { animation: none !important; }
 @media print {

@@ -17,7 +17,7 @@ export function Contact() {
         className="clarity-section clarity-contact section-shell section-space"
         aria-labelledby="contact-title"
       >
-        <header className="clarity-section-header">
+        <header className="clarity-section-header reveal" data-reveal="mask">
           <ChapterIdentity
             index="07"
             kind="contact"
@@ -39,7 +39,7 @@ export function Contact() {
           </div>
         </header>
 
-        <nav className="clarity-contact-actions" aria-label={locale === "fr" ? "Moyens de contact" : "Contact options"}>
+        <nav className="clarity-contact-actions reveal" data-reveal="line" data-motion-stagger aria-label={locale === "fr" ? "Moyens de contact" : "Contact options"}>
           <a href={`mailto:${profile.email}`} data-cursor="OPEN">
             <span className="mono">EMAIL</span>
             <strong>{locale === "fr" ? "M’envoyer un email" : "Send me an email"}</strong>

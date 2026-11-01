@@ -28,7 +28,7 @@ Espacements : `--space-1/2/3/4/6/8/12/16/24/32` = `4/8/12/16/24/32/48/64/96/128p
 
 Typographie : **Barlow Condensed 800** (`--display`) pour les titres identitaires et de chapitre ; **Geist Sans** pour navigation, boutons et lecture ; monospace système (`--font-geist-mono`, `.mono`) pour index, périodes et métadonnées seulement. Les titres ont une échelle fluide avec `clamp()`, un interlignage serré et des paragraphes de 16–20 px à 1.6–1.7 d'interlignage. La densité vient du contraste d'échelle, des séparateurs et des colonnes plutôt que de blocs vides.
 
-Mouvement : `--ease-out-expo`, `--ease-in-out`, `--duration-fast` (180 ms), `--duration-normal` (360 ms), `--duration-expressive` (620 ms). Les interactions décoratives disparaissent avec `prefers-reduced-motion: reduce` ou `data-motion="off"`. Le mouvement n'est jamais nécessaire pour lire ou naviguer. Bordures : `--radius-control: 4px` et `--radius-surface: 8px`. En-tête : `--header-height: 84px`.
+Mouvement : `--ease-out-expo`, `--ease-in-out`, `--duration-fast` (180 ms), `--duration-normal` (360 ms), `--duration-expressive` (620 ms), puis l'échelle micro/reveal/editorial/idle détaillée dans [MOTION_SYSTEM.md](./MOTION_SYSTEM.md). Les interactions décoratives disparaissent avec `prefers-reduced-motion: reduce` ou `data-motion="off"`. Le mouvement n'est jamais nécessaire pour lire ou naviguer. Bordures : `--radius-control: 4px` et `--radius-surface: 8px`. En-tête : `--header-height: 84px`.
 
 ## Composants
 

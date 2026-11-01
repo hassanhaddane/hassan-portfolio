@@ -17,7 +17,7 @@ export function KnowledgeSystem() {
         className="clarity-section clarity-experience section-shell section-space"
         aria-labelledby="experience-title"
       >
-        <header className="clarity-section-header">
+        <header className="clarity-section-header reveal" data-reveal="mask">
           <ChapterIdentity
             index="03"
             kind="experience"
@@ -37,7 +37,7 @@ export function KnowledgeSystem() {
 
         <div className="clarity-experience-list">
           {professionalWork.map((work, index) => (
-            <article key={work.id} className="clarity-experience-entry" data-primary={work.id === "iaudiogram"}>
+            <article key={work.id} className="clarity-experience-entry reveal" data-reveal="line" data-primary={work.id === "iaudiogram"}>
               <EntityTypeMarker kind="experience" index={String(index + 1).padStart(2, "0")} />
               <div className="clarity-experience-main">
                 <header>
@@ -74,7 +74,7 @@ export function KnowledgeSystem() {
         className="clarity-section clarity-skills section-shell section-space"
         aria-labelledby="stack-title"
       >
-        <header className="clarity-section-header">
+        <header className="clarity-section-header reveal" data-reveal="mask">
           <ChapterIdentity
             index="04"
             kind="stack"
@@ -107,7 +107,7 @@ export function KnowledgeSystem() {
         className="clarity-section clarity-education section-shell section-space"
         aria-labelledby="education-title"
       >
-        <header className="clarity-section-header">
+        <header className="clarity-section-header reveal" data-reveal="mask">
           <ChapterIdentity
             index="05"
             kind="education"

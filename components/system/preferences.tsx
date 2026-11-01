@@ -180,7 +180,10 @@ export function PreferencesProvider({
   }, []);
 
   useEffect(() => {
-    let scrollTimer = 0;
+    let scrollAnimation = 0;
+    let correctionTimer = 0;
+    let navigationId = 0;
+    let activeBoundary: HTMLElement | null = null;
     let previousScrollBehavior = "";
     let nativeSmoothDisabled = false;
     const targetFromHash = (hash: string) => {
@@ -194,9 +197,15 @@ export function PreferencesProvider({
     const motionAllowed = () =>
       document.documentElement.dataset.motion !== "off" &&
       !matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const stopScroll = () => {
-      if (scrollTimer) window.clearInterval(scrollTimer);
-      scrollTimer = 0;
+    const stopScroll = (cancelCorrection = false) => {
+      if (scrollAnimation) cancelAnimationFrame(scrollAnimation);
+      scrollAnimation = 0;
+      if (cancelCorrection) {
+        window.clearTimeout(correctionTimer);
+        correctionTimer = 0;
+        activeBoundary?.style.removeProperty("content-visibility");
+        activeBoundary = null;
+      }
       if (nativeSmoothDisabled) {
         document.documentElement.style.scrollBehavior = previousScrollBehavior;
         nativeSmoothDisabled = false;
@@ -219,11 +228,14 @@ export function PreferencesProvider({
     const scrollToHash = (hash: string, forceInstant = false) => {
       const target = targetFromHash(hash);
       if (!target) return;
+      stopScroll(true);
+      const requestId = ++navigationId;
       syncTargetSection(target);
       const renderBoundary = target.closest<HTMLElement>(
         "#projets, .knowledge-system-root, #about, #contact",
       );
       renderBoundary?.style.setProperty("content-visibility", "visible");
+      activeBoundary = renderBoundary;
       const root = document.scrollingElement ?? document.documentElement;
       const rootStyle = getComputedStyle(document.documentElement);
       const targetStyle = getComputedStyle(target);
@@ -234,7 +246,6 @@ export function PreferencesProvider({
         0,
         target.getBoundingClientRect().top + scrollY - navigationOffset,
       );
-      stopScroll();
       disableNativeSmooth();
       if (forceInstant || !motionAllowed()) {
         root.scrollTop = destination;
@@ -256,16 +267,35 @@ export function PreferencesProvider({
           if (progress >= 1) {
             stopScroll();
             syncTargetSection(target);
+          } else {
+            scrollAnimation = requestAnimationFrame(advance);
           }
         };
-        advance();
-        scrollTimer = window.setInterval(advance, 16);
+        scrollAnimation = requestAnimationFrame(advance);
       }
       if (renderBoundary)
-        window.setTimeout(() => {
+        correctionTimer = window.setTimeout(() => {
+          if (requestId !== navigationId) return;
           renderBoundary.style.removeProperty("content-visibility");
+          activeBoundary = null;
+          correctionTimer = 0;
+          const finalOffset = Math.max(
+            Number.parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0,
+            Number.parseFloat(getComputedStyle(target).scrollMarginTop) || 0,
+          );
+          const correction = target.getBoundingClientRect().top - finalOffset;
+          if (Math.abs(correction) > 2) root.scrollTop += correction;
           syncTargetSection(target);
         }, forceInstant ? 160 : 1050);
+    };
+    const interruptScroll = () => {
+      if (!scrollAnimation && !correctionTimer) return;
+      navigationId++;
+      stopScroll(true);
+    };
+    const interruptOnKey = (event: KeyboardEvent) => {
+      if (["ArrowUp", "ArrowDown", "PageUp", "PageDown", "Home", "End", " "].includes(event.key))
+        interruptScroll();
     };
     const handleInternalLink = (event: MouseEvent) => {
       if (
@@ -301,6 +331,11 @@ export function PreferencesProvider({
     };
     const restoreDeepLink = () => scrollToHash(location.hash, true);
     document.addEventListener("click", handleInternalLink, true);
+    addEventListener("wheel", interruptScroll, { passive: true });
+    addEventListener("touchstart", interruptScroll, { passive: true });
+    addEventListener("keydown", interruptOnKey);
+    addEventListener("resize", interruptScroll, { passive: true });
+    document.addEventListener("visibilitychange", interruptScroll);
     window.addEventListener("lowkyz:navigate", handleProgrammaticNavigation);
     window.addEventListener("popstate", restoreDeepLink);
     const firstFrame = requestAnimationFrame(() =>
@@ -309,9 +344,14 @@ export function PreferencesProvider({
     const settled = window.setTimeout(restoreDeepLink, 180);
     return () => {
       cancelAnimationFrame(firstFrame);
-      stopScroll();
+      stopScroll(true);
       window.clearTimeout(settled);
       document.removeEventListener("click", handleInternalLink, true);
+      removeEventListener("wheel", interruptScroll);
+      removeEventListener("touchstart", interruptScroll);
+      removeEventListener("keydown", interruptOnKey);
+      removeEventListener("resize", interruptScroll);
+      document.removeEventListener("visibilitychange", interruptScroll);
       window.removeEventListener("lowkyz:navigate", handleProgrammaticNavigation);
       window.removeEventListener("popstate", restoreDeepLink);
     };

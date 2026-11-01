@@ -17,7 +17,7 @@ export function About() {
       className="clarity-section clarity-about section-shell section-space"
       aria-labelledby="about-title"
     >
-      <header className="clarity-section-header">
+      <header className="clarity-section-header reveal" data-reveal="mask">
         <ChapterIdentity
           index="06"
           kind="about"
@@ -31,7 +31,7 @@ export function About() {
         </div>
       </header>
 
-      <div className="clarity-about-grid">
+      <div className="clarity-about-grid reveal" data-reveal="line">
         <section aria-labelledby="about-languages">
           <span className="mono">01 / {locale === "fr" ? "LANGUES" : "LANGUAGES"}</span>
           <h3 id="about-languages">{locale === "fr" ? "Langues" : "Languages"}</h3>

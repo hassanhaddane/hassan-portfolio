@@ -2,8 +2,9 @@
 
 import { memo, useEffect, useRef, useState } from "react";
 import { organismPoint, stageIndex } from "@/lib/constellation-shapes";
-import { technologies, useFieldSignal } from "@/lib/field-signal";
+import { signalFamily, useFieldSignal } from "@/lib/field-signal";
 import { useWorkSignal } from "@/lib/work-signal";
+import { invalidateMotionFrame, subscribeMotionFrame } from "@/lib/motion-runtime";
 import type { SceneState } from "@/lib/constellation-engine";
 import { useActiveSection, usePreferences } from "./preferences";
 
@@ -35,7 +36,7 @@ const StaticOrganism = memo(function StaticOrganism() {
       fill="none"
       aria-hidden="true"
     >
-      {Array.from({ length: 7 }, (_, family) => (
+      <g className="organism-living">{Array.from({ length: 7 }, (_, family) => (
         <g key={family} data-family={family}>
           {strands
             .filter((strand) => strand.family === family)
@@ -57,7 +58,7 @@ const StaticOrganism = memo(function StaticOrganism() {
               </g>
             ))}
         </g>
-      ))}
+      ))}</g>
     </svg>
   );
 });
@@ -106,153 +107,95 @@ export function Constellation() {
     if (!motion) return;
     const fieldElement = field.current;
     const root = document.documentElement;
-    let pointerFrame = 0,
-      scrollFrame = 0,
-      velocityFrame = 0,
-      x = 0,
-      y = 0;
-    let cssVelocity = 0,
-      signalPathLength = 0;
-    let lastY = scrollY,
-      lastTime = performance.now();
-    let anchors: Array<{ id: string; stage: number; center: number; top: number; height: number }> = [];
+    let signalPathLength = 0;
+    let anchors: Array<{ stage: number; center: number; top: number; height: number }> = [];
+    let lastStoryY = -1;
 
     const measure = () => {
       anchors = [...document.querySelectorAll<HTMLElement>("[data-section]")]
         .map((section) => ({
-          id: section.id,
           stage: stageIndex[section.id],
-          center: section.offsetTop + section.offsetHeight * 0.5,
-          top: section.offsetTop,
+          top: section.getBoundingClientRect().top + scrollY,
           height: section.offsetHeight,
         }))
-        .filter((section) => Number.isFinite(section.stage));
+        .filter((section) => Number.isFinite(section.stage))
+        .map((section) => ({ ...section, center: section.top + section.height * 0.5 }));
       signalPathLength = storyPath.current?.getTotalLength() ?? 0;
+      lastStoryY = -1;
     };
+    measure();
+    const resizeObserver = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(() => {
+      measure();
+      invalidateMotionFrame();
+    });
+    document.querySelectorAll<HTMLElement>("[data-section]").forEach((section) => resizeObserver?.observe(section));
 
-    const updateStory = () => {
-      scrollFrame = 0;
-      if (!anchors.length) measure();
-      const readingPoint = scrollY + innerHeight * 0.42;
-      let stage = anchors[0]?.stage ?? 0;
-      let current = anchors[0];
-      for (let index = 0; index < anchors.length; index++) {
-        const anchor = anchors[index];
-        const next = anchors[index + 1];
-        if (readingPoint >= anchor.top) current = anchor;
-        if (!next || readingPoint <= next.center) {
-          const span = Math.max(1, (next?.center ?? anchor.center) - anchor.center);
-          const progress = Math.max(0, Math.min(1, (readingPoint - anchor.center) / span));
-          stage = anchor.stage + ((next?.stage ?? anchor.stage) - anchor.stage) * progress;
-          break;
-        }
-      }
-      const documentRange = Math.max(1, document.documentElement.scrollHeight - innerHeight);
-      const overall = Math.max(0, Math.min(1, scrollY / documentRange));
-      const sectionProgress = current
-        ? Math.max(0, Math.min(1, (readingPoint - current.top) / Math.max(1, current.height)))
-        : 0;
-      scene.current.stage = stage;
-      scene.current.introProgress = Math.min(1, scrollY / innerHeight);
-      root.style.setProperty("--story-progress", overall.toFixed(4));
-      root.style.setProperty("--section-progress", sectionProgress.toFixed(4));
-      root.style.setProperty(
-        "--section-shift",
-        `${((sectionProgress - 0.5) * 14).toFixed(2)}px`,
-      );
-      root.style.setProperty("--story-dash", (1120 - overall * 1120).toFixed(2));
-      if (storyHead.current && storyPath.current && signalPathLength > 0) {
-        const point = storyPath.current.getPointAtLength(overall * signalPathLength);
-        storyHead.current.setAttribute(
-          "transform",
-          `translate(${point.x.toFixed(2)} ${point.y.toFixed(2)})`,
-        );
-      }
-    };
-
-    const settleVelocity = () => {
-      const energy = Math.min(1, Math.abs(cssVelocity) * 0.52);
-      root.style.setProperty("--story-velocity", energy.toFixed(3));
-      root.style.setProperty("--story-stroke", `${(2 + energy * 1.4).toFixed(2)}px`);
-      root.style.setProperty("--story-glow", `${(6 + energy * 8).toFixed(2)}px`);
-      root.style.setProperty("--story-stretch", (1 + energy * 0.025).toFixed(4));
-      root.style.setProperty(
-        "--signal-shift",
-        `${Math.max(-11, Math.min(11, cssVelocity * 2.4)).toFixed(2)}px`,
-      );
-      cssVelocity *= 0.82;
-      if (Math.abs(cssVelocity) > 0.008) {
-        velocityFrame = requestAnimationFrame(settleVelocity);
-      } else {
-        velocityFrame = 0;
-        root.style.setProperty("--story-velocity", "0");
-        root.style.setProperty("--story-stroke", "2px");
-        root.style.setProperty("--story-glow", "6px");
-        root.style.setProperty("--story-stretch", "1");
-        root.style.setProperty("--signal-shift", "0px");
-      }
-    };
-
-    const pointer = (event: PointerEvent) => {
-      if (event.pointerType !== "mouse") return;
-      x = (event.clientX / innerWidth) * 2 - 1;
-      y = (event.clientY / innerHeight) * 2 - 1;
-      scene.current.x = x;
-      scene.current.y = y;
-      if (pointerFrame) return;
-      pointerFrame = requestAnimationFrame(() => {
-        fieldElement?.style.setProperty("--field-x", `${x * 8}px`);
-        fieldElement?.style.setProperty("--field-y", `${y * 5}px`);
+    const unsubscribe = subscribeMotionFrame((frame) => {
+      if (frame.resized) measure();
+      if (frame.pointerChanged) {
+        const intensity = frame.pointerInside ? frame.pointerType === "mouse" ? 1 : frame.pointerType === "touch" ? 0.45 : 0 : 0;
+        const x = intensity * (frame.pointerX / frame.width * 2 - 1);
+        const y = intensity * (frame.pointerY / frame.height * 2 - 1);
+        scene.current.x = x;
+        scene.current.y = y;
+        fieldElement?.style.setProperty("--field-x", `${(x * 8).toFixed(2)}px`);
+        fieldElement?.style.setProperty("--field-y", `${(y * 5).toFixed(2)}px`);
         root.style.setProperty("--pointer-drift-x", `${(x * 5).toFixed(2)}px`);
         root.style.setProperty("--pointer-drift-y", `${(y * 4).toFixed(2)}px`);
         root.style.setProperty("--pointer-tilt-x", `${(y * -0.32).toFixed(3)}deg`);
         root.style.setProperty("--pointer-tilt-y", `${(x * 0.42).toFixed(3)}deg`);
-        pointerFrame = 0;
-      });
-    };
-    const scroll = () => {
-      const now = performance.now();
-      scene.current.scrollSpeed =
-        (scrollY - lastY) / Math.max(now - lastTime, 1);
-      cssVelocity = scene.current.scrollSpeed;
-      lastY = scrollY;
-      lastTime = now;
-      root.dataset.storyDirection = scene.current.scrollSpeed < -0.02 ? "up" : "down";
-      if (!scrollFrame) scrollFrame = requestAnimationFrame(updateStory);
-      if (!velocityFrame) velocityFrame = requestAnimationFrame(settleVelocity);
-    };
-    const resize = () => {
-      measure();
-      updateStory();
-    };
-    measure();
-    updateStory();
-    addEventListener("pointermove", pointer, { passive: true });
-    addEventListener("scroll", scroll, { passive: true });
-    addEventListener("resize", resize, { passive: true });
+      }
+      if (lastStoryY !== frame.scrollY || frame.resized) {
+        lastStoryY = frame.scrollY;
+        const readingPoint = frame.scrollY + frame.height * 0.42;
+        let stage = anchors[0]?.stage ?? 0;
+        let current = anchors[0];
+        for (let index = 0; index < anchors.length; index++) {
+          const anchor = anchors[index];
+          const next = anchors[index + 1];
+          if (readingPoint >= anchor.top) current = anchor;
+          if (!next || readingPoint <= next.center) {
+            const span = Math.max(1, (next?.center ?? anchor.center) - anchor.center);
+            const progress = Math.max(0, Math.min(1, (readingPoint - anchor.center) / span));
+            stage = anchor.stage + ((next?.stage ?? anchor.stage) - anchor.stage) * progress;
+            break;
+          }
+        }
+        const documentRange = Math.max(1, document.documentElement.scrollHeight - frame.height);
+        const overall = Math.max(0, Math.min(1, frame.scrollY / documentRange));
+        const sectionProgress = current
+          ? Math.max(0, Math.min(1, (readingPoint - current.top) / Math.max(1, current.height)))
+          : 0;
+        scene.current.stage = stage;
+        scene.current.introProgress = Math.min(1, frame.scrollY / frame.height);
+        root.style.setProperty("--story-progress", overall.toFixed(4));
+        root.style.setProperty("--section-progress", sectionProgress.toFixed(4));
+        root.style.setProperty("--section-shift", `${((sectionProgress - 0.5) * 14).toFixed(2)}px`);
+        root.style.setProperty("--story-dash", (1120 - overall * 1120).toFixed(2));
+        if (storyHead.current && storyPath.current && signalPathLength > 0) {
+          const point = storyPath.current.getPointAtLength(overall * signalPathLength);
+          storyHead.current.setAttribute("transform", `translate(${point.x.toFixed(2)} ${point.y.toFixed(2)})`);
+        }
+      }
+      scene.current.scrollSpeed = frame.velocity;
+      const energy = Math.min(1, Math.abs(frame.velocity) * 0.52);
+      root.style.setProperty("--story-velocity", energy.toFixed(3));
+      root.style.setProperty("--story-stroke", `${(2 + energy * 1.4).toFixed(2)}px`);
+      root.style.setProperty("--story-glow", `${(6 + energy * 8).toFixed(2)}px`);
+      root.style.setProperty("--story-stretch", (1 + energy * 0.025).toFixed(4));
+      root.style.setProperty("--signal-shift", `${Math.max(-11, Math.min(11, frame.velocity * 2.4)).toFixed(2)}px`);
+      root.dataset.storyDirection = frame.direction;
+    });
     return () => {
-      cancelAnimationFrame(pointerFrame);
-      cancelAnimationFrame(scrollFrame);
-      cancelAnimationFrame(velocityFrame);
-      removeEventListener("pointermove", pointer);
-      removeEventListener("scroll", scroll);
-      removeEventListener("resize", resize);
+      unsubscribe();
+      resizeObserver?.disconnect();
       fieldElement?.style.removeProperty("--field-x");
       fieldElement?.style.removeProperty("--field-y");
       [
-        "--story-progress",
-        "--section-progress",
-        "--section-shift",
-        "--story-dash",
-        "--story-velocity",
-        "--story-stroke",
-        "--story-glow",
-        "--story-stretch",
-        "--signal-shift",
-        "--pointer-drift-x",
-        "--pointer-drift-y",
-        "--pointer-tilt-x",
-        "--pointer-tilt-y",
+        "--story-progress", "--section-progress", "--section-shift", "--story-dash",
+        "--story-velocity", "--story-stroke", "--story-glow", "--story-stretch",
+        "--signal-shift", "--pointer-drift-x", "--pointer-drift-y",
+        "--pointer-tilt-x", "--pointer-tilt-y",
       ].forEach((property) => root.style.removeProperty(property));
       delete root.dataset.storyDirection;
     };
@@ -261,7 +204,7 @@ export function Constellation() {
     const media = matchMedia("(min-width: 800px) and (pointer: fine)");
     const nav = navigator as Navigator & {
       deviceMemory?: number;
-      connection?: { saveData?: boolean };
+      connection?: EventTarget & { saveData?: boolean };
     };
     const getTier = (): PerformanceTier => {
       if (!motion) return "reduced";
@@ -310,11 +253,13 @@ export function Constellation() {
       void boot();
     };
     media.addEventListener("change", changed);
+    nav.connection?.addEventListener("change", changed);
     return () => {
       disposed = true;
       clearTimeout(idle);
       dispose?.();
       media.removeEventListener("change", changed);
+      nav.connection?.removeEventListener("change", changed);
     };
   }, [mode, motion]);
   return (
@@ -323,7 +268,7 @@ export function Constellation() {
         ref={field}
         className={`organism-field stage-${activeSection} ${webgl ? "webgl-ready" : ""}`}
         data-performance={performanceTier}
-        data-signal={signal ? technologies.indexOf(signal) : -1}
+        data-signal={signalFamily(signal)}
         data-work={workSignal}
         aria-hidden="true"
       >

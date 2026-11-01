@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { ArrowDown, ArrowDownToLine, ArrowUpRight, Check, Copy } from "lucide-react";
 import { copy, profile } from "@/lib/portfolio-data";
+import { subscribeMotionFrame } from "@/lib/motion-runtime";
 import { setFieldSignal, useFieldSignal, type Technology } from "@/lib/field-signal";
 import { usePreferences } from "@/components/system/preferences";
 import { CreativeAction } from "@/components/ui/creative-action";
@@ -41,7 +42,7 @@ function HeroTechnology({ technology }: { technology: Technology }) {
 }
 
 export function Hero() {
-  const { locale } = usePreferences();
+  const { locale, motion } = usePreferences();
   const [emailCopied, setEmailCopied] = useState(false);
   const copyTimer = useRef<number | null>(null);
 
@@ -50,24 +51,17 @@ export function Hero() {
   }, []);
 
   useEffect(() => {
+    if (!motion) return;
     const hero = document.getElementById("profil");
-    let frame = 0;
-    const update = () => {
-      frame = 0;
-      if (!hero || scrollY > innerHeight * 1.5) return;
-      hero.style.setProperty("--hero-scroll-y", `${Math.min(1, scrollY / innerHeight) * 18}px`);
-    };
-    const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
-    update();
-    addEventListener("scroll", schedule, { passive: true });
-    addEventListener("resize", schedule, { passive: true });
+    const unsubscribe = subscribeMotionFrame((frame) => {
+      if (!hero || (!frame.scrolled && !frame.resized)) return;
+      hero.style.setProperty("--hero-scroll-y", `${Math.min(1, frame.scrollY / frame.height) * 18}px`);
+    });
     return () => {
-      cancelAnimationFrame(frame);
-      removeEventListener("scroll", schedule);
-      removeEventListener("resize", schedule);
+      unsubscribe();
       hero?.style.removeProperty("--hero-scroll-y");
     };
-  }, []);
+  }, [motion]);
 
   async function copyEmail() {
     try {
@@ -82,7 +76,7 @@ export function Hero() {
 
   return (
     <section id="profil" data-section tabIndex={-1} className="signal-hero" aria-labelledby="hero-title">
-      <div className="signal-hero__technical-grid" aria-hidden="true" />
+      <div className="signal-hero__technical-grid motion-parallax" data-motion-parallax="0.2" aria-hidden="true" />
       <div className="signal-hero__topline mono">
         <span>LOWKYZ <i aria-hidden="true">/</i> HASSAN HADDANE</span>
         <span>{locale === "fr" ? "DÉVELOPPEMENT · INTERFACES · SON" : "DEVELOPMENT · INTERFACES · SOUND"}</span>
@@ -116,8 +110,8 @@ export function Hero() {
               : "From interfaces to APIs, I bring technical precision and care for the experience together."}
           </p>
           <div className="signal-hero__actions">
-            <CreativeAction variant="primary" href="#projets" label={locale === "fr" ? "Découvrir mes projets" : "Explore my work"} data-cursor="WORK" />
-            <CreativeAction variant="secondary" href={profile.cv} download="CV-Hassan-Haddane.pdf" label={copy.download[locale]} icon={<ArrowDownToLine aria-hidden="true" />} data-cursor="CV" />
+            <CreativeAction className="magnetic" variant="primary" href="#projets" label={locale === "fr" ? "Découvrir mes projets" : "Explore my work"} data-cursor="WORK" />
+            <CreativeAction className="magnetic" variant="secondary" href={profile.cv} download="CV-Hassan-Haddane.pdf" label={copy.download[locale]} icon={<ArrowDownToLine aria-hidden="true" />} data-cursor="CV" />
             <a className="signal-hero__contact-link" href="#contact" data-cursor="CONTACT">
               {locale === "fr" ? "Me contacter" : "Get in touch"}<ArrowUpRight aria-hidden="true" />
             </a>

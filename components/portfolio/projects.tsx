@@ -17,7 +17,7 @@ export function Projects() {
       className="clarity-section clarity-project section-shell section-space"
       aria-labelledby="projects-title"
     >
-      <header className="clarity-section-header">
+      <header className="clarity-section-header reveal" data-reveal="mask">
         <ChapterIdentity
           index="02"
           kind="project"
@@ -45,7 +45,7 @@ export function Projects() {
           <CreativeAction variant="secondary" href={greeCheck.url} target="_blank" rel="noopener noreferrer" data-cursor="OPEN" label={locale === "fr" ? "Ouvrir le projet" : "Open project"} />
         </header>
 
-        <figure className="clarity-project-preview">
+        <figure className="clarity-project-preview reveal" data-reveal="image">
           <div className="clarity-preview-bar mono" aria-hidden="true">
             <span>GREECHECK</span>
             <span>gree-check.vercel.app</span>
@@ -71,7 +71,7 @@ export function Projects() {
           </figcaption>
         </figure>
 
-        <div className="clarity-project-details">
+        <div className="clarity-project-details reveal" data-reveal="line" data-motion-stagger>
           <section aria-labelledby="project-objective">
             <span className="mono">01 / {locale === "fr" ? "OBJECTIF" : "GOAL"}</span>
             <h4 id="project-objective">{locale === "fr" ? "Objectif" : "Goal"}</h4>
@@ -109,7 +109,7 @@ export function Projects() {
               </div>
               {project.url ? <CreativeAction variant="secondary" href={project.url} target="_blank" rel="noopener noreferrer" data-cursor="OPEN" label={locale === "fr" ? "Voir le site" : "Visit website"} /> : null}
             </header>
-            <div className="clarity-project-details">
+            <div className="clarity-project-details reveal" data-reveal="line" data-motion-stagger>
               <section>
                 <span className="mono">{locale === "fr" ? "CONTRIBUTIONS" : "CONTRIBUTIONS"}</span>
                 <ul>{project.evidence.map((item) => <li key={item.statement.en}>{item.statement[locale]}</li>)}</ul>
