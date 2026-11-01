@@ -3,6 +3,7 @@ import type { Technology } from "./field-signal";
 
 export type Skill = {
   name: string;
+  label?: Localized;
   source: SourceId;
   // Only direct, documented project or experience relationships are shown.
   relations: EvidenceTargetId[];
@@ -14,13 +15,13 @@ export type SkillGroup = {
   skills: Skill[];
 };
 
-const skill = (name: string, relations: EvidenceTargetId[] = [], signal?: Technology): Skill => ({
-  name, source: "cv2026", relations, signal,
+const skill = (name: string, relations: EvidenceTargetId[] = [], signal?: Technology, label?: Localized): Skill => ({
+  name, label, source: "cv2026", relations, signal,
 });
 
 export const skillGroups: SkillGroup[] = [
   {
-    id: "front", label: text("FRONT", "FRONT END"), skills: [
+    id: "front", label: text("Front-end", "Front end"), skills: [
       skill("React", ["iaudiogram", "greecheck", "bloom", "tech-express"], "React"),
       skill("TypeScript", ["iaudiogram", "greecheck", "bloom", "tech-express"], "TypeScript"),
       skill("Angular", ["biosency"]),
@@ -31,17 +32,17 @@ export const skillGroups: SkillGroup[] = [
     ],
   },
   {
-    id: "back", label: text("BACK / API", "BACK END / API"), skills: [
+    id: "back", label: text("Back-end", "Back end"), skills: [
       skill("Python", ["iaudiogram"], "Python"),
       skill("FastAPI", ["iaudiogram"], "FastAPI"),
       skill("Node.js"),
       skill("Django"),
       skill("Flask"),
-      skill("API REST", ["iaudiogram"]),
+      skill("API REST", ["iaudiogram"], undefined, text("API REST", "REST APIs")),
     ],
   },
   {
-    id: "data", label: text("DONNÉES", "DATA"), skills: [
+    id: "data", label: text("Bases de données", "Databases"), skills: [
       skill("PostgreSQL", ["iaudiogram"]),
       skill("MySQL"),
       skill("MongoDB"),
@@ -49,16 +50,16 @@ export const skillGroups: SkillGroup[] = [
     ],
   },
   {
-    id: "quality", label: text("QUALITÉ", "QUALITY"), skills: [
+    id: "quality", label: text("Tests & qualité", "Testing & quality"), skills: [
       skill("Cypress", ["iaudiogram", "biosency"]),
       skill("Vitest"),
       skill("Jest"),
-      skill("Tests unitaires", [], undefined),
-      skill("Tests E2E", ["iaudiogram", "biosency"]),
+      skill("Tests unitaires", [], undefined, text("Tests unitaires", "Unit tests")),
+      skill("Tests E2E", ["iaudiogram", "biosency"], undefined, text("Tests E2E", "End-to-end tests")),
     ],
   },
   {
-    id: "tools", label: text("OUTILS", "TOOLS"), skills: [
+    id: "tools", label: text("DevOps", "DevOps"), skills: [
       skill("Docker", ["iaudiogram"], "Docker"),
       skill("Git"),
       skill("GitHub", ["iaudiogram"]),
@@ -68,10 +69,10 @@ export const skillGroups: SkillGroup[] = [
     ],
   },
   {
-    id: "ai", label: text("IA", "AI"), skills: [
+    id: "ai", label: text("Développement assisté par IA", "AI-assisted development"), skills: [
       skill("Codex"),
       skill("Claude CoWork"),
-      skill("Recherche et prototypage assistés"),
+      skill("Recherche et prototypage assistés", [], undefined, text("Recherche et prototypage assistés", "AI-assisted research and prototyping")),
     ],
   },
 ];

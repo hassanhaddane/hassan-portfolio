@@ -4,6 +4,7 @@ export type ProfessionalWork = {
   id: Extract<EvidenceTargetId, "iaudiogram" | "sante" | "biosency">;
   company: string;
   product?: string;
+  productEn?: string;
   start: string;
   end: string;
   period: Localized;
@@ -60,6 +61,7 @@ export const professionalWork: ProfessionalWork[] = [
     id: "biosency",
     company: "Biosency",
     product: "Plateforme médicale IoT",
+    productEn: "IoT medical platform",
     start: "2021-05",
     end: "2021-06",
     period: text("mai — juin 2021", "May — Jun 2021"),

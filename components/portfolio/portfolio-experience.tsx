@@ -7,7 +7,8 @@ import { EasterEggs } from "@/components/system/easter-eggs";
 import { Hero } from "@/components/portfolio/hero";
 import { ProjectsV2 } from "@/components/portfolio/projects-v2";
 import "@/app/work-showcase.css";
-import { KnowledgeSystem } from "@/components/portfolio/knowledge-system";
+import { JourneyExpertiseV2 } from "@/components/portfolio/journey-expertise-v2";
+import "@/app/journey-expertise-v2.css";
 import { About } from "@/components/portfolio/about";
 import { Contact } from "@/components/portfolio/contact";
 import { profile, type Locale } from "@/lib/portfolio-data";
@@ -87,7 +88,7 @@ export function PortfolioExperience({ locale }: { locale: Locale }) {
           <main id="main" tabIndex={-1}>
             <Hero />
             <ProjectsV2 />
-            <KnowledgeSystem />
+            <JourneyExpertiseV2 />
             <About />
             <Contact />
           </main>
