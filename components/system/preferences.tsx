@@ -362,6 +362,7 @@ export function PreferencesProvider({
     document.addEventListener("visibilitychange", interruptScroll);
     window.addEventListener("lowkyz:navigate", handleProgrammaticNavigation);
     window.addEventListener("popstate", restoreDeepLink);
+    window.addEventListener("hashchange", restoreDeepLink);
     const firstFrame = requestAnimationFrame(() =>
       requestAnimationFrame(restoreDeepLink),
     );
@@ -378,6 +379,7 @@ export function PreferencesProvider({
       document.removeEventListener("visibilitychange", interruptScroll);
       window.removeEventListener("lowkyz:navigate", handleProgrammaticNavigation);
       window.removeEventListener("popstate", restoreDeepLink);
+      window.removeEventListener("hashchange", restoreDeepLink);
     };
   }, []);
 

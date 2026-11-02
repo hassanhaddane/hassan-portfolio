@@ -445,9 +445,9 @@ html[data-performance="reduced"] .organism-vector { transform: none !important; 
 .signal-hero__word + .signal-hero__word { margin-top: 0.115em; margin-left: 0.17em; }
 .signal-hero__letter-mask { display: block; overflow: clip; padding-block: 0.1em; margin-block: -0.1em; }
 .signal-hero__letter-mask > span { display: block; transform-origin: 50% 100%; }
-html[data-intro-phase="off"] .signal-hero__letter-mask > span {
-  animation: signal-hero-letter-in 780ms var(--ease-out-expo) both;
-  animation-delay: calc(var(--letter) * 42ms);
+html[data-intro-phase="off"] .signal-hero[data-entry="true"] .signal-hero__letter-mask > span {
+  animation: signal-hero-letter-in 560ms var(--ease-out-expo) both;
+  animation-delay: calc(var(--letter) * 26ms);
 }
 .signal-hero__role-line {
   display: flex;
@@ -612,7 +612,7 @@ html[data-intro-phase="off"] .signal-hero__letter-mask > span {
   .signal-hero__base { padding-left: 4rem; }
 }
 @media (min-width: 761px) and (max-width: 1000px) {
-  .signal-hero { padding: 7rem clamp(2rem, 5vw, 3.5rem) 1.5rem; }
+  .signal-hero { min-height: 0; grid-template-rows: auto auto auto; padding: 7rem clamp(2rem, 5vw, 3.5rem) 1.5rem; }
   .signal-hero__composition { grid-template-columns: 1fr; gap: 2rem; }
   .signal-hero__main { transform: none; }
   .signal-hero__name { font-size: clamp(7rem, 15.2vw, 9.5rem); }

@@ -32,8 +32,8 @@
   --duration-normal: 360ms;
   --duration-expressive: 620ms;
   --motion-micro: 180ms;
-  --motion-reveal: 680ms;
-  --motion-editorial: 920ms;
+  --motion-reveal: 540ms;
+  --motion-editorial: 760ms;
   --motion-idle: 20s;
   --background: #080a0e;
   --foreground: #f3f1eb;
@@ -588,7 +588,7 @@ html[data-motion="off"] *::after {
 }
 @media (max-width: 650px) {
   html {
-    scroll-padding-top: 150px;
+    scroll-padding-top: 80px;
   }
   :root {
     --gutter: 22px;

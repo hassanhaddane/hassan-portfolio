@@ -35,6 +35,10 @@ html[data-mode="explore"] .portfolio-mode-switch__label[data-for-mode="explore"]
 .lab-v2-mode-note p { margin: 0; color: var(--text-secondary); font-size: .84rem; }
 .lab-v2-mode-note button { display: inline-flex; align-items: center; gap: .75rem; min-height: 44px; padding: .65rem .9rem; border: 1px solid var(--primary); background: transparent; color: var(--foreground); white-space: nowrap; cursor: pointer; }
 .lab-v2-mode-note button:hover, .lab-v2-mode-note button:focus-visible { background: color-mix(in srgb, var(--primary) 18%, transparent); }
+.lab-v2-controls button, .lab-v2-controls input { min-height: 44px; }
+.command-dialog[data-slot="dialog-content"] { border-radius: 2px; border-color: var(--border-strong); }
+.command-dialog [data-slot="command-item"] { border-radius: 0; border-left: 2px solid transparent; font-size: .87rem; transition: background var(--motion-micro), border-color var(--motion-micro); }
+.command-dialog [data-slot="command-item"][data-selected="true"] { border-left-color: var(--signal); background: color-mix(in srgb, var(--primary) 22%, var(--surface)); }
 
 html[data-mode="recruiter"] .organism-canvas,
 html[data-mode="recruiter"] .foreground-filament,
@@ -70,8 +74,14 @@ html[data-mode="recruiter"] .work-showcase .showcase-project-reveal { clip-path:
   .contact-v2-actions { max-width: 32rem; }
 }
 @media (max-width: 760px) {
+  .clarity-section.section-space { padding-block: 2.75rem; }
+  .personal-v2 .clarity-section-heading h2 { font-size: clamp(2.8rem, 12.5vw, 4.8rem); }
+  .personal-v2-composition { padding-block: 1.8rem; }
+  .expertise-filter { flex-wrap: wrap; overflow: visible; }
+  .expertise-filter button { min-height: 44px; }
+  .signal-hero { min-height: 0; }
   .portfolio-mode-switch { width: 44px; min-width: 44px; justify-content: center; padding: 0; }
-  .portfolio-mode-switch .portfolio-mode-switch__label, .portfolio-mode-switch__dot { display: none; }
+  html[data-mode] .portfolio-mode-switch .portfolio-mode-switch__label, .portfolio-mode-switch__dot { display: none; }
   .navigation-dialog__modes { padding-block: .55rem; }
   .navigation-dialog__modes button { min-height: 48px; }
   .navigation-dialog[data-slot="dialog-content"] nav a { min-height: 3.25rem; font-size: clamp(2rem, 9vw, 3rem); }

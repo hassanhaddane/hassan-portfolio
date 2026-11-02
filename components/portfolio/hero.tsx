@@ -6,6 +6,7 @@ import { copy, profile } from "@/lib/portfolio-data";
 import { subscribeMotionFrame } from "@/lib/motion-runtime";
 import { setFieldSignal, useFieldSignal, type Technology } from "@/lib/field-signal";
 import { usePreferences } from "@/components/system/preferences";
+import { useIntro } from "@/components/intro/intro-context";
 import { CreativeAction } from "@/components/ui/creative-action";
 
 function IdentityWord({ word, offset }: { word: string; offset: number }) {
@@ -43,6 +44,14 @@ function HeroTechnology({ technology }: { technology: Technology }) {
 
 export function Hero() {
   const { locale, expressiveMotion: motion } = usePreferences();
+  const { phase } = useIntro();
+  const [entry, setEntry] = useState(true);
+  useEffect(() => {
+    if (phase === "transition") { setEntry(false); return; }
+    if (phase !== "off") { setEntry(true); return; }
+    const timer = window.setTimeout(() => setEntry(false), 1000);
+    return () => clearTimeout(timer);
+  }, [phase]);
   const [emailCopied, setEmailCopied] = useState(false);
   const copyTimer = useRef<number | null>(null);
 
@@ -75,7 +84,7 @@ export function Hero() {
   }
 
   return (
-    <section id="profil" data-section tabIndex={-1} className="signal-hero" aria-labelledby="hero-title">
+    <section id="profil" data-entry={entry} data-section tabIndex={-1} className="signal-hero" aria-labelledby="hero-title">
       <div className="signal-hero__technical-grid motion-parallax" data-motion-parallax="0.2" aria-hidden="true" />
       <div className="signal-hero__topline mono">
         <span>LOWKYZ <i aria-hidden="true">/</i> HASSAN HADDANE</span>
