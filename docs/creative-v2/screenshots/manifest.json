@@ -1,0 +1,413 @@
+{
+  "tool": "IAB via Computer Use",
+  "screenshots": [
+    {
+      "file": "01-lowkyz-live-desktop.jpg",
+      "source": "https://www.lowkyz.dev/fr",
+      "captureDateLocal": "2026-10-31",
+      "timezone": "Europe/Paris",
+      "viewportCss": [
+        1440,
+        900
+      ],
+      "rasterPx": [
+        1425,
+        891
+      ],
+      "sha256": "07417efcf0731fd4cb955e726d71a2c8d5944a0c2856777b6e3d3d7bc8a1a7b7",
+      "purpose": "settled visual audit evidence",
+      "usage": "documentation only; not a runtime asset"
+    },
+    {
+      "file": "02-lowkyz-live-mobile.jpg",
+      "source": "https://www.lowkyz.dev/fr",
+      "captureDateLocal": "2026-10-31",
+      "timezone": "Europe/Paris",
+      "viewportCss": [
+        390,
+        844
+      ],
+      "rasterPx": [
+        375,
+        812
+      ],
+      "sha256": "080d2b485cb477ef1ea326a2c367884e30ab16bd58cefb07138258bd2089e03b",
+      "purpose": "settled visual audit evidence",
+      "usage": "documentation only; not a runtime asset"
+    },
+    {
+      "file": "04-daniele-projects-desktop.jpg",
+      "source": "https://www.danielebuser.com/",
+      "captureDateLocal": "2026-10-31",
+      "timezone": "Europe/Paris",
+      "viewportCss": [
+        1280,
+        720
+      ],
+      "rasterPx": [
+        1280,
+        720
+      ],
+      "sha256": "4068610f9de3d72ea2760abb3f42b96f0117d59355c6a675d3e719af67ca729b",
+      "purpose": "settled visual audit evidence",
+      "usage": "documentation only; not a runtime asset"
+    },
+    {
+      "file": "06-daniele-detail-settled-desktop.jpg",
+      "source": "https://www.danielebuser.com/projects/leonardo-berselli-portfolio",
+      "captureDateLocal": "2026-10-31",
+      "timezone": "Europe/Paris",
+      "viewportCss": [
+        1280,
+        720
+      ],
+      "rasterPx": [
+        1280,
+        720
+      ],
+      "sha256": "1e2b7de19caa89ff47f48a9b3c72262840c615cb53bda13dcfef1c92563e0630",
+      "purpose": "settled visual audit evidence",
+      "usage": "documentation only; not a runtime asset"
+    },
+    {
+      "file": "07-overworld-entry-desktop.jpg",
+      "source": "https://overworldaudio.com/",
+      "captureDateLocal": "2026-10-31",
+      "timezone": "Europe/Paris",
+      "viewportCss": [
+        1280,
+        720
+      ],
+      "rasterPx": [
+        1280,
+        720
+      ],
+      "sha256": "8ddcf5457679a5beeec56726f917dbf3a4af5d4c71a303af349c701142c2601d",
+      "purpose": "intentional loader observation",
+      "usage": "documentation only; not a runtime asset"
+    },
+    {
+      "file": "08-overworld-ready-desktop.jpg",
+      "source": "https://overworldaudio.com/",
+      "captureDateLocal": "2026-10-31",
+      "timezone": "Europe/Paris",
+      "viewportCss": [
+        1280,
+        720
+      ],
+      "rasterPx": [
+        1280,
+        720
+      ],
+      "sha256": "5a1be5ec39906cdbdffde291d878c85c742f4e158b2dacef33e34857585890de",
+      "purpose": "settled visual audit evidence",
+      "usage": "documentation only; not a runtime asset"
+    },
+    {
+      "file": "09-overworld-after-entry-desktop.jpg",
+      "source": "https://overworldaudio.com/",
+      "captureDateLocal": "2026-10-31",
+      "timezone": "Europe/Paris",
+      "viewportCss": [
+        1280,
+        720
+      ],
+      "rasterPx": [
+        1280,
+        720
+      ],
+      "sha256": "cf7dae49302786a12536f17ecd150415e64b5ef91ad7269911c00268fdd13594",
+      "purpose": "settled visual audit evidence",
+      "usage": "documentation only; not a runtime asset"
+    },
+    {
+      "file": "10-redoy-entry-desktop.jpg",
+      "source": "https://www.redoyanulhaque.me/",
+      "captureDateLocal": "2026-10-31",
+      "timezone": "Europe/Paris",
+      "viewportCss": [
+        1280,
+        720
+      ],
+      "rasterPx": [
+        1280,
+        720
+      ],
+      "sha256": "ad0a97432cbdca0878e0962e8210421ee16cf85fb5cf9527b5d58afdaeb7c46b",
+      "purpose": "intentional loader observation",
+      "usage": "documentation only; not a runtime asset"
+    },
+    {
+      "file": "11-redoy-home-desktop.jpg",
+      "source": "https://www.redoyanulhaque.me/",
+      "captureDateLocal": "2026-10-31",
+      "timezone": "Europe/Paris",
+      "viewportCss": [
+        1280,
+        720
+      ],
+      "rasterPx": [
+        1265,
+        712
+      ],
+      "sha256": "5b86b0f341db5977b934b129ce881dc2533b5e52b0846b803ba88559bfcadc57",
+      "purpose": "settled visual audit evidence",
+      "usage": "documentation only; not a runtime asset"
+    },
+    {
+      "file": "12-redoy-work-desktop.jpg",
+      "source": "https://www.redoyanulhaque.me/",
+      "captureDateLocal": "2026-10-31",
+      "timezone": "Europe/Paris",
+      "viewportCss": [
+        1280,
+        720
+      ],
+      "rasterPx": [
+        1265,
+        712
+      ],
+      "sha256": "bd4ed2da66be056c532c2aa7effd02dc400832fa1aa4484dd6519438322c4c73",
+      "purpose": "settled visual audit evidence",
+      "usage": "documentation only; not a runtime asset"
+    },
+    {
+      "file": "13-refact0r-desktop.jpg",
+      "source": "https://refact0r.dev/",
+      "captureDateLocal": "2026-10-31",
+      "timezone": "Europe/Paris",
+      "viewportCss": [
+        1280,
+        720
+      ],
+      "rasterPx": [
+        1280,
+        720
+      ],
+      "sha256": "1578d92e5f7d1dcb1068f939a906573a9ff68bc7d2f4436e0bcc41d1362730f7",
+      "purpose": "settled visual audit evidence",
+      "usage": "documentation only; not a runtime asset"
+    },
+    {
+      "file": "14-refact0r-mobile.jpg",
+      "source": "https://refact0r.dev/",
+      "captureDateLocal": "2026-10-31",
+      "timezone": "Europe/Paris",
+      "viewportCss": [
+        390,
+        844
+      ],
+      "rasterPx": [
+        390,
+        844
+      ],
+      "sha256": "34cb52d0896ae8b8e14a036c5db2d4122d90a5af382cb60413d56879b4a8836f",
+      "purpose": "settled visual audit evidence",
+      "usage": "documentation only; not a runtime asset"
+    },
+    {
+      "file": "15-daniele-mobile.jpg",
+      "source": "https://www.danielebuser.com/",
+      "captureDateLocal": "2026-10-31",
+      "timezone": "Europe/Paris",
+      "viewportCss": [
+        390,
+        844
+      ],
+      "rasterPx": [
+        390,
+        844
+      ],
+      "sha256": "e1d0af35268cf7a3ba2b2e30e5e811d58ee701800495c3ae88aa02a60167a2cb",
+      "purpose": "settled visual audit evidence",
+      "usage": "documentation only; not a runtime asset"
+    },
+    {
+      "file": "16-redoy-mobile.jpg",
+      "source": "https://www.redoyanulhaque.me/",
+      "captureDateLocal": "2026-10-31",
+      "timezone": "Europe/Paris",
+      "viewportCss": [
+        390,
+        844
+      ],
+      "rasterPx": [
+        375,
+        812
+      ],
+      "sha256": "18ff310a08becac8b49bae67efd389a2e77a09df4e9905e2178c181e6b50cb29",
+      "purpose": "settled visual audit evidence",
+      "usage": "documentation only; not a runtime asset"
+    },
+    {
+      "file": "17-overworld-mobile.jpg",
+      "source": "https://overworldaudio.com/",
+      "captureDateLocal": "2026-10-31",
+      "timezone": "Europe/Paris",
+      "viewportCss": [
+        390,
+        844
+      ],
+      "rasterPx": [
+        390,
+        844
+      ],
+      "sha256": "4748d398697b1aae6f083e5af54c3a113fae80e58508ea35e9c6dc573c1c77e5",
+      "purpose": "settled visual audit evidence",
+      "usage": "documentation only; not a runtime asset"
+    },
+    {
+      "file": "18-local-fr-desktop.jpg",
+      "source": "http://localhost:3100/fr",
+      "captureDateLocal": "2026-10-31",
+      "timezone": "Europe/Paris",
+      "viewportCss": [
+        1440,
+        900
+      ],
+      "rasterPx": [
+        1425,
+        891
+      ],
+      "sha256": "e27f113a9ff5ad89541bc2a93efbfdc4c79d6c8a3f014753d0dd4146ecfbcf3c",
+      "purpose": "settled visual audit evidence",
+      "usage": "documentation only; not a runtime asset"
+    },
+    {
+      "file": "19-local-project-desktop.jpg",
+      "source": "http://localhost:3100/fr",
+      "captureDateLocal": "2026-10-31",
+      "timezone": "Europe/Paris",
+      "viewportCss": [
+        1440,
+        900
+      ],
+      "rasterPx": [
+        1425,
+        891
+      ],
+      "sha256": "961a67dc06f406d6653e381bb212f9a9bd6581efbdd9d75cefb48ae92e9f6c23",
+      "purpose": "settled visual audit evidence",
+      "usage": "documentation only; not a runtime asset"
+    },
+    {
+      "file": "20-local-command-desktop.jpg",
+      "source": "http://localhost:3100/fr",
+      "captureDateLocal": "2026-10-31",
+      "timezone": "Europe/Paris",
+      "viewportCss": [
+        1440,
+        900
+      ],
+      "rasterPx": [
+        1425,
+        891
+      ],
+      "sha256": "50d603961a0ab86b703ee93404384e11c8df7167583fb1994345f8c418f34df1",
+      "purpose": "settled visual audit evidence",
+      "usage": "documentation only; not a runtime asset"
+    },
+    {
+      "file": "21-local-en-mobile.jpg",
+      "source": "http://localhost:3100/en",
+      "captureDateLocal": "2026-10-31",
+      "timezone": "Europe/Paris",
+      "viewportCss": [
+        390,
+        844
+      ],
+      "rasterPx": [
+        375,
+        812
+      ],
+      "sha256": "de93e6ee0f262b6040332eb2a387d3262aafe7993c621df87981449b57e5aa7e",
+      "purpose": "settled visual audit evidence",
+      "usage": "documentation only; not a runtime asset"
+    },
+    {
+      "file": "22-local-mobile-menu.jpg",
+      "source": "http://localhost:3100/en",
+      "captureDateLocal": "2026-10-31",
+      "timezone": "Europe/Paris",
+      "viewportCss": [
+        390,
+        844
+      ],
+      "rasterPx": [
+        375,
+        812
+      ],
+      "sha256": "b82c44f5f6ab8f08b2bfce978aa9816d3b889f6bc3eea6debc08e749d58b5815",
+      "purpose": "settled visual audit evidence",
+      "usage": "documentation only; not a runtime asset"
+    },
+    {
+      "file": "23-local-contact-mobile.jpg",
+      "source": "http://localhost:3100/en",
+      "captureDateLocal": "2026-10-31",
+      "timezone": "Europe/Paris",
+      "viewportCss": [
+        390,
+        844
+      ],
+      "rasterPx": [
+        375,
+        812
+      ],
+      "sha256": "33378810f5a66bdd8424f0e7add50f98f286e73e76fb62b793477badf6664dfb",
+      "purpose": "settled visual audit evidence",
+      "usage": "documentation only; not a runtime asset"
+    },
+    {
+      "file": "24-local-explore-experience.jpg",
+      "source": "http://localhost:3100/fr",
+      "captureDateLocal": "2026-10-31",
+      "timezone": "Europe/Paris",
+      "viewportCss": [
+        1440,
+        900
+      ],
+      "rasterPx": [
+        1425,
+        891
+      ],
+      "sha256": "3a0e3724b7c4875de9eba4709089c66ec7f4980da79fabe6bfbb3f21b7af6174",
+      "purpose": "settled visual audit evidence",
+      "usage": "documentation only; not a runtime asset"
+    },
+    {
+      "file": "25-local-fr-mobile.jpg",
+      "source": "http://localhost:3100/fr",
+      "captureDateLocal": "2026-10-31",
+      "timezone": "Europe/Paris",
+      "viewportCss": [
+        390,
+        844
+      ],
+      "rasterPx": [
+        375,
+        812
+      ],
+      "sha256": "47f9569050deaaa5b058dcd5ae431622e997f022a73270d32cc7d85313d40159",
+      "purpose": "settled visual audit evidence",
+      "usage": "documentation only; not a runtime asset"
+    },
+    {
+      "file": "26-local-skills-dark-desktop.jpg",
+      "source": "http://localhost:3100/fr",
+      "captureDateLocal": "2026-10-31",
+      "timezone": "Europe/Paris",
+      "viewportCss": [
+        1440,
+        900
+      ],
+      "rasterPx": [
+        1425,
+        891
+      ],
+      "sha256": "6e114092fa9c72259784aa2800b6748b7cbff32f5066ea6e9a101b3ee6616768",
+      "purpose": "settled visual audit evidence",
+      "usage": "documentation only; not a runtime asset"
+    }
+  ]
+}

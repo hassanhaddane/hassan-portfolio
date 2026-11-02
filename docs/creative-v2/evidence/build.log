@@ -1,0 +1,28 @@
+
+> lowkyz-interactive-system@1.0.0 build C:\Users\hassa\IdeaProjects\hassan-portfolio
+> next build
+
+   ▲ Next.js 15.5.25
+   - Experiments (use with caution):
+     · optimizePackageImports
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 7.9s
+   Linting and checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/10) ...
+Could not find files for /_error in .next/build-manifest.json
+Could not find files for /_error in .next/build-manifest.json
+Could not find files for /_error in .next/build-manifest.json
+Could not find files for /_error in .next/build-manifest.json
+   Generating static pages (2/10)
+   Generating static pages (4/10)
+   Generating static pages (7/10)
+TypeError: a[d] is not a function
+    at Object.c [as require] (C:\Users\hassa\IdeaProjects\hassan-portfolio\.next\server\webpack-runtime.js:1:127)
+Error occurred prerendering page "/fr". Read more: https://nextjs.org/docs/messages/prerender-error
+TypeError: a[d] is not a function
+    at Object.c [as require] (C:\Users\hassa\IdeaProjects\hassan-portfolio\.next\server\webpack-runtime.js:1:127)
+Export encountered an error on /fr/page: /fr, exiting the build.
+ ⨯ Next.js build worker exited with code: 1 and signal: null
+ ELIFECYCLE  Command failed with exit code 1.

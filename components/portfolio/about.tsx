@@ -1,14 +1,13 @@
 "use client";
 
 import { usePreferences } from "@/components/system/preferences";
+import { interests, languages } from "@/lib/knowledge-data";
+import { profile } from "@/lib/portfolio-data";
+import { bloom } from "@/lib/work-data";
 import { ChapterIdentity } from "./narrative";
 
 export function About() {
   const { locale } = usePreferences();
-
-  const languages = locale === "fr"
-    ? [["Français", "Bilingue"], ["Anglais", "Professionnel"], ["Arabe", "Langue maternelle"]]
-    : [["French", "Bilingual"], ["English", "Professional"], ["Arabic", "Native language"]];
 
   return (
     <section
@@ -18,7 +17,7 @@ export function About() {
       className="clarity-section clarity-about section-shell section-space"
       aria-labelledby="about-title"
     >
-      <header className="clarity-section-header">
+      <header className="clarity-section-header reveal" data-reveal="mask">
         <ChapterIdentity
           index="06"
           kind="about"
@@ -27,37 +26,32 @@ export function About() {
         />
         <div className="clarity-section-heading">
           <span className="mono">HASSAN HADDANE</span>
-          <h2 id="about-title">{locale === "fr" ? "DÉVELOPPEUR WEB À RENNES." : "WEB DEVELOPER IN RENNES."}</h2>
-          <p>
-            {locale === "fr"
-              ? "J’ai plus de trois ans d’expérience, principalement sur des applications web liées à la santé. J’aime surtout développer des interfaces claires, tout en gardant une vue sur les API, les tests et la mise en production."
-              : "I have over three years of experience, mainly working on web applications in healthcare. I particularly enjoy building clear interfaces, and I also work on APIs, testing and deployment."}
-          </p>
+          <h2 id="about-title">{profile.role[locale].toUpperCase()} · {profile.location[locale].toUpperCase()}.</h2>
+          <p>{profile.summary[locale]}</p>
         </div>
       </header>
 
-      <div className="clarity-about-grid">
+      <div className="clarity-about-grid reveal" data-reveal="line">
         <section aria-labelledby="about-languages">
           <span className="mono">01 / {locale === "fr" ? "LANGUES" : "LANGUAGES"}</span>
           <h3 id="about-languages">{locale === "fr" ? "Langues" : "Languages"}</h3>
           <dl>
-            {languages.map(([language, level]) => (
-              <div key={language}>
-                <dt>{language}</dt>
-                <dd>{level}</dd>
+            {languages.map((language) => (
+              <div key={language.name.en}>
+                <dt>{language.name[locale]}</dt>
+                <dd>{language.level[locale]}</dd>
               </div>
             ))}
           </dl>
         </section>
 
-        <section aria-labelledby="about-interests">
-          <span className="mono">02 / {locale === "fr" ? "EN DEHORS DU TRAVAIL" : "OUTSIDE WORK"}</span>
-          <h3 id="about-interests">{locale === "fr" ? "En dehors du développement" : "Outside development"}</h3>
-          <p>
-            {locale === "fr"
-              ? "Je pratique le football et la musculation. Je m’intéresse aussi à l’histoire, à la géopolitique et au travail du son : enregistrement, mixage et mastering."
-              : "I play football and train at the gym. I am also interested in history, geopolitics and audio work: recording, mixing and mastering."}
-          </p>
+        <section id="lab" data-section tabIndex={-1} aria-labelledby="about-interests">
+          <span className="mono">02 / LAB</span>
+          <h3 id="about-interests">{locale === "fr" ? "Culture, son et projets associatifs" : "Culture, sound and community work"}</h3>
+          <p>{interests.map((interest, index) => (
+            <span key={interest.en} className="about-interest">{index > 0 ? " · " : ""}{interest[locale]}</span>
+          ))}</p>
+          <p>{locale === "fr" ? "Depuis mai 2026, je participe bénévolement à 808BLOOM : studio, événements et site de l’association." : "Since May 2026, I have volunteered with 808BLOOM, contributing to the studio, events and association website."} <a href={bloom.url} target="_blank" rel="noopener noreferrer">{locale === "fr" ? "Voir le site" : "Visit the website"}</a></p>
         </section>
       </div>
     </section>

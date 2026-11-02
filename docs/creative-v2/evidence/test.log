@@ -1,0 +1,5 @@
+
+> lowkyz-interactive-system@1.0.0 test C:\Users\hassa\IdeaProjects\hassan-portfolio
+> node scripts/validate-production.mjs
+
+Production validation passed: 14 artifacts and 46 source files checked.

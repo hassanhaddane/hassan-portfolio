@@ -1,0 +1,59 @@
+[
+  {
+    "route": "/",
+    "status": 200,
+    "finalUrl": "http://localhost:3100/fr",
+    "contentType": "text/html; charset=utf-8",
+    "bytes": 93849
+  },
+  {
+    "route": "/fr",
+    "status": 200,
+    "finalUrl": "http://localhost:3100/fr",
+    "contentType": "text/html; charset=utf-8",
+    "bytes": 93849,
+    "htmlLang": "fr",
+    "hasName": true,
+    "canonical": "https://www.lowkyz.xyz/fr"
+  },
+  {
+    "route": "/en",
+    "status": 200,
+    "finalUrl": "http://localhost:3100/en",
+    "contentType": "text/html; charset=utf-8",
+    "bytes": 93189,
+    "htmlLang": "fr",
+    "hasName": true,
+    "canonical": "https://www.lowkyz.xyz/en"
+  },
+  {
+    "route": "/robots.txt",
+    "status": 200,
+    "finalUrl": "http://localhost:3100/robots.txt",
+    "contentType": "text/plain",
+    "bytes": 97,
+    "body": "User-Agent: *\nAllow: /\n\nHost: https://www.lowkyz.xyz\nSitemap: https://www.lowkyz.xyz/sitemap.xml\n"
+  },
+  {
+    "route": "/sitemap.xml",
+    "status": 200,
+    "finalUrl": "http://localhost:3100/sitemap.xml",
+    "contentType": "application/xml",
+    "bytes": 685,
+    "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xhtml=\"http://www.w3.org/1999/xhtml\">\n<url>\n<loc>https://www.lowkyz.xyz/fr</loc>\n<xhtml:link rel=\"alternate\" hreflang=\"fr-FR\" href=\"https://www.lowkyz.xyz/fr\" />\n<xhtml:link rel=\"alternate\" hreflang=\"en\" href=\"https://www.lowkyz.xyz/en\" />\n<changefreq>monthly</changefreq>\n<priority>1</priority>\n</url>\n<url>\n<loc>https://www.lowkyz.xyz/en</loc>\n<xhtml:link rel=\"alternate\" hreflang=\"fr-FR\" href=\"https://www.lowkyz.xyz/fr\" />\n<xhtml:link rel=\"alternate\" hreflang=\"en\" href=\"https://www.lowkyz.xyz/en\" />\n<changefreq>monthly</changefreq>\n<priority>0.9</priority>\n</url>\n</urlset>\n"
+  },
+  {
+    "route": "/opengraph-image",
+    "status": 200,
+    "finalUrl": "http://localhost:3100/opengraph-image",
+    "contentType": "image/png",
+    "bytes": 191527
+  },
+  {
+    "route": "/cv-hassan-haddane.pdf",
+    "status": 200,
+    "finalUrl": "http://localhost:3100/cv-hassan-haddane.pdf",
+    "contentType": "application/pdf",
+    "bytes": 220982
+  }
+]

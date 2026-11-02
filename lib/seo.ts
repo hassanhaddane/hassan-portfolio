@@ -1,18 +1,18 @@
 import type { Metadata } from "next";
 import type { Locale } from "./portfolio-data";
 
-export const SITE_ORIGIN = "https://www.lowkyz.xyz";
+export const SITE_ORIGIN = "https://lowkyz.dev";
 
 export const seoContent = {
   fr: {
-    title: "Hassan Haddane — Développeur Web Full-Stack | React, Next.js, Python",
-    description: "Portfolio de Hassan Haddane, développeur Web Full-Stack à Rennes. React, Next.js, TypeScript, Python, FastAPI, qualité et DevOps.",
-    ogDescription: "Développeur Web Full-Stack à Rennes · React · Next.js · TypeScript · Python",
+    title: "Hassan Haddane — Développeur Full-Stack",
+    description: "Hassan Haddane, développeur Full-Stack Bac+5 à Rennes, avec plus de trois ans d’expérience professionnelle. Applications, API, interfaces et projets audio.",
+    ogDescription: "Développeur Full-Stack · Rennes · 3+ ans d’expérience · Bac+5",
   },
   en: {
-    title: "Hassan Haddane — Full-Stack Web Developer | React, Next.js, Python",
-    description: "Hassan Haddane’s portfolio. Full-Stack Web Developer in Rennes working with React, Next.js, TypeScript, Python, FastAPI, quality and DevOps.",
-    ogDescription: "Full-Stack Web Developer in Rennes · React · Next.js · TypeScript · Python",
+    title: "Hassan Haddane — Full-Stack Developer",
+    description: "Hassan Haddane, a Full-Stack Developer in Rennes with a master’s level degree and over three years of professional experience. Applications, APIs, interfaces and audio projects.",
+    ogDescription: "Full-Stack Developer · Rennes · 3+ years of experience · Master’s level degree",
   },
 } as const;
 

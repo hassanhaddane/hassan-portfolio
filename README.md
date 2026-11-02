@@ -1,78 +1,69 @@
-# LOWKYZ // Interactive Developer System
+# LOWKYZ // Hassan Haddane — Creative V2
 
-Portfolio bilingue de Hassan Haddane, développeur Web Full-Stack à Rennes. Le site combine une lecture rapide pour les recruteurs et une exploration plus expressive, avec trois moments centraux : le Digital Organism du hero, le récit produit de GreeCheck et le Knowledge Graph qui relie technologies, projets, expériences et pratiques.
+Portfolio personnel FR/EN : expériences, trois projets et études de cas, formation, compétences, About, Creative Lab et contact. Next.js 15.5.25, React 19, TypeScript strict ; validé sur Node 22 et pnpm 10.8.1.
 
-## Démarrage
-
-Le projet utilise Node.js 22, pnpm 10, Next.js 15 et React 19.
+## Installation
 
 ```sh
-pnpm install
-pnpm dev
-```
-
-La version de production se valide ainsi :
-
-```sh
+corepack enable
+pnpm install --frozen-lockfile
+pnpm dev                 # http://localhost:3000/fr
 pnpm lint
-pnpm test
 pnpm typecheck
+pnpm test
 pnpm build
-pnpm start
+pnpm start               # production locale après build
 ```
 
-Aucun secret ni service distant n'est requis pour lancer le portfolio.
-
-## Routes
-
-- `/` redirige vers `/fr`
-- `/fr` contient la version française et ses métadonnées dédiées
-- `/en` contient la version anglaise et ses métadonnées dédiées
-- `/opengraph-image` génère l'image sociale LOWKYZ
-- `/robots.txt` et `/sitemap.xml` sont générés par Next.js
-- `/cv-hassan-haddane.pdf` sert le CV actuel
-
-## Expérience
-
-- **Récit en sept chapitres** : `00 NOW`, `01 PROJET`, `02 EXPÉRIENCE`, `03 COMPÉTENCES`, `04 FORMATION`, `05 À PROPOS`, `06 CONTACT`. Chaque chapitre possède un marqueur lisible, une transition vers le suivant et un signal graphique issu du même organisme numérique.
-- **Repère permanent** : un rail latéral sur desktop et une barre compacte sur mobile synchronisent le numéro et la catégorie avec la position réelle, y compris sur les liens profonds et après un changement de mode.
-- **Recruiter Mode** affiche une synthèse immédiate du profil et une lecture claire de la stack.
-- **Explore Mode** charge Three.js à la demande et active le Digital Organism, les réactions aux technologies, le curseur contextuel et les transitions enrichies.
-- **Lampe LOWKYZ** pilote deux thèmes dessinés séparément. Le thème clair minéral est l'état par défaut, le thème sombre profond correspond à la lampe éteinte et le choix est restauré localement sans flash d'hydratation.
-- **Performance adaptative** choisit un rendu high, normal, low ou reduced selon le mouvement préféré, la taille d'écran, la mémoire, le nombre de cœurs et l'économiseur de données.
-- **Ctrl/Cmd+K** ouvre une palette accessible avec navigation, `whoami`, `stack`, `hire`, langue, mode et mouvement.
-- **GreeCheck** utilise des captures publiques réelles et un mode système interactif. Les expériences médicales restent des représentations abstraites explicitement légendées.
-- **Knowledge Graph** relie uniquement des technologies et contextes déclarés dans le CV et les informations fournies.
-- **Contact** permet de copier l'email, appeler, ouvrir les profils ou télécharger le CV sans formulaire serveur.
+Aucune variable d’environnement requise. Autre port : `pnpm dev --port 3100`. Le build génère les types de routes Next sur un checkout vierge. Aucun script ne pousse ni ne déploie.
 
 ## Architecture
 
-```text
-app/                            Routes, styles, métadonnées, OG, sitemap et robots
-components/portfolio/           Hero, récit projet, expériences, Knowledge Graph, formation, About et Contact
-components/system/              Préférences, navigation, palette, motion, Easter eggs et canvas
-components/ui/                  Primitives Radix/cmdk strictement nécessaires
-lib/portfolio-data.ts           Données professionnelles et contenus bilingues
-lib/work-data.ts                Storytelling et relations factuelles de GreeCheck
-lib/knowledge-data.ts           Nœuds et connexions du Knowledge Graph
-lib/constellation-*.ts          Géométrie et moteur WebGL différé
-public/projects/                Captures publiques optimisées de GreeCheck
-public/cv-hassan-haddane.pdf    CV courant
-scripts/generate-cv.py          Génération reproductible du CV avec ReportLab
-scripts/validate-production.mjs Contrôles de production ciblés
-docs/                           Audit initial, UX, direction et décisions techniques
-```
+- `/` redirige vers `/fr` ; `/fr` et `/en` sont pré-rendus.
+- `app/[locale]/work/[slug]` génère six études de cas FR/EN (GreeCheck, 808BLOOM, Tech Express), autres slugs en 404.
+- `components/portfolio/portfolio-experience.tsx` compose `Hero`, `ProjectsV2`, `JourneyExpertiseV2`, `AboutV2`, `CreativeLabV2`, `ContactV2` et le JSON-LD.
+- `components/system` : unique fournisseur de préférences, navigation responsive, palette Ctrl/Cmd+K, fond et mouvement. `components/intro` : états, logo, transition et contrôle d’entrée.
+- `lib/motion-runtime.ts` : événements et RAF DOM partagés. `constellation-engine.ts`, `field-shaders.ts`, `field-signal.ts` : unique moteur Three.js et signaux du contenu.
+- `lib/fonts.ts`, `app/fonts` : polices locales. Geist utilise `font-display: optional` pour garder le fallback si son chargement manque le premier rendu.
+- CSS : tokens et couches existantes `app/*system.css`, puis Work, Journey, Personal/Lab/Contact et modes. Les feuilles historiques non importées ne sont pas transférées.
 
-Les fontes Barlow Condensed et Geist sont auto-hébergées. Le CSS est centralisé par système visuel, avec une couche finale de tokens light/dark et de garde-fous typographiques fluides. Three.js est exclu du chemin critique et importé uniquement pour les appareils capables d'exécuter l'expérience enrichie.
+## Modes et animations
 
-## Contenu et confidentialité
+Recruteur est le mode initial : contenu complet, fond SVG/CSS statique, CV et contact directs. Explore enrichit le même document avec parallax, reveals, signal vivant et Lab interactif. Le changement conserve la section.
 
-Le portfolio n'affiche ni score de compétence arbitraire, ni statistique inventée. GreeCheck est présenté avec ses fonctions réelles : scan, recherche, comparaison, GreeScore local et explicable, trois langues, historique, favoris, critères et listes. Les travaux iAudiogram, Santé Respiratoire France et Biosency sont décrits sans données internes ni captures fictives.
+Intro visuelle uniquement, sans moteur audio ni contrôle de son. Elle apparaît pour une première visite Explore sans ancre ; accès direct en Recruteur. Replay, Skip et bouton d’entrée unique disponibles.
 
-Pour mettre à jour le profil, modifier les données dans `lib/portfolio-data.ts`, `lib/work-data.ts` et `lib/knowledge-data.ts`. Le CV se régénère avec `python scripts/generate-cv.py`.
+Préférences locales : mode, langue, thème, mouvement. Mouvement réduit système prioritaire ; thème système sans choix manuel. WebGL différé sur desktop capable, DPR plafonné à 1–1,5, adaptation, pause d’onglet, destruction des ressources/contexte. Fallback sur appareils tactiles/modestes. Canvas du Lab suspendu hors écran. Scroll natif libre.
 
-## Accessibilité et qualité
+## Contenus
 
-Toutes les informations importantes restent disponibles sans WebGL. Les sections sont focalisables depuis la palette, la navigation comporte un lien d'évitement, les dialogues gèrent le focus et Escape, les interactions disposent d'états clavier et les animations respectent `prefers-reduced-motion`. Les rendus mobile utilisent une composition et un explorateur adaptés plutôt qu'une réduction du graphe desktop.
+| Source | Usage |
+| --- | --- |
+| `lib/portfolio-data.ts` | Identité, coordonnées, types, provenance |
+| `lib/work-data.ts` | Expériences, projets, preuves, rôles, captures, liens et études de cas |
+| `lib/knowledge-data.ts` | Compétences, relations documentées, formation, certification, langues |
+| `lib/personal-data.ts` | About, Lab, Contact bilingues |
+| `lib/seo.ts` | Origine `https://lowkyz.dev`, métadonnées FR/EN |
+| `public/cv-hassan-haddane.pdf` | CV 2026 fourni, conservé à l’identique |
+| `public/projects/` | Captures authentiques documentées |
 
-La publication n'est pas automatique : cette refonte reste locale tant qu'elle n'est pas déployée explicitement.
+Modifier ces sources typées, conserver les traductions et les statuts : alternance iAudiogram, stage Santé Respiratoire France, stage puis CDD Biosency. 808BLOOM distingue web et engagement associatif/audio. Tech Express V1/V2 sont des démos GitHub Pages. CEO1.9 reste une exploration avec dépôt et démo en pause.
+
+Pour changer le CV : fournir un PDF approuvé, remplacer le fichier, vérifier texte/rendu et téléchargement. L’original joint mentionne encore `www.lowkyz.xyz` : cette mention nécessite une nouvelle version approuvée ; le site utilise `.dev`.
+
+## Qualité et limites
+
+[PRODUCTION_QA.md](docs/creative-v2/PRODUCTION_QA.md) : mesures, liens, limites et points manuels. [VISUAL_QA.md](docs/creative-v2/VISUAL_QA.md) : captures et corrections. [MASTERPLAN.md](docs/creative-v2/MASTERPLAN.md) : plan et état livré.
+
+Les scores locaux ne sont pas des données utilisateurs ; aucun INP terrain ni garantie de fluidité universelle. Les tests contrôlent artefacts/traductions et complètent les tests navigateur. Des composants/styles historiques restent dans le dépôt : les anciens `Projects`, `KnowledgeSystem`, `About`, `Contact` ne sont pas montés par V2. Deux dépendances uniquement liées aux toggles inactifs ont été retirées.
+
+## Procédure Vercel manuelle
+
+1. Relire la PR vers `master`, autoriser explicitement le push. Une intégration Vercel existante peut déclencher une Preview dès le push.
+2. Vérifier racine du dépôt, preset Next.js, Node 22, `pnpm install --frozen-lockfile`, build `pnpm build`, sortie par défaut du preset. Pas d’export statique : `next/image` utilise le runtime Next/Vercel.
+3. Garder `master` en production ; tester une Preview : FR/EN, six études de cas, PDF, images, console.
+4. Configurer `lowkyz.dev` comme domaine primaire, `www` redirigé vers l’apex pour les canonical. La redirection observée pendant le QA va dans l’autre sens.
+5. Après validation humaine, autoriser séparément merge/promotion. Vérifier HTTPS, robots, sitemap, canonical, OG et soumission du sitemap. Prévoir le retour au déploiement précédent.
+6. Choisir et autoriser une mesure Web Vitals en production pour obtenir des données terrain.
+
+Sources officielles : [déploiements Git](https://vercel.com/docs/git), [builds](https://vercel.com/docs/builds). Aucun push, merge, changement de domaine ou déploiement effectué pendant cette passe.

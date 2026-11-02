@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import { stagePoint } from "./constellation-shapes";
 import { fieldVertex, pointFragment, filamentFragment } from "./field-shaders";
-import { getFieldSignal, technologies } from "./field-signal";
+import { getFieldSignal, signalFamily } from "./field-signal";
 
 export type SceneState = {
   stage: number;
@@ -184,7 +184,7 @@ export function createConstellation(
     geometry.attributes.position.needsUpdate = true;
     lineGeometry.attributes.position.needsUpdate = true;
     const signal = getFieldSignal();
-    uniforms.uSignal.value = signal ? technologies.indexOf(signal) : -1;
+    uniforms.uSignal.value = signalFamily(signal);
     uniforms.uEnergy.value +=
       ((signal ? 1 : 0) - uniforms.uEnergy.value) * easing * 2;
     uniforms.uTime.value = time;
@@ -234,5 +234,6 @@ export function createConstellation(
     pointMaterial.dispose();
     lineMaterial.dispose();
     renderer.dispose();
+    renderer.forceContextLoss();
   };
 }

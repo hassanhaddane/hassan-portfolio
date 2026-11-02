@@ -1,0 +1,121 @@
+{
+  "local": [
+    {
+      "route": "/fr",
+      "canonical": "https://lowkyz.dev/fr",
+      "status": 200,
+      "h1": 1,
+      "anchors": "pass"
+    },
+    {
+      "route": "/fr/work/greecheck",
+      "canonical": "https://lowkyz.dev/fr/work/greecheck",
+      "status": 200,
+      "h1": 1,
+      "anchors": "pass"
+    },
+    {
+      "route": "/fr/work/808bloom",
+      "canonical": "https://lowkyz.dev/fr/work/808bloom",
+      "status": 200,
+      "h1": 1,
+      "anchors": "pass"
+    },
+    {
+      "route": "/fr/work/tech-express",
+      "canonical": "https://lowkyz.dev/fr/work/tech-express",
+      "status": 200,
+      "h1": 1,
+      "anchors": "pass"
+    },
+    {
+      "route": "/en",
+      "canonical": "https://lowkyz.dev/en",
+      "status": 200,
+      "h1": 1,
+      "anchors": "pass"
+    },
+    {
+      "route": "/en/work/greecheck",
+      "canonical": "https://lowkyz.dev/en/work/greecheck",
+      "status": 200,
+      "h1": 1,
+      "anchors": "pass"
+    },
+    {
+      "route": "/en/work/808bloom",
+      "canonical": "https://lowkyz.dev/en/work/808bloom",
+      "status": 200,
+      "h1": 1,
+      "anchors": "pass"
+    },
+    {
+      "route": "/en/work/tech-express",
+      "canonical": "https://lowkyz.dev/en/work/tech-express",
+      "status": 200,
+      "h1": 1,
+      "anchors": "pass"
+    },
+    {
+      "route": "/robots.txt",
+      "status": 200,
+      "bytes": 89
+    },
+    {
+      "route": "/sitemap.xml",
+      "status": 200,
+      "bytes": 2473
+    },
+    {
+      "route": "/cv-hassan-haddane.pdf",
+      "status": 200,
+      "bytes": 179815
+    },
+    {
+      "route": "/opengraph-image",
+      "status": 200,
+      "bytes": 191527
+    }
+  ],
+  "external": [
+    {
+      "url": "https://808bloom.vercel.app/fr",
+      "status": 200,
+      "final": "https://808bloom.vercel.app/fr"
+    },
+    {
+      "url": "https://github.com/hassanhaddane",
+      "status": 200,
+      "final": "https://github.com/hassanhaddane"
+    },
+    {
+      "url": "https://github.com/hassanhaddane/GreeCheck",
+      "status": 200,
+      "final": "https://github.com/hassanhaddane/GreeCheck"
+    },
+    {
+      "url": "https://github.com/hassanhaddane/ceo19",
+      "status": 200,
+      "final": "https://github.com/hassanhaddane/ceo19"
+    },
+    {
+      "url": "https://gree-check.vercel.app/fr",
+      "status": 200,
+      "final": "https://gree-check.vercel.app/fr"
+    },
+    {
+      "url": "https://hassanhaddane.github.io/TechExpress/en/",
+      "status": 200,
+      "final": "https://hassanhaddane.github.io/TechExpress/en/"
+    },
+    {
+      "url": "https://hassanhaddane.github.io/TechExpressProject/en/",
+      "status": 200,
+      "final": "https://hassanhaddane.github.io/TechExpressProject/en/"
+    },
+    {
+      "url": "https://www.linkedin.com/in/hassanhaddane/",
+      "error": "HTTP Error 999: <none>"
+    }
+  ]
+}

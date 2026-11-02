@@ -5,12 +5,21 @@ import { Constellation } from "@/components/system/constellation";
 import { MotionSystem } from "@/components/system/motion-system";
 import { EasterEggs } from "@/components/system/easter-eggs";
 import { Hero } from "@/components/portfolio/hero";
-import { Projects } from "@/components/portfolio/projects";
-import { KnowledgeSystem } from "@/components/portfolio/knowledge-system";
-import { About } from "@/components/portfolio/about";
-import { Contact } from "@/components/portfolio/contact";
+import { ProjectsV2 } from "@/components/portfolio/projects-v2";
+import "@/app/work-showcase.css";
+import { JourneyExpertiseV2 } from "@/components/portfolio/journey-expertise-v2";
+import "@/app/journey-expertise-v2.css";
+import { AboutV2 } from "@/components/portfolio/about-v2";
+import { CreativeLabV2 } from "@/components/portfolio/creative-lab-v2";
+import { ContactV2 } from "@/components/portfolio/contact-v2";
+import "@/app/personal-lab-contact-v2.css";
+import "@/app/presentation-modes-v2.css";
 import { profile, type Locale } from "@/lib/portfolio-data";
+import { education } from "@/lib/knowledge-data";
+import { greeCheck } from "@/lib/work-data";
 import { SITE_ORIGIN } from "@/lib/seo";
+import { IntroProvider } from "@/components/intro/intro-context";
+import { Intro } from "@/components/intro/intro";
 
 export function PortfolioExperience({ locale }: { locale: Locale }) {
   const personId = `${SITE_ORIGIN}/#person`;
@@ -23,13 +32,13 @@ export function PortfolioExperience({ locale }: { locale: Locale }) {
         name: profile.name,
         alternateName: profile.alias,
         url: `${SITE_ORIGIN}/${locale}`,
-        jobTitle: locale === "fr" ? "Développeur Web Full-Stack" : "Full-Stack Web Developer",
+        jobTitle: profile.role[locale],
         email: `mailto:${profile.email}`,
         telephone: profile.phoneHref,
         sameAs: [profile.github, profile.linkedin],
         homeLocation: {
           "@type": "Place",
-          name: "Rennes, France",
+          name: profile.location[locale],
         },
         knowsLanguage: ["French", "Arabic", "English"],
         knowsAbout: [
@@ -43,7 +52,7 @@ export function PortfolioExperience({ locale }: { locale: Locale }) {
         ],
         alumniOf: {
           "@type": "EducationalOrganization",
-          name: "EPSI",
+          name: education.school,
         },
       },
       {
@@ -56,38 +65,40 @@ export function PortfolioExperience({ locale }: { locale: Locale }) {
       },
       {
         "@type": "SoftwareApplication",
-        "@id": "https://gree-check.vercel.app/#application",
-        name: "GreeCheck",
-        url: "https://gree-check.vercel.app/fr",
-        applicationCategory: "HealthApplication",
+        "@id": `${greeCheck.url}#application`,
+        name: greeCheck.name,
+        url: greeCheck.url,
         operatingSystem: "Web",
-        description: locale === "fr"
-          ? "PWA d’aide au choix pour scanner, rechercher et comparer des produits alimentaires."
-          : "A PWA for scanning, searching and comparing food products.",
+        description: greeCheck.summary[locale],
         author: { "@id": personId },
       },
     ],
   };
 
   return (
-    <div lang={locale}>
+    <div lang={locale} data-portfolio-root>
+      <script dangerouslySetInnerHTML={{ __html: "try{var p=JSON.parse(localStorage.getItem('lowkyz.preferences.v1')||'{}');var m=p.mode==='explore'?'explore':'recruiter';var r=matchMedia('(prefers-reduced-motion: reduce)').matches;var t=p.theme==='light'||p.theme==='dark'?p.theme:matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';document.documentElement.dataset.theme=t;document.documentElement.style.colorScheme=t;document.documentElement.dataset.mode=m;document.documentElement.dataset.motion=p.motion===false||r?'off':'on';document.documentElement.dataset.expressiveMotion=m==='explore'&&p.motion!==false&&!r?'on':'off';if(m==='recruiter')document.documentElement.removeAttribute('data-intro-pending')}catch(e){document.documentElement.dataset.mode='recruiter';document.documentElement.dataset.expressiveMotion='off';document.documentElement.removeAttribute('data-intro-pending')}" }} />
       <PreferencesProvider initialLocale={locale}>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, "\\u003c") }}
-        />
-        <Constellation />
-        <MotionSystem />
-        <EasterEggs />
-      <Navigation />
-        <main id="main" tabIndex={-1}>
-          <Hero />
-          <Projects />
-          <KnowledgeSystem />
-          <About />
-          <Contact />
-        </main>
-        <CommandPalette />
+        <IntroProvider>
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, "\\u003c") }}
+          />
+          <Constellation />
+          <MotionSystem />
+          <EasterEggs />
+          <Navigation />
+          <Intro />
+          <main id="main" tabIndex={-1}>
+            <Hero />
+            <ProjectsV2 />
+            <JourneyExpertiseV2 />
+            <AboutV2 />
+            <CreativeLabV2 />
+            <ContactV2 />
+          </main>
+          <CommandPalette />
+        </IntroProvider>
       </PreferencesProvider>
     </div>
   );
