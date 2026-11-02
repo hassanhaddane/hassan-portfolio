@@ -42,7 +42,7 @@ function HeroTechnology({ technology }: { technology: Technology }) {
 }
 
 export function Hero() {
-  const { locale, motion } = usePreferences();
+  const { locale, expressiveMotion: motion } = usePreferences();
   const [emailCopied, setEmailCopied] = useState(false);
   const copyTimer = useRef<number | null>(null);
 

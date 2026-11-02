@@ -9,7 +9,7 @@ import { ChapterIdentity } from "./narrative";
 import { ProjectMedia } from "./project-media";
 
 export function ProjectsV2() {
-  const { locale, motion } = usePreferences();
+  const { locale, expressiveMotion: motion } = usePreferences();
   const sectionRef = useRef<HTMLElement>(null);
   const [activeId, setActiveId] = useState(projects[0].id);
 

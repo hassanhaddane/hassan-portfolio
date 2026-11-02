@@ -12,7 +12,7 @@ import { ChapterIdentity } from "./narrative";
 type CopyStatus = "copied" | "error" | null;
 
 export function ContactV2() {
-  const { locale, motion } = usePreferences();
+  const { locale, expressiveMotion: motion } = usePreferences();
   const section = useRef<HTMLElement>(null);
   const emailAction = useRef<HTMLDivElement>(null);
   const copyTimer = useRef<number | null>(null);

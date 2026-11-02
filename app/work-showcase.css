@@ -180,7 +180,7 @@
 .case-next .mono { display: block; margin-bottom: .8rem; color: var(--case-accent); font-size: .75rem; }
 .case-next a { font-family: var(--display); font-size: clamp(2.8rem, 7vw, 7rem); line-height: .85; text-decoration: none; text-transform: uppercase; }
 
-@media (max-width: 1000px) {
+@media (max-width: 1100px) {
   .showcase-project-heading { grid-template-columns: 4rem minmax(0, 1fr); }
   .showcase-project-summary { grid-column: 2; }
   .showcase-project-bottom { grid-template-columns: 1fr; }

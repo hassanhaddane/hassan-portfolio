@@ -6,7 +6,7 @@ import { usePreferences } from "./preferences";
 
 /** Opt-in motion grammar: .reveal, [data-motion-parallax], and .magnetic. */
 export function MotionSystem() {
-  const { motion } = usePreferences();
+  const { expressiveMotion: motion } = usePreferences();
   const cursor = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

@@ -13,6 +13,7 @@ import { AboutV2 } from "@/components/portfolio/about-v2";
 import { CreativeLabV2 } from "@/components/portfolio/creative-lab-v2";
 import { ContactV2 } from "@/components/portfolio/contact-v2";
 import "@/app/personal-lab-contact-v2.css";
+import "@/app/presentation-modes-v2.css";
 import { profile, type Locale } from "@/lib/portfolio-data";
 import { education } from "@/lib/knowledge-data";
 import { greeCheck } from "@/lib/work-data";
@@ -76,6 +77,7 @@ export function PortfolioExperience({ locale }: { locale: Locale }) {
 
   return (
     <div lang={locale}>
+      <script dangerouslySetInnerHTML={{ __html: "try{var p=JSON.parse(localStorage.getItem('lowkyz.preferences.v1')||'{}');var m=p.mode==='explore'?'explore':'recruiter';var r=matchMedia('(prefers-reduced-motion: reduce)').matches;var t=p.theme==='light'||p.theme==='dark'?p.theme:matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';document.documentElement.dataset.theme=t;document.documentElement.style.colorScheme=t;document.documentElement.dataset.mode=m;document.documentElement.dataset.motion=p.motion===false||r?'off':'on';document.documentElement.dataset.expressiveMotion=m==='explore'&&p.motion!==false&&!r?'on':'off';if(m==='recruiter')document.documentElement.removeAttribute('data-intro-pending')}catch(e){document.documentElement.dataset.mode='recruiter';document.documentElement.dataset.expressiveMotion='off';document.documentElement.removeAttribute('data-intro-pending')}" }} />
       <PreferencesProvider initialLocale={locale}>
         <IntroProvider>
           <script

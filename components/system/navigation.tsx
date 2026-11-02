@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type CSSProperties } from "react";
-import { ArrowDownToLine, ArrowUpRight, Menu, Moon, Search, Sun } from "lucide-react";
+import { ArrowDownToLine, ArrowUpRight, Menu, Moon, Orbit, Search, Sun } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { profile } from "@/lib/portfolio-data";
 import { useActiveSection, useCommand, usePreferences } from "./preferences";
@@ -21,7 +21,7 @@ const chapters = [
 const primaryChapters = chapters.filter(({ id }) => !["profil", "education"].includes(id));
 
 export function Navigation() {
-  const { locale, setLocale, theme, toggleTheme } = usePreferences();
+  const { locale, setLocale, mode, setMode, motion, toggleMotion, systemReduced, theme, toggleTheme } = usePreferences();
   const { setCommandOpen } = useCommand();
   const activeSection = useActiveSection();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -72,6 +72,9 @@ export function Navigation() {
         </nav>
 
         <div className="masthead-utilities">
+          <button type="button" className="portfolio-mode-switch" onClick={() => setMode(mode === "recruiter" ? "explore" : "recruiter")} aria-label={mode === "recruiter" ? (locale === "fr" ? "Passer en mode Explore" : "Switch to Explore mode") : (locale === "fr" ? "Passer en mode Recruteur" : "Switch to Recruiter mode")} aria-pressed={mode === "explore"} title={mode === "recruiter" ? "Explore" : "Recruiter"}>
+            <Orbit aria-hidden="true" /><span className="portfolio-mode-switch__label" data-for-mode="recruiter">{locale === "fr" ? "Recruteur" : "Recruiter"}</span><span className="portfolio-mode-switch__label" data-for-mode="explore">Explore</span><span className="portfolio-mode-switch__dot" aria-hidden="true" />
+          </button>
           <button type="button" className="signal-masthead__command" data-command-trigger onClick={() => setCommandOpen(true)} aria-label={locale === "fr" ? "Ouvrir la recherche et les commandes" : "Open search and commands"} title="Cmd / Ctrl + K">
             <Search aria-hidden="true" /><kbd>⌘ K</kbd>
           </button>
@@ -122,6 +125,10 @@ export function Navigation() {
                 ))}
               </nav>
               <div className="navigation-dialog__bottom">
+                <div className="navigation-dialog__modes" role="group" aria-label={locale === "fr" ? "Mode de présentation" : "Presentation mode"}>
+                  <button type="button" aria-pressed={mode === "recruiter"} onClick={() => setMode("recruiter")}>{locale === "fr" ? "Recruteur" : "Recruiter"}<small>{locale === "fr" ? "Lecture directe" : "Direct overview"}</small></button>
+                  <button type="button" aria-pressed={mode === "explore"} onClick={() => setMode("explore")}>Explore<small>{locale === "fr" ? "Expérience interactive" : "Interactive experience"}</small></button>
+                </div>
                 <div className="navigation-dialog__secondary">
                   <a href="#profil" aria-current={activeSection === "profil" ? "location" : undefined} onClick={() => { menuTarget.current = "profil"; setMenuOpen(false); }}>{chapters[0].label[locale]}</a>
                   <a href="#education" aria-current={activeSection === "education" ? "location" : undefined} onClick={() => { menuTarget.current = "education"; setMenuOpen(false); }}>{chapters[4].label[locale]}</a>
@@ -130,6 +137,7 @@ export function Navigation() {
                 <div className="navigation-dialog__controls">
                   <button type="button" className="signal-masthead__command" onClick={openCommand}><Search aria-hidden="true" />{locale === "fr" ? "Rechercher" : "Search"}<kbd>⌘ K</kbd></button>
                   <button type="button" className="theme-switch theme-switch-mobile" onClick={toggleTheme} aria-label={themeLabel}><ThemeIcon aria-hidden="true" /><span>{themeLabel}</span></button>
+                  <button type="button" className="navigation-dialog__motion" onClick={toggleMotion} disabled={systemReduced} aria-pressed={motion}>{systemReduced ? (locale === "fr" ? "Mouvement réduit (système)" : "Reduced motion (system)") : motion ? (locale === "fr" ? "Réduire le mouvement" : "Reduce motion") : (locale === "fr" ? "Activer le mouvement" : "Enable motion")}</button>
                   <ReplayIntro mobile onReplay={() => setMenuOpen(false)} />
                 </div>
               </div>

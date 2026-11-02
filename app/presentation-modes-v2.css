@@ -1,0 +1,91 @@
+/* The same document serves both readings. Explore adds atmosphere; Recruiter stays direct. */
+.portfolio-mode-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: .55rem;
+  min-height: 44px;
+  padding: .45rem .65rem;
+  border: 1px solid var(--border-strong);
+  background: var(--surface-raised);
+  color: var(--foreground);
+  font: 600 .7rem/1 var(--font-geist-sans), sans-serif;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: border-color var(--motion-micro), background var(--motion-micro), transform var(--motion-micro);
+}
+.portfolio-mode-switch:hover,
+.portfolio-mode-switch:focus-visible { border-color: var(--primary); background: var(--surface-soft); }
+.portfolio-mode-switch:focus-visible,
+.navigation-dialog__modes button:focus-visible,
+.navigation-dialog__motion:focus-visible { outline: 2px solid var(--ring); outline-offset: 3px; }
+.portfolio-mode-switch:active { transform: translateY(1px); }
+.portfolio-mode-switch svg { width: 16px; height: 16px; color: var(--cobalt-light); }
+.portfolio-mode-switch__label[data-for-mode="explore"] { display: none; }
+html[data-mode="explore"] .portfolio-mode-switch__label[data-for-mode="recruiter"] { display: none; }
+html[data-mode="explore"] .portfolio-mode-switch__label[data-for-mode="explore"] { display: inline; }
+.portfolio-mode-switch__dot { width: 5px; height: 5px; border-radius: 50%; background: var(--text-tertiary); }
+.portfolio-mode-switch[aria-pressed="true"] .portfolio-mode-switch__dot { background: var(--signal); box-shadow: 0 0 9px var(--signal); }
+.navigation-dialog__modes { display: grid; grid-template-columns: 1fr 1fr; gap: .55rem; padding-block: .85rem; border-top: 1px solid var(--border); }
+.navigation-dialog__modes button { display: grid; gap: .2rem; min-height: 55px; padding: .6rem .8rem; border: 1px solid var(--border); background: var(--surface-raised); color: var(--foreground); text-align: left; cursor: pointer; }
+.navigation-dialog__modes button[aria-pressed="true"] { border-color: var(--primary); background: color-mix(in srgb, var(--primary) 12%, var(--surface-raised)); }
+.navigation-dialog__modes small { color: var(--text-secondary); font-size: .65rem; font-weight: 400; }
+.navigation-dialog__motion { min-height: 44px; padding: .5rem .7rem; border: 1px solid var(--border); background: var(--surface-raised); color: var(--foreground); font-size: .72rem; cursor: pointer; }
+.navigation-dialog__motion:disabled { opacity: .65; cursor: default; }
+.lab-v2-mode-note { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; margin: -1rem 0 1.5rem; padding: 1rem 1.2rem; border: 1px solid var(--border-strong); background: var(--surface-raised); }
+.lab-v2-mode-note p { margin: 0; color: var(--text-secondary); font-size: .84rem; }
+.lab-v2-mode-note button { display: inline-flex; align-items: center; gap: .75rem; min-height: 44px; padding: .65rem .9rem; border: 1px solid var(--primary); background: transparent; color: var(--foreground); white-space: nowrap; cursor: pointer; }
+.lab-v2-mode-note button:hover, .lab-v2-mode-note button:focus-visible { background: color-mix(in srgb, var(--primary) 18%, transparent); }
+
+html[data-mode="recruiter"] .organism-canvas,
+html[data-mode="recruiter"] .foreground-filament,
+html[data-mode="recruiter"] .custom-cursor { display: none; }
+html[data-mode="recruiter"] .organism-field { opacity: .28; }
+html[data-mode="recruiter"] .organism-living,
+html[data-mode="recruiter"] .signal-hero__letter-mask > span { animation: none !important; }
+html[data-mode="recruiter"] .signal-hero__letter-mask > span { transform: none; opacity: 1; }
+html[data-mode="recruiter"] .signal-hero__main,
+html[data-mode="recruiter"] .signal-hero__aside,
+html[data-mode="recruiter"] .showcase-media,
+html[data-mode="recruiter"] .showcase-media-layer { transform: none !important; translate: none !important; }
+html[data-mode="recruiter"] .reveal,
+html[data-mode="recruiter"] .reveal[data-revealed="false"],
+html[data-mode="recruiter"] [data-motion-stagger] > * { opacity: 1 !important; transform: none !important; clip-path: none !important; filter: none !important; transition-duration: .18s !important; }
+html[data-mode="recruiter"] .signal-hero__technical-grid { opacity: .22; }
+html[data-mode="recruiter"] main *,
+html[data-mode="recruiter"] main *::before,
+html[data-mode="recruiter"] main *::after { animation-duration: .01ms !important; animation-delay: 0ms !important; }
+html[data-mode="recruiter"] .journey-list::after { height: 100%; }
+html[data-mode="recruiter"] .contact-v2-title[data-revealed="false"] span { transform: none; }
+html[data-mode="recruiter"] .lab-v2-stage canvas { visibility: hidden; }
+html[data-mode="recruiter"] .lab-v2-fallback { display: block; }
+html[data-mode="recruiter"] .work-showcase .showcase-project-reveal { clip-path: none; }
+
+@media (max-width: 1180px) {
+  .navigation-dialog[data-slot="dialog-content"] { grid-template-rows: auto auto auto; align-content: start; }
+  .navigation-dialog[data-slot="dialog-content"] nav { justify-content: flex-start; padding-top: .8rem; }
+  .navigation-dialog__controls { flex-wrap: wrap; }
+}
+@media (min-width: 801px) and (max-width: 1100px) {
+  .contact-v2-body { grid-template-columns: minmax(0, 1fr); }
+  .contact-v2-actions { max-width: 32rem; }
+}
+@media (max-width: 760px) {
+  .portfolio-mode-switch { width: 44px; min-width: 44px; justify-content: center; padding: 0; }
+  .portfolio-mode-switch .portfolio-mode-switch__label, .portfolio-mode-switch__dot { display: none; }
+  .navigation-dialog__modes { padding-block: .55rem; }
+  .navigation-dialog__modes button { min-height: 48px; }
+  .navigation-dialog[data-slot="dialog-content"] nav a { min-height: 3.25rem; font-size: clamp(2rem, 9vw, 3rem); }
+  .lab-v2-mode-note { display: grid; }
+}
+@media (max-width: 375px) {
+  .site-masthead.signal-masthead { padding-inline: .65rem; }
+  .signal-masthead .masthead-utilities { gap: .12rem; }
+  .signal-masthead__brand { font-size: 1.3rem; }
+  .signal-masthead .locale-switch { min-width: 44px; }
+  .signal-hero__name { font-size: min(17.5vw, 4.7rem); }
+  .signal-hero__facts { gap: .25rem; }
+  .signal-hero__facts span { font-size: .55rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .portfolio-mode-switch, .navigation-dialog__modes button, .lab-v2-mode-note button { transition: none; }
+}

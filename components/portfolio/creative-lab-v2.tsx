@@ -6,7 +6,7 @@ import { creativeLabCopy } from "@/lib/personal-data";
 import { ChapterIdentity } from "./narrative";
 
 function SignalLab() {
-  const { locale, motion, theme } = usePreferences();
+  const { locale, mode, expressiveMotion: motion, theme } = usePreferences();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const pointer = useRef({ x: 0.5, y: 0.5 });
   const [enabled, setEnabled] = useState(true);
@@ -16,6 +16,7 @@ function SignalLab() {
   const running = enabled && motion;
 
   useEffect(() => {
+    if (mode === "recruiter") return;
     const canvas = canvasRef.current;
     const context = canvas?.getContext("2d", { alpha: true });
     if (!canvas || !context) {
@@ -98,7 +99,7 @@ function SignalLab() {
       resizeObserver?.disconnect();
       removeEventListener("visibilitychange", schedule);
     };
-  }, [frequency, energy, running, theme]);
+  }, [frequency, energy, running, theme, mode]);
 
   const move = (event: PointerEvent<HTMLDivElement>) => {
     if (!running) return;
@@ -118,17 +119,17 @@ function SignalLab() {
         <span className="mono lab-v2-stage-label">LOWKYZ / INPUT 01</span>
       </div>
       <div className="lab-v2-controls">
-        <label>{locale === "fr" ? "Fréquence" : "Frequency"}<input type="range" min="1" max="5" step="1" value={frequency} onChange={(event) => setFrequency(Number(event.target.value))} aria-valuetext={`${frequency} / 5`} /></label>
-        <label>{locale === "fr" ? "Énergie" : "Energy"}<input type="range" min="10" max="100" step="1" value={energy} onChange={(event) => setEnergy(Number(event.target.value))} aria-valuetext={`${energy}%`} /></label>
+        <label>{locale === "fr" ? "Fréquence" : "Frequency"}<input type="range" min="1" max="5" step="1" value={frequency} disabled={mode === "recruiter"} onChange={(event) => setFrequency(Number(event.target.value))} aria-valuetext={`${frequency} / 5`} /></label>
+        <label>{locale === "fr" ? "Énergie" : "Energy"}<input type="range" min="10" max="100" step="1" value={energy} disabled={mode === "recruiter"} onChange={(event) => setEnergy(Number(event.target.value))} aria-valuetext={`${energy}%`} /></label>
         <button type="button" aria-pressed={running} disabled={!motion} onClick={() => setEnabled((value) => !value)}>{running ? (locale === "fr" ? "Mettre en pause" : "Pause") : (locale === "fr" ? "Activer" : "Play")}</button>
       </div>
-      {!motion ? <p className="lab-v2-reduced">{locale === "fr" ? "Animation désactivée selon votre préférence de mouvement." : "Animation disabled by your motion preference."}</p> : null}
+      {!motion && mode === "explore" ? <p className="lab-v2-reduced">{locale === "fr" ? "Animation désactivée selon votre préférence de mouvement." : "Animation disabled by your motion preference."}</p> : null}
     </article>
   );
 }
 
 function TypeLab() {
-  const { locale, motion } = usePreferences();
+  const { locale, mode, expressiveMotion: motion } = usePreferences();
   const surface = useRef<HTMLDivElement>(null);
   const frame = useRef(0);
   const [enabled, setEnabled] = useState(true);
@@ -168,23 +169,24 @@ function TypeLab() {
         <span className="mono lab-v2-stage-label">LOWKYZ / GRID 02</span>
       </div>
       <div className="lab-v2-controls">
-        <label>{locale === "fr" ? "Espacement" : "Spacing"}<input type="range" min="0" max="12" step="1" value={spacing} onChange={(event) => setSpacing(Number(event.target.value))} aria-valuetext={`${spacing} px`} /></label>
-        <label>{locale === "fr" ? "Inclinaison" : "Slant"}<input type="range" min="-12" max="12" step="1" value={slant} onChange={(event) => setSlant(Number(event.target.value))} aria-valuetext={`${slant}°`} /></label>
+        <label>{locale === "fr" ? "Espacement" : "Spacing"}<input type="range" min="0" max="12" step="1" value={spacing} disabled={mode === "recruiter"} onChange={(event) => setSpacing(Number(event.target.value))} aria-valuetext={`${spacing} px`} /></label>
+        <label>{locale === "fr" ? "Inclinaison" : "Slant"}<input type="range" min="-12" max="12" step="1" value={slant} disabled={mode === "recruiter"} onChange={(event) => setSlant(Number(event.target.value))} aria-valuetext={`${slant}°`} /></label>
         <button type="button" aria-pressed={running} disabled={!motion} onClick={() => setEnabled((value) => !value)}>{running ? (locale === "fr" ? "Désactiver" : "Disable") : (locale === "fr" ? "Activer" : "Enable")}</button>
       </div>
-      {!motion ? <p className="lab-v2-reduced">{locale === "fr" ? "Interaction animée désactivée selon votre préférence de mouvement." : "Animated interaction disabled by your motion preference."}</p> : null}
+      {!motion && mode === "explore" ? <p className="lab-v2-reduced">{locale === "fr" ? "Interaction animée désactivée selon votre préférence de mouvement." : "Animated interaction disabled by your motion preference."}</p> : null}
     </article>
   );
 }
 
 export function CreativeLabV2() {
-  const { locale } = usePreferences();
+  const { locale, mode, setMode } = usePreferences();
   return (
     <section id="lab" data-section tabIndex={-1} className="clarity-section section-shell section-space lab-v2" aria-labelledby="lab-title">
       <header className="clarity-section-header reveal" data-reveal="mask">
         <ChapterIdentity index="07" kind="lab" category={{ fr: "LAB", en: "LAB" }} title={{ fr: "EXPLORATIONS INTERACTIVES", en: "INTERACTIVE EXPLORATIONS" }} />
         <div className="clarity-section-heading"><span className="mono">REACT / TYPESCRIPT / CANVAS / SVG / WEBGL</span><h2 id="lab-title">{creativeLabCopy.title[locale]}</h2><p>{creativeLabCopy.introduction[locale]}</p></div>
       </header>
+      {mode === "recruiter" ? <div className="lab-v2-mode-note"><p>{locale === "fr" ? "Deux démonstrations légères, en Canvas 2D et SVG. Passez en mode Explore pour les manipuler." : "Two lightweight Canvas 2D and SVG experiments. Switch to Explore to interact with them."}</p><button type="button" onClick={() => setMode("explore")}>{locale === "fr" ? "Activer Explore" : "Enable Explore"}<span aria-hidden="true">↗</span></button></div> : null}
       <div className="lab-v2-grid"><SignalLab /><TypeLab /></div>
       <p className="lab-v2-background-note mono">{creativeLabCopy.background[locale]}</p>
     </section>

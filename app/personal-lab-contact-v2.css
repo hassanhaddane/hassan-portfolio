@@ -59,7 +59,7 @@ html[data-theme="light"] .personal-v2-portrait-frame img { mix-blend-mode: norma
 .lab-v2-type-stage svg path, .lab-v2-type-stage svg circle { fill: none; stroke: var(--cobalt-light); stroke-width: 1; }
 .lab-v2-type-word { position: relative; z-index: 1; display: flex; justify-content: center; font: 800 clamp(4.1rem, 8vw, 9rem)/.8 var(--display); letter-spacing: -.05em; color: var(--foreground); white-space: nowrap; }
 .lab-v2-type-word > span { display: inline-block; margin-inline: calc(var(--type-spacing) * .32); transform: translate(calc(var(--type-pointer-x) * (var(--glyph) - 2.5) * 12px), calc(var(--type-pointer-y) * (var(--glyph) - 2.5) * 8px)) skewX(var(--type-slant)); transition: transform var(--motion-micro) var(--ease-out-expo), margin var(--motion-micro) ease; }
-.lab-v2-type-stage[data-active="false"] .lab-v2-type-word > span { transform: none; }
+.lab-v2-type-stage[data-active="false"] .lab-v2-type-word > span { transform: skewX(var(--type-slant)); }
 .lab-v2-background-note { margin-top: 1.4rem; color: var(--text-secondary); font-size: .76rem; }
 
 .contact-v2 { --contact-v2-x: 70%; --contact-v2-y: 52%; --contact-v2-strength: 0; min-height: min(850px, 100svh); overflow: clip; background: radial-gradient(circle at var(--contact-v2-x) var(--contact-v2-y), color-mix(in srgb, var(--primary) 16%, transparent), transparent 45%), var(--background); }

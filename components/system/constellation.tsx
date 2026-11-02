@@ -64,7 +64,7 @@ const StaticOrganism = memo(function StaticOrganism() {
 });
 
 export function Constellation() {
-  const { mode, motion } = usePreferences();
+  const { mode, expressiveMotion: motion } = usePreferences();
   const activeSection = useActiveSection();
   const signal = useFieldSignal();
   const workSignal = useWorkSignal();

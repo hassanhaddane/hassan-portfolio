@@ -7,6 +7,7 @@ import {
   useState,
   useMemo,
   useCallback,
+  useRef,
   type ReactNode,
 } from "react";
 import type { Locale } from "@/lib/portfolio-data";
@@ -20,6 +21,7 @@ type Preferences = {
   mode: Mode;
   setMode: (mode: Mode) => void;
   motion: boolean;
+  expressiveMotion: boolean;
   toggleMotion: () => void;
   systemReduced: boolean;
   theme: Theme;
@@ -44,7 +46,8 @@ export function PreferencesProvider({
   const [locale, setLocaleState] = useState<Locale>(initialLocale);
   const [mode, setMode] = useState<Mode>("recruiter");
   const [motionEnabled, setMotionEnabled] = useState(true);
-  const [theme, setTheme] = useState<Theme>("dark");
+  const [theme, setThemeState] = useState<Theme>("dark");
+  const themeIsManual = useRef(false);
   const [systemReduced, setSystemReduced] = useState(false);
   const [ready, setReady] = useState(false);
   const [activeSection, setActiveSection] = useState("profil");
@@ -56,8 +59,10 @@ export function PreferencesProvider({
       if (saved.mode === "recruiter" || saved.mode === "explore")
         setMode(saved.mode);
       if (typeof saved.motion === "boolean") setMotionEnabled(saved.motion);
-      if (saved.theme === "light" || saved.theme === "dark")
-        setTheme(saved.theme);
+      if (saved.theme === "light" || saved.theme === "dark") {
+        themeIsManual.current = true;
+        setThemeState(saved.theme);
+      }
     } catch {
       /* Storage can be unavailable in private or restricted contexts. */
     }
@@ -65,20 +70,37 @@ export function PreferencesProvider({
     setSystemReduced(media.matches);
     const update = () => setSystemReduced(media.matches);
     media.addEventListener("change", update);
+    const colorMedia = matchMedia("(prefers-color-scheme: light)");
+    const updateColor = () => {
+      if (!themeIsManual.current) setThemeState(colorMedia.matches ? "light" : "dark");
+    };
+    updateColor();
+    colorMedia.addEventListener("change", updateColor);
     setReady(true);
-    return () => media.removeEventListener("change", update);
+    return () => {
+      media.removeEventListener("change", update);
+      colorMedia.removeEventListener("change", updateColor);
+    };
   }, []);
 
   const motion = motionEnabled && !systemReduced;
+  const expressiveMotion = motion && mode === "explore";
   const setLocale = useCallback((nextLocale: Locale) => {
     setLocaleState(nextLocale);
+  }, []);
+  const setTheme = useCallback((nextTheme: Theme) => {
+    themeIsManual.current = true;
+    setThemeState(nextTheme);
   }, []);
   const toggleMotion = useCallback(
     () => setMotionEnabled((value) => !value),
     [],
   );
   const toggleTheme = useCallback(
-    () => setTheme((value) => (value === "light" ? "dark" : "light")),
+    () => {
+      themeIsManual.current = true;
+      setThemeState((value) => (value === "light" ? "dark" : "light"));
+    },
     [],
   );
   const preferences = useMemo(
@@ -88,13 +110,14 @@ export function PreferencesProvider({
       mode,
       setMode,
       motion,
+      expressiveMotion,
       toggleMotion,
       systemReduced,
       theme,
       setTheme,
       toggleTheme,
     }),
-    [locale, setLocale, mode, motion, toggleMotion, systemReduced, theme, toggleTheme],
+    [locale, setLocale, mode, motion, expressiveMotion, toggleMotion, systemReduced, theme, setTheme, toggleTheme],
   );
   const command = useMemo(
     () => ({ commandOpen, setCommandOpen }),
@@ -105,7 +128,7 @@ export function PreferencesProvider({
     try {
       localStorage.setItem(
         KEY,
-        JSON.stringify({ locale, mode, motion: motionEnabled, theme }),
+        JSON.stringify({ locale, mode, motion: motionEnabled, theme: themeIsManual.current ? theme : undefined }),
       );
     } catch {
       /* Optional persistence. */
@@ -113,6 +136,7 @@ export function PreferencesProvider({
     document.documentElement.lang = locale;
     document.documentElement.dataset.mode = mode;
     document.documentElement.dataset.motion = motion ? "on" : "off";
+    document.documentElement.dataset.expressiveMotion = expressiveMotion ? "on" : "off";
     document.documentElement.dataset.theme = theme;
     document.documentElement.style.colorScheme = theme;
     document
@@ -132,7 +156,7 @@ export function PreferencesProvider({
     document.querySelector<HTMLMetaElement>('meta[property="og:description"]')?.setAttribute("content", seo.ogDescription);
     document.querySelector<HTMLMetaElement>('meta[property="og:locale"]')?.setAttribute("content", locale === "fr" ? "fr_FR" : "en_GB");
     document.querySelector<HTMLLinkElement>('link[rel="canonical"]')?.setAttribute("href", `${SITE_ORIGIN}/${locale}`);
-  }, [ready, locale, mode, motionEnabled, motion, theme]);
+  }, [ready, locale, mode, motionEnabled, motion, expressiveMotion, theme]);
 
   useEffect(() => {
     const sections = [

@@ -19,7 +19,7 @@ function relatedHref(id: Skill["relations"][number], locale: "fr" | "en") {
 }
 
 function ExperienceJourney() {
-  const { locale, motion } = usePreferences();
+  const { locale, expressiveMotion: motion } = usePreferences();
   const timeline = useRef<HTMLDivElement>(null);
   const [activeWork, setActiveWork] = useState<ProfessionalWork["id"]>(work[0].id);
 
