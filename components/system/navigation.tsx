@@ -5,7 +5,7 @@ import { ArrowDownToLine, ArrowUpRight, Menu, Moon, Orbit, Search, Sun } from "l
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { profile } from "@/lib/portfolio-data";
 import { useActiveSection, useCommand, usePreferences } from "./preferences";
-import { ReplayIntro, SoundToggle } from "@/components/intro/intro-controls";
+import { ReplayIntro } from "@/components/intro/intro-controls";
 
 const chapters = [
   { id: "profil", label: { fr: "Accueil", en: "Home" } },
@@ -81,7 +81,6 @@ export function Navigation() {
           <button type="button" className="theme-switch theme-switch-desktop" onClick={toggleTheme} aria-label={themeLabel} title={themeLabel}>
             <ThemeIcon aria-hidden="true" />
           </button>
-          <SoundToggle />
           <ReplayIntro />
           <button type="button" className="locale-switch mono" onClick={() => setLocale(locale === "fr" ? "en" : "fr")} >
             <span className="sr-only">{locale === "fr" ? "Switch to English : " : "Passer en français : "}</span><span data-current={locale === "fr"}>FR</span><span aria-hidden="true">/</span><span data-current={locale === "en"}>EN</span>

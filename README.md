@@ -22,7 +22,7 @@ Aucune variable d’environnement requise. Autre port : `pnpm dev --port 3100`. 
 - `/` redirige vers `/fr` ; `/fr` et `/en` sont pré-rendus.
 - `app/[locale]/work/[slug]` génère six études de cas FR/EN (GreeCheck, 808BLOOM, Tech Express), autres slugs en 404.
 - `components/portfolio/portfolio-experience.tsx` compose `Hero`, `ProjectsV2`, `JourneyExpertiseV2`, `AboutV2`, `CreativeLabV2`, `ContactV2` et le JSON-LD.
-- `components/system` : unique fournisseur de préférences, navigation responsive, palette Ctrl/Cmd+K, fond et mouvement. `components/intro` : états, logo, transition et contrôles audio.
+- `components/system` : unique fournisseur de préférences, navigation responsive, palette Ctrl/Cmd+K, fond et mouvement. `components/intro` : états, logo, transition et contrôle d’entrée.
 - `lib/motion-runtime.ts` : événements et RAF DOM partagés. `constellation-engine.ts`, `field-shaders.ts`, `field-signal.ts` : unique moteur Three.js et signaux du contenu.
 - `lib/fonts.ts`, `app/fonts` : polices locales. Geist utilise `font-display: optional` pour garder le fallback si son chargement manque le premier rendu.
 - CSS : tokens et couches existantes `app/*system.css`, puis Work, Journey, Personal/Lab/Contact et modes. Les feuilles historiques non importées ne sont pas transférées.
@@ -31,7 +31,7 @@ Aucune variable d’environnement requise. Autre port : `pnpm dev --port 3100`. 
 
 Recruteur est le mode initial : contenu complet, fond SVG/CSS statique, CV et contact directs. Explore enrichit le même document avec parallax, reveals, signal vivant et Lab interactif. Le changement conserve la section.
 
-Intro automatique uniquement pour une première visite Explore sans ancre ; accès direct en Recruteur. Replay, Skip et entrée silencieuse disponibles. Son original synthétisé, OFF par défaut, après geste explicite ; aucune musique externe.
+Intro visuelle uniquement, sans moteur audio ni contrôle de son. Elle apparaît pour une première visite Explore sans ancre ; accès direct en Recruteur. Replay, Skip et bouton d’entrée unique disponibles.
 
 Préférences locales : mode, langue, thème, mouvement. Mouvement réduit système prioritaire ; thème système sans choix manuel. WebGL différé sur desktop capable, DPR plafonné à 1–1,5, adaptation, pause d’onglet, destruction des ressources/contexte. Fallback sur appareils tactiles/modestes. Canvas du Lab suspendu hors écran. Scroll natif libre.
 

@@ -29,8 +29,12 @@ export const personalStory: {
 export const creativeLabCopy = {
   title: text("DES IDÉES À MANIPULER.", "IDEAS YOU CAN MOVE."),
   introduction: text(
-    "Deux petites expériences interactives. Le signal explore le rythme ; la typographie explore la forme. Elles utilisent le même vocabulaire visuel que le portfolio.",
-    "Two small interactive experiments. The signal explores rhythm; the typography explores form. Both use the same visual language as the portfolio.",
+    "Ce laboratoire montre comment je développe une interaction : dessiner un signal en temps réel avec Canvas, puis faire réagir une composition typographique au pointeur sur une grille SVG. J’y travaille aussi les réglages au clavier, la pause et le mouvement réduit.",
+    "This lab shows how I build an interaction: drawing a live signal with Canvas, then making typography respond to the pointer over an SVG grid. It also lets me work on keyboard controls, pause states and reduced motion.",
+  ),
+  recruiterNote: text(
+    "Le mode Recruteur présente un aperçu statique pour parcourir mon profil rapidement. Activez Explore pour tester les réglages et les réactions au pointeur.",
+    "Recruiter mode keeps a static preview so you can scan my profile quickly. Switch to Explore to try the controls and pointer interactions.",
   ),
   background: text(
     "Le champ visuel derrière ces expériences prolonge le moteur Three.js et les shaders du site.",

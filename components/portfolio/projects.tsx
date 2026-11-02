@@ -1,10 +1,107 @@
 "use client";
 
 import Image from "next/image";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { usePreferences } from "@/components/system/preferences";
 import { CreativeAction } from "@/components/ui/creative-action";
 import { bloom, greeCheck, greeCheckStorySteps, techExpress } from "@/lib/work-data";
 import { ChapterIdentity, EntityTypeMarker } from "./narrative";
+
+function ProjectStory() {
+  const { locale, motion } = usePreferences();
+  const [activeStep, setActiveStep] = useState(0);
+  const storyRef = useRef<HTMLDivElement>(null);
+  const visualRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const story = storyRef.current;
+    if (!story || !motion) return;
+    const steps = [...story.querySelectorAll<HTMLElement>("[data-project-step]")];
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (visible) setActiveStep(Number((visible.target as HTMLElement).dataset.projectStep));
+      },
+      { rootMargin: "-32% 0px -46%", threshold: [0.15, 0.45, 0.75] },
+    );
+    steps.forEach((step) => observer.observe(step));
+    return () => observer.disconnect();
+  }, [motion]);
+
+  useEffect(() => {
+    const visual = visualRef.current;
+    if (!visual || !motion || !matchMedia("(pointer: fine) and (hover: hover)").matches) return;
+    let frame = 0;
+    const move = (event: PointerEvent) => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        const bounds = visual.getBoundingClientRect();
+        const x = (event.clientX - bounds.left) / bounds.width - 0.5;
+        const y = (event.clientY - bounds.top) / bounds.height - 0.5;
+        visual.style.setProperty("--project-tilt-x", `${y * -1.5}deg`);
+        visual.style.setProperty("--project-tilt-y", `${x * 2}deg`);
+        visual.style.setProperty("--project-pan-x", `${x * 8}px`);
+        visual.style.setProperty("--project-pan-y", `${y * 6}px`);
+      });
+    };
+    const reset = () => {
+      visual.style.setProperty("--project-tilt-x", "0deg");
+      visual.style.setProperty("--project-tilt-y", "0deg");
+      visual.style.setProperty("--project-pan-x", "0px");
+      visual.style.setProperty("--project-pan-y", "0px");
+    };
+    visual.addEventListener("pointermove", move, { passive: true });
+    visual.addEventListener("pointerleave", reset);
+    return () => {
+      cancelAnimationFrame(frame);
+      visual.removeEventListener("pointermove", move);
+      visual.removeEventListener("pointerleave", reset);
+    };
+  }, [motion]);
+
+  return (
+    <div className="project-story" ref={storyRef}>
+      <figure className="project-story-visual" ref={visualRef} style={{ "--project-step": activeStep } as CSSProperties}>
+        <div className="clarity-preview-bar mono" aria-hidden="true">
+          <span>GREECHECK</span>
+          <span>{String(activeStep + 1).padStart(2, "0")} / {String(greeCheckStorySteps.length).padStart(2, "0")}</span>
+        </div>
+        <div className="project-story-screen reveal" data-reveal="image" aria-live="polite">
+          {greeCheckStorySteps.map((step, index) => (
+            <div className="project-story-image" data-active={activeStep === index} key={step.id} aria-hidden={activeStep !== index}>
+              <Image
+                src={step.src}
+                alt={activeStep === index ? step.alt[locale] : ""}
+                fill
+                priority={index === 0}
+                sizes="(max-width: 760px) 94vw, (max-width: 1180px) 58vw, 54vw"
+              />
+            </div>
+          ))}
+        </div>
+        <figcaption>
+          <span className="mono">{String(activeStep + 1).padStart(2, "0")}</span>
+          <strong>{greeCheckStorySteps[activeStep].title[locale]}</strong>
+          <span>{greeCheckStorySteps[activeStep].detail[locale]}</span>
+        </figcaption>
+      </figure>
+
+      <ol className="project-story-steps" aria-label={locale === "fr" ? "Parcours dans GreeCheck" : "GreeCheck walkthrough"}>
+        {greeCheckStorySteps.map((step, index) => (
+          <li key={step.id} data-project-step={index} data-active={activeStep === index}>
+            <button type="button" onClick={() => setActiveStep(index)} aria-pressed={activeStep === index}>
+              <span className="mono">{String(index + 1).padStart(2, "0")}</span>
+              <strong>{step.title[locale]}</strong>
+              <small>{step.detail[locale]}</small>
+            </button>
+          </li>
+        ))}
+      </ol>
+    </div>
+  );
+}
 
 export function Projects() {
   const { locale } = usePreferences();
@@ -45,31 +142,7 @@ export function Projects() {
           <CreativeAction variant="secondary" href={greeCheck.url} target="_blank" rel="noopener noreferrer" data-cursor="OPEN" label={locale === "fr" ? "Ouvrir le projet" : "Open project"} />
         </header>
 
-        <figure className="clarity-project-preview reveal" data-reveal="image">
-          <div className="clarity-preview-bar mono" aria-hidden="true">
-            <span>GREECHECK</span>
-            <span>gree-check.vercel.app</span>
-          </div>
-          <div className="clarity-preview-image project-image-desktop">
-            <Image
-              src="/projects/greecheck/home-desktop.png"
-              alt={locale === "fr" ? "Accueil public de GreeCheck sur ordinateur" : "GreeCheck public home screen on desktop"}
-              fill
-              sizes="(max-width: 900px) 100vw, 82vw"
-            />
-          </div>
-          <div className="clarity-preview-image project-image-mobile">
-            <Image
-              src="/projects/greecheck/home-mobile-clean.png"
-              alt={locale === "fr" ? "Accueil public de GreeCheck sur mobile" : "GreeCheck public home screen on mobile"}
-              fill
-              sizes="92vw"
-            />
-          </div>
-          <figcaption>
-            {locale === "fr" ? "Capture de l’application." : "Application screenshot."}
-          </figcaption>
-        </figure>
+        <ProjectStory />
 
         <div className="clarity-project-details reveal" data-reveal="line" data-motion-stagger>
           <section aria-labelledby="project-objective">
@@ -109,7 +182,7 @@ export function Projects() {
               </div>
               {project.url ? <CreativeAction variant="secondary" href={project.url} target="_blank" rel="noopener noreferrer" data-cursor="OPEN" label={locale === "fr" ? "Voir le site" : "Visit website"} /> : null}
             </header>
-            <div className="clarity-project-details reveal" data-reveal="line" data-motion-stagger>
+            <div className="clarity-project-details">
               <section>
                 <span className="mono">{locale === "fr" ? "CONTRIBUTIONS" : "CONTRIBUTIONS"}</span>
                 <ul>{project.evidence.map((item) => <li key={item.statement.en}>{item.statement[locale]}</li>)}</ul>

@@ -2,6 +2,8 @@
 
 Date : 2 novembre 2026, Europe/Paris. Branche : `feat/lowkyz-creative-v2`. **Prête pour une pull request avec les réserves explicites ci-dessous.** Aucun push, merge ou déploiement effectué. Le LCP mobile cible n’est pas encore atteint ; la publication doit passer par une Preview et une revue humaine.
 
+Actualisation après cet audit, à la demande de Hassan : moteur et contrôles audio supprimés, entrée visuelle unique ; argumentaire du Lab précisé et mobilité Bretagne/Nantes/Paris ajoutée au hero en FR/EN. Lint, typecheck, tests et build passent ; vérification navigateur à 390 px, entrée unique et aucun contrôle audio. Les mesures Lighthouse et les tests de son ci-dessous restent l’historique de la version auditée avant cette actualisation, et n’ont pas été présentés comme remesurés.
+
 ## Périmètre et reproductibilité
 
 Contrôle du code indexé dans une copie isolée `tmp/qa-production-final`, build Next de production servi sur le port 3140. Les cinq changements déjà présents avant cette mission restent hors du commit : ordre CSS dans `app/layout.tsx`, `app/story-motion.css`, anciens composants `contact.tsx`, `knowledge-system.tsx`, `projects.tsx`. L’import de police ajouté dans `layout.tsx` est indexé séparément de son changement préexistant. Les tests et un build ont aussi été exécutés dans le workspace complet ; ils passent, avec environ 172 kB au premier chargement contre 171 kB pour la branche isolée.

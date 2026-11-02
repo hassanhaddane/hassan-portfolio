@@ -186,7 +186,7 @@ export function CreativeLabV2() {
         <ChapterIdentity index="07" kind="lab" category={{ fr: "LAB", en: "LAB" }} title={{ fr: "EXPLORATIONS INTERACTIVES", en: "INTERACTIVE EXPLORATIONS" }} />
         <div className="clarity-section-heading"><span className="mono">REACT / TYPESCRIPT / CANVAS / SVG / WEBGL</span><h2 id="lab-title">{creativeLabCopy.title[locale]}</h2><p>{creativeLabCopy.introduction[locale]}</p></div>
       </header>
-      {mode === "recruiter" ? <div className="lab-v2-mode-note"><p>{locale === "fr" ? "Deux démonstrations légères, en Canvas 2D et SVG. Passez en mode Explore pour les manipuler." : "Two lightweight Canvas 2D and SVG experiments. Switch to Explore to interact with them."}</p><button type="button" onClick={() => setMode("explore")}>{locale === "fr" ? "Activer Explore" : "Enable Explore"}<span aria-hidden="true">↗</span></button></div> : null}
+      {mode === "recruiter" ? <div className="lab-v2-mode-note"><p>{creativeLabCopy.recruiterNote[locale]}</p><button type="button" onClick={() => setMode("explore")}>{locale === "fr" ? "Activer Explore" : "Enable Explore"}<span aria-hidden="true">↗</span></button></div> : null}
       <div className="lab-v2-grid"><SignalLab /><TypeLab /></div>
       <p className="lab-v2-background-note mono">{creativeLabCopy.background[locale]}</p>
     </section>

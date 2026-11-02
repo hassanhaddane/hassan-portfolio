@@ -50,7 +50,6 @@ html:not([data-intro-pending="true"]) .cinematic-intro { display: none; }
 .cinematic-intro__skip:active { color: #91abff; }
 .cinematic-intro__skip:focus-visible,
 .intro-controls button:focus-visible,
-.intro-sound-toggle:focus-visible,
 .intro-replay:focus-visible { outline: 2px solid #a3b9ff; outline-offset: 5px; }
 
 .intro-logo {
@@ -159,7 +158,7 @@ html:not([data-intro-pending="true"]) .cinematic-intro { display: none; }
 .cinematic-intro__status i:nth-child(3) { animation-delay: 320ms; }
 .cinematic-intro[data-phase="choice"] .cinematic-intro__status,
 .cinematic-intro[data-phase="transition"] .cinematic-intro__status { display: none; }
-.intro-controls { display: flex; justify-content: center; flex-wrap: wrap; gap: 0.75rem; width: min(100%, 690px); }
+.intro-controls { display: flex; justify-content: center; flex-wrap: wrap; gap: 0.75rem; width: min(100%, 360px); }
 .intro-controls button {
   display: inline-flex;
   align-items: center;
@@ -179,10 +178,10 @@ html:not([data-intro-pending="true"]) .cinematic-intro { display: none; }
 .intro-controls button:hover { border-color: #91abff; background: #1c2b4b; }
 .intro-controls button:active { transform: translateY(2px); }
 .intro-controls button svg { width: 17px; height: 17px; }
-.intro-controls .intro-controls__sound { border-color: #3267ff; background: #3267ff; }
-.intro-controls .intro-controls__sound:hover { background: #2453dd; }
+.intro-controls .intro-controls__enter { border-color: #3267ff; background: #3267ff; }
+.intro-controls .intro-controls__enter:hover { background: #2453dd; }
 .intro-controls__arrow { margin-left: auto; color: #91abff; transition: transform 180ms; }
-.intro-controls__sound .intro-controls__arrow { color: #f3f1eb; }
+.intro-controls__enter .intro-controls__arrow { color: #f3f1eb; }
 .intro-controls button:hover .intro-controls__arrow { transform: translate(3px, -3px); }
 
 .intro-transition { position: absolute; inset: 0; z-index: 1; opacity: 0; pointer-events: none; overflow: hidden; }
@@ -198,7 +197,6 @@ html:not([data-intro-pending="true"]) .cinematic-intro { display: none; }
 .cinematic-intro[data-phase="transition"] .intro-transition__nodes i { animation: intro-node 750ms var(--ease-out-expo) var(--node-delay) both; }
 html[data-intro-phase="transition"] #profil { animation: intro-hero-arrive 880ms var(--ease-out-expo) both; }
 
-.intro-sound-toggle,
 .intro-replay {
   display: inline-grid;
   place-items: center;
@@ -209,14 +207,9 @@ html[data-intro-phase="transition"] #profil { animation: intro-hero-arrive 880ms
   background: var(--surface-raised);
   color: var(--foreground);
 }
-.intro-sound-toggle:hover,
 .intro-replay:hover { border-color: var(--primary); color: var(--cobalt-light); }
-.intro-sound-toggle:active,
 .intro-replay:active { transform: translateY(2px); }
-.intro-sound-toggle[aria-pressed="true"] { border-color: var(--primary); color: var(--cobalt-light); }
-.intro-sound-toggle:disabled,
 .intro-replay:disabled { opacity: 0.4; cursor: not-allowed; }
-.intro-sound-toggle svg,
 .intro-replay svg { width: 17px; height: 17px; }
 .intro-replay--mobile { width: 100%; gap: 0.65rem; display: flex; justify-content: center; margin-top: 0.75rem; }
 
@@ -241,6 +234,6 @@ html[data-intro-phase="transition"] #profil { animation: intro-hero-arrive 880ms
 }
 @media (prefers-reduced-motion: reduce) {
   .cinematic-intro { display: none !important; }
-  .intro-sound-toggle, .intro-replay { transition: none; }
+  .intro-replay { transition: none; }
 }
 html[data-motion="off"] .cinematic-intro { display: none !important; }

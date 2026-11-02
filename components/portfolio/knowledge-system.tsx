@@ -1,12 +1,58 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import { usePreferences } from "@/components/system/preferences";
-import { certifications, education, skillGroups } from "@/lib/knowledge-data";
-import { professionalWork } from "@/lib/work-data";
+import { setFieldSignal } from "@/lib/field-signal";
+import { certifications, education, skillGroups, type Skill } from "@/lib/knowledge-data";
+import { evidenceTargetName, professionalWork, type ProfessionalWork } from "@/lib/work-data";
+import { setWorkSignal } from "@/lib/work-signal";
 import { ChapterIdentity, EntityTypeMarker } from "./narrative";
+
+const chronologicalWork = [...professionalWork].reverse();
 
 export function KnowledgeSystem() {
   const { locale } = usePreferences();
+  const [activeWork, setActiveWork] = useState<ProfessionalWork["id"]>("biosency");
+  const [activeSkill, setActiveSkill] = useState("React");
+  const experienceList = useRef<HTMLDivElement>(null);
+
+  const activateWork = (work: ProfessionalWork) => {
+    setActiveWork(work.id);
+    setWorkSignal(work.id);
+  };
+
+  const activateSkill = (skill: Skill) => {
+    if (!skill.relations.length) return;
+    setActiveSkill(skill.name);
+    setFieldSignal(skill.signal ?? null);
+  };
+
+  useEffect(() => {
+    const list = experienceList.current;
+    if (!list) return;
+    const articles = [...list.querySelectorAll<HTMLElement>("[data-work-id]")];
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        const work = chronologicalWork.find(
+          (item) => item.id === (visible?.target as HTMLElement | undefined)?.dataset.workId,
+        );
+        if (work) {
+          setActiveWork(work.id);
+          setWorkSignal(work.id);
+        }
+      },
+      { rootMargin: "-28% 0px -52%", threshold: [0.15, 0.4, 0.7] },
+    );
+    articles.forEach((article) => observer.observe(article));
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => () => setFieldSignal(null), []);
+
+  const relation = skillGroups.flatMap((group) => group.skills).find((skill) => skill.name === activeSkill);
 
   return (
     <>
@@ -35,9 +81,19 @@ export function KnowledgeSystem() {
           </div>
         </header>
 
-        <div className="clarity-experience-list">
-          {professionalWork.map((work, index) => (
-            <article key={work.id} className="clarity-experience-entry reveal" data-reveal="line" data-primary={work.id === "iaudiogram"}>
+        <div className="clarity-experience-list" ref={experienceList}>
+          {chronologicalWork.map((work, index) => (
+            <article
+              key={work.id}
+              className="clarity-experience-entry reveal"
+              data-reveal="line"
+              data-primary={work.id === "iaudiogram"}
+              data-active={activeWork === work.id}
+              data-work-id={work.id}
+              tabIndex={0}
+              onPointerEnter={() => activateWork(work)}
+              onFocus={() => activateWork(work)}
+            >
               <EntityTypeMarker kind="experience" index={String(index + 1).padStart(2, "0")} />
               <div className="clarity-experience-main">
                 <header>
@@ -93,10 +149,36 @@ export function KnowledgeSystem() {
               <span className="mono">{String(index + 1).padStart(2, "0")}</span>
               <h3 id={`skill-group-${index}`}>{group.label[locale]}</h3>
               <ul>
-                {group.skills.map((item) => <li key={item.name}>{item.name}</li>)}
+                {group.skills.map((item) => {
+                  const hasRelation = item.relations.length > 0;
+                  return (
+                    <li key={item.name} data-related={activeSkill === item.name}>
+                      {hasRelation ? (
+                        <button
+                          type="button"
+                          aria-pressed={activeSkill === item.name}
+                          onPointerEnter={() => activateSkill(item)}
+                          onFocus={() => activateSkill(item)}
+                          onClick={() => activateSkill(item)}
+                        >
+                          {item.name}
+                        </button>
+                      ) : item.name}
+                    </li>
+                  );
+                })}
               </ul>
             </section>
           ))}
+        </div>
+
+        <div className="skill-relation-readout" aria-live="polite">
+          <span className="mono">{locale === "fr" ? "PREUVES LIÉES" : "RELATED WORK"}</span>
+          <strong>{activeSkill}</strong>
+          <span aria-hidden="true">→</span>
+          <ul>
+            {relation?.relations.map((target) => <li key={target}>{evidenceTargetName(target)}</li>)}
+          </ul>
         </div>
       </section>
 
@@ -127,7 +209,7 @@ export function KnowledgeSystem() {
             <h3>{education.school}</h3>
             <p>{education.field[locale]}</p>
           </div>
-          <ol>
+          <ol className="education-progression">
             {education.degrees.map((degree) => (
               <li key={degree.level}>
                 <strong>{degree.level.toUpperCase()}</strong>
@@ -140,7 +222,7 @@ export function KnowledgeSystem() {
           </ol>
         </article>
         <p className="clarity-education-certification mono">
-          CERTIFICATION · {certifications[0].name} · {certifications[0].year}
+          {locale === "fr" ? "CERTIFICATION" : "CERTIFICATION"} · {certifications[0].name} · {certifications[0].year}
         </p>
       </section>
     </>

@@ -6,8 +6,8 @@ import "./hero-system.css";
 import "./narrative-system.css";
 import "./theme-system.css";
 import "./entity-type-system.css";
-import "./story-motion.css";
 import "./clarity-system.css";
+import "./story-motion.css";
 import "./intro-system.css";
 import { SITE_ORIGIN, seoContent } from "@/lib/seo";
 

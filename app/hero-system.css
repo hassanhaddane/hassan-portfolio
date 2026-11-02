@@ -509,6 +509,9 @@ html[data-intro-phase="off"] .signal-hero[data-entry="true"] .signal-hero__lette
 .signal-hero__facts strong { font-family: var(--display); font-size: clamp(2rem, 3.1vw, 3rem); line-height: 0.92; letter-spacing: -0.04em; }
 .signal-hero__facts span { color: var(--text-secondary); font-size: 0.77rem; line-height: 1.3; }
 .signal-hero__stack { display: grid; gap: 0.6rem; color: var(--text-tertiary); }
+.signal-hero__mobility { display: flex; flex-wrap: wrap; gap: .25rem .65rem; margin: 1rem 0 0; padding-left: .75rem; border-left: 2px solid var(--primary); color: var(--foreground); font-size: .95rem; line-height: 1.45; }
+.signal-hero__mobility strong { color: var(--text-secondary); font-weight: 500; }
+.signal-hero__mobility span { font-weight: 650; }
 .signal-hero__stack > span { font-size: 0.6rem; letter-spacing: 0.1em; }
 .signal-hero__stack > div { display: flex; flex-wrap: wrap; gap: 0.3rem 0.5rem; }
 .signal-hero__technology { min-height: 34px; padding: 0.2rem 0.45rem; border: 1px solid var(--border); background: color-mix(in srgb, var(--surface) 70%, transparent); color: var(--text-secondary); font-size: 0.7rem; }

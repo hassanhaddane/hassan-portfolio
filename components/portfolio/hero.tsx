@@ -118,6 +118,7 @@ export function Hero() {
               ? "Des interfaces aux API, je relie précision technique et attention à l’expérience."
               : "From interfaces to APIs, I bring technical precision and care for the experience together."}
           </p>
+          <p className="signal-hero__mobility"><strong>{locale === "fr" ? "Mobilité" : "Open to opportunities in"}</strong><span>{profile.mobility[locale]}</span></p>
           <div className="signal-hero__actions">
             <CreativeAction className="magnetic" variant="primary" href="#projets" label={locale === "fr" ? "Découvrir mes projets" : "Explore my work"} data-cursor="WORK" />
             <CreativeAction className="magnetic" variant="secondary" href={profile.cv} download="CV-Hassan-Haddane.pdf" label={copy.download[locale]} icon={<ArrowDownToLine aria-hidden="true" />} data-cursor="CV" />
