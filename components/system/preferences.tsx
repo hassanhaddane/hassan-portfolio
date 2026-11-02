@@ -134,6 +134,7 @@ export function PreferencesProvider({
       /* Optional persistence. */
     }
     document.documentElement.lang = locale;
+    document.querySelector<HTMLElement>("[data-portfolio-root]")?.setAttribute("lang", locale);
     document.documentElement.dataset.mode = mode;
     document.documentElement.dataset.motion = motion ? "on" : "off";
     document.documentElement.dataset.expressiveMotion = expressiveMotion ? "on" : "off";
@@ -150,11 +151,14 @@ export function PreferencesProvider({
       history.replaceState(history.state, "", nextUrl);
 
     const seo = seoContent[locale];
-    document.title = seo.title;
+    document.title = `${seo.title} // LOWKYZ`;
     document.querySelector<HTMLMetaElement>('meta[name="description"]')?.setAttribute("content", seo.description);
     document.querySelector<HTMLMetaElement>('meta[property="og:title"]')?.setAttribute("content", seo.title);
     document.querySelector<HTMLMetaElement>('meta[property="og:description"]')?.setAttribute("content", seo.ogDescription);
     document.querySelector<HTMLMetaElement>('meta[property="og:locale"]')?.setAttribute("content", locale === "fr" ? "fr_FR" : "en_GB");
+    document.querySelector<HTMLMetaElement>('meta[property="og:url"]')?.setAttribute("content", `${SITE_ORIGIN}/${locale}`);
+    document.querySelector<HTMLMetaElement>('meta[name="twitter:title"]')?.setAttribute("content", seo.title);
+    document.querySelector<HTMLMetaElement>('meta[name="twitter:description"]')?.setAttribute("content", seo.ogDescription);
     document.querySelector<HTMLLinkElement>('link[rel="canonical"]')?.setAttribute("href", `${SITE_ORIGIN}/${locale}`);
   }, [ready, locale, mode, motionEnabled, motion, expressiveMotion, theme]);
 

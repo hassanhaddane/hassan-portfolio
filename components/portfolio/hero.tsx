@@ -155,13 +155,14 @@ export function Hero() {
           <i aria-hidden="true" />
           <span>{locale === "fr" ? "Ouvert aux échanges professionnels" : "Open to professional conversations"}</span>
         </a>
-        <button className="signal-hero__email" type="button" onClick={copyEmail} aria-label={locale === "fr" ? `Copier l’adresse email ${profile.email}` : `Copy email address ${profile.email}`}>
+        <button className="signal-hero__email" type="button" onClick={copyEmail}>
+          <span className="sr-only">{locale === "fr" ? "Copier l’adresse : " : "Copy address: "}</span>
           <span className="mono">EMAIL</span>
           <strong>{emailCopied ? copy.copied[locale] : profile.email}</strong>
           {emailCopied ? <Check aria-hidden="true" /> : <Copy aria-hidden="true" />}
         </button>
-        <a className="signal-hero__scroll" href="#greecheck">
-          <span className="mono">{locale === "fr" ? "DÉFILER POUR EXPLORER" : "SCROLL TO EXPLORE"}</span>
+        <a className="signal-hero__scroll" href="#greecheck" >
+          <span className="sr-only">{locale === "fr" ? "Défiler pour explorer" : "Scroll to explore"}</span><span className="mono" aria-hidden="true">{locale === "fr" ? "DÉFILER POUR EXPLORER" : "SCROLL TO EXPLORE"}</span>
           <ArrowDown aria-hidden="true" />
         </a>
       </div>

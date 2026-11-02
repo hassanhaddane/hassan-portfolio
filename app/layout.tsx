@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { GeistSans } from "geist/font/sans";
+import { GeistSans } from "@/lib/fonts";
 import localFont from "next/font/local";
 import "./globals.css";
 import "./hero-system.css";

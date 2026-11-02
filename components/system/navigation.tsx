@@ -72,10 +72,10 @@ export function Navigation() {
         </nav>
 
         <div className="masthead-utilities">
-          <button type="button" className="portfolio-mode-switch" onClick={() => setMode(mode === "recruiter" ? "explore" : "recruiter")} aria-label={mode === "recruiter" ? (locale === "fr" ? "Passer en mode Explore" : "Switch to Explore mode") : (locale === "fr" ? "Passer en mode Recruteur" : "Switch to Recruiter mode")} aria-pressed={mode === "explore"} title={mode === "recruiter" ? "Explore" : "Recruiter"}>
+          <button type="button" className="portfolio-mode-switch" onClick={() => setMode(mode === "recruiter" ? "explore" : "recruiter")} aria-label={mode === "recruiter" ? (locale === "fr" ? "Recruteur : passer en mode Explore" : "Recruiter: switch to Explore mode") : (locale === "fr" ? "Explore : passer en mode Recruteur" : "Explore: switch to Recruiter mode")} aria-pressed={mode === "explore"} title={mode === "recruiter" ? "Explore" : "Recruiter"}>
             <Orbit aria-hidden="true" /><span className="portfolio-mode-switch__label" data-for-mode="recruiter">{locale === "fr" ? "Recruteur" : "Recruiter"}</span><span className="portfolio-mode-switch__label" data-for-mode="explore">Explore</span><span className="portfolio-mode-switch__dot" aria-hidden="true" />
           </button>
-          <button type="button" className="signal-masthead__command" data-command-trigger onClick={() => setCommandOpen(true)} aria-label={locale === "fr" ? "Ouvrir la recherche et les commandes" : "Open search and commands"} title="Cmd / Ctrl + K">
+          <button type="button" className="signal-masthead__command" data-command-trigger onClick={() => setCommandOpen(true)} aria-label={locale === "fr" ? "⌘ K — Ouvrir la recherche et les commandes" : "⌘ K — Open search and commands"} title="Cmd / Ctrl + K">
             <Search aria-hidden="true" /><kbd>⌘ K</kbd>
           </button>
           <button type="button" className="theme-switch theme-switch-desktop" onClick={toggleTheme} aria-label={themeLabel} title={themeLabel}>
@@ -83,8 +83,8 @@ export function Navigation() {
           </button>
           <SoundToggle />
           <ReplayIntro />
-          <button type="button" className="locale-switch mono" onClick={() => setLocale(locale === "fr" ? "en" : "fr")} aria-label={locale === "fr" ? "Switch to English" : "Passer en français"}>
-            <span data-current={locale === "fr"}>FR</span><span aria-hidden="true">/</span><span data-current={locale === "en"}>EN</span>
+          <button type="button" className="locale-switch mono" onClick={() => setLocale(locale === "fr" ? "en" : "fr")} >
+            <span className="sr-only">{locale === "fr" ? "Switch to English : " : "Passer en français : "}</span><span data-current={locale === "fr"}>FR</span><span aria-hidden="true">/</span><span data-current={locale === "en"}>EN</span>
           </button>
 
           <Dialog open={menuOpen} onOpenChange={setMenuOpen}>

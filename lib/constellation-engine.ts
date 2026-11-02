@@ -234,5 +234,6 @@ export function createConstellation(
     pointMaterial.dispose();
     lineMaterial.dispose();
     renderer.dispose();
+    renderer.forceContextLoss();
   };
 }

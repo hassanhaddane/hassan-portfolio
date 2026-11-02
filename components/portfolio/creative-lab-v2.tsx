@@ -164,7 +164,7 @@ function TypeLab() {
     <article className="lab-v2-experiment lab-v2-type" aria-labelledby="type-lab-title">
       <header><span className="mono">02 / TYPE + SVG</span><h3 id="type-lab-title">TYPE LAB</h3><p>{locale === "fr" ? "Une grille typographique qui se décale avec le pointeur. Réglez l’espacement et l’inclinaison pour changer sa silhouette." : "A typographic grid that reacts to the pointer. Adjust spacing and slant to reshape its silhouette."}</p></header>
       <div className="lab-v2-stage lab-v2-type-stage" ref={surface} onPointerMove={move} onPointerLeave={reset} data-active={running} style={{ "--type-spacing": `${spacing}px`, "--type-slant": `${slant}deg` } as CSSProperties}>
-        <span className="lab-v2-type-word" aria-label="LOWKYZ">{[..."LOWKYZ"].map((letter, index) => <span key={index} aria-hidden="true" style={{ "--glyph": index } as CSSProperties}>{letter}</span>)}</span>
+        <span className="lab-v2-type-word" role="img" aria-label="LOWKYZ">{[..."LOWKYZ"].map((letter, index) => <span key={index} aria-hidden="true" style={{ "--glyph": index } as CSSProperties}>{letter}</span>)}</span>
         <svg viewBox="0 0 600 240" preserveAspectRatio="none" aria-hidden="true"><path d="M0 120 H600 M300 0 V240" /><circle cx="300" cy="120" r="68" /></svg>
         <span className="mono lab-v2-stage-label">LOWKYZ / GRID 02</span>
       </div>

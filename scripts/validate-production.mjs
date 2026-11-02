@@ -1,5 +1,6 @@
 import { readFile, readdir, stat } from "node:fs/promises";
 import path from "node:path";
+import ts from "typescript";
 
 const root = process.cwd();
 const failures = [];
@@ -9,15 +10,22 @@ const requiredFiles = [
   "app/opengraph-image.tsx",
   "app/robots.ts",
   "app/sitemap.ts",
-  "components/portfolio/about.tsx",
-  "components/portfolio/contact.tsx",
-  "components/portfolio/knowledge-system.tsx",
+  "components/portfolio/about-v2.tsx",
+  "components/portfolio/contact-v2.tsx",
+  "components/portfolio/journey-expertise-v2.tsx",
+  "components/portfolio/creative-lab-v2.tsx",
+  "components/portfolio/projects-v2.tsx",
+  "app/[locale]/work/[slug]/page.tsx",
   "public/sw.js",
   "public/cv-hassan-haddane.pdf",
   "public/projects/greecheck/home-desktop.png",
   "public/projects/greecheck/scan-desktop-crop.png",
   "public/projects/greecheck/product-desktop.png",
   "public/projects/greecheck/compare-desktop.png",
+  "public/projects/808bloom/home-desktop.png",
+  "public/projects/808bloom/home-mobile.png",
+  "public/projects/tech-express/v1-desktop.png",
+  "public/projects/tech-express/v2-desktop.png",
 ];
 
 async function exists(relativePath) {
@@ -62,6 +70,28 @@ for (const file of sourceFiles) {
   const source = await readFile(file, "utf8");
   for (const token of forbidden) {
     if (source.includes(token)) failures.push(`${path.relative(root, file)} contains forbidden token: ${token}`);
+  }
+  if (path.dirname(file) === path.join(root, "lib") && /\.ts$/.test(file)) {
+    const ast = ts.createSourceFile(file, source, ts.ScriptTarget.Latest, true);
+    const visit = (node) => {
+      // Validate both object literals and the shared text(fr, en) data helper.
+      if (ts.isObjectLiteralExpression(node)) {
+        const props = node.properties.filter(ts.isPropertyAssignment);
+        if (props.some((prop) => prop.name.getText(ast) === "fr")) {
+          for (const locale of ["fr", "en"]) {
+            const prop = props.find((item) => item.name.getText(ast) === locale);
+            if (!prop || (ts.isStringLiteral(prop.initializer) && !prop.initializer.text.trim()))
+              failures.push(`${path.relative(root, file)}: missing ${locale} translation`);
+          }
+        }
+      }
+      if (ts.isCallExpression(node) && node.expression.getText(ast) === "text") {
+        if (node.arguments.length !== 2 || node.arguments.some((arg) => ts.isStringLiteral(arg) && !arg.text.trim()))
+          failures.push(`${path.relative(root, file)}: empty bilingual text`);
+      }
+      ts.forEachChild(node, visit);
+    };
+    visit(ast);
   }
 }
 

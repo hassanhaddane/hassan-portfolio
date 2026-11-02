@@ -1,6 +1,14 @@
 # LOWKYZ — Creative V2 : masterplan
 
-Date : 31 octobre 2026, Europe/Paris. Statut : **préparation uniquement, aucune implémentation V2**.
+Mis à jour le 2 novembre 2026, Europe/Paris. Statut : **Creative V2 implémentée ; validation locale terminée, revue humaine et configuration Vercel restantes**.
+
+## État de livraison
+
+Les sections V2, l’intro isolée, les modes Recruteur/Explore, trois études de cas FR/EN, la timeline, les compétences documentées, About, deux expériences Lab et Contact sont implémentés. Les données du CV sont centralisées ; le PDF fourni reste identique. Un seul moteur Three.js avec fallback et nettoyage GPU est utilisé.
+
+Résultats réels et réserves : [PRODUCTION_QA.md](./PRODUCTION_QA.md). Revue créative : [VISUAL_QA.md](./VISUAL_QA.md). Installation, architecture et procédure Vercel : [README](../../README.md). L’origine canonique livrée est `https://lowkyz.dev` ; configurer le domaine primaire en conséquence. Aucun push ni déploiement effectué.
+
+Le texte ci-dessous conserve le plan initial du 31 octobre comme historique. Ses formulations au futur ne décrivent pas l’état actuel des composants. Les documents QA et le README prévalent pour l’architecture livrée, les commandes et les limites.
 
 Ce document s'appuie sur [BASELINE.md](./BASELINE.md), le dépôt local, le CV fourni et les captures de cette session. Il remplace les anciennes hypothèses de direction pour cette future phase, sans supprimer les documents historiques. Les budgets ci-dessous sont des objectifs à vérifier, jamais des performances déjà acquises.
 

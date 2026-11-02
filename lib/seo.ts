@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import type { Locale } from "./portfolio-data";
 
-// The apex currently redirects to www; use the final host consistently.
-export const SITE_ORIGIN = "https://www.lowkyz.dev";
+export const SITE_ORIGIN = "https://lowkyz.dev";
 
 export const seoContent = {
   fr: {
