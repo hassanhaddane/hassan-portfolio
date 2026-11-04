@@ -1,47 +1,80 @@
 "use client";
 
 import Image from "next/image";
+import { ArrowUpRight } from "lucide-react";
 import { usePreferences } from "@/components/system/preferences";
 import { languages } from "@/lib/knowledge-data";
 import { personalStory } from "@/lib/personal-data";
-import { profile } from "@/lib/portfolio-data";
-import { ChapterIdentity } from "./narrative";
+import { experienceCopy as words } from "@/lib/experience-copy";
+import { SectionHeading } from "./section-heading";
 
 export function AboutV2() {
   const { locale } = usePreferences();
   return (
-    <section id="about" data-section tabIndex={-1} className="clarity-section section-shell section-space personal-v2" aria-labelledby="about-title">
-      <header className="clarity-section-header reveal" data-reveal="mask">
-        <ChapterIdentity index="06" kind="about" category={{ fr: "À PROPOS", en: "ABOUT" }} title={{ fr: "HASSAN HADDANE", en: "HASSAN HADDANE" }} />
-        <div className="clarity-section-heading">
-          <span className="mono">{profile.role[locale].toUpperCase()} / {profile.location[locale].toUpperCase()}</span>
-          <h2 id="about-title">{personalStory.title[locale]}</h2>
-          <p>{personalStory.introduction[locale]}</p>
-        </div>
-      </header>
-
-      <div className="personal-v2-composition">
-        <figure className="personal-v2-portrait reveal" data-reveal="line">
-          <div className="personal-v2-portrait-frame">
-            <span className="personal-v2-portrait-ring" aria-hidden="true" />
-            <Image src="/profile/hassan-haddane-cv.png" alt={locale === "fr" ? "Portrait de Hassan Haddane issu de son CV" : "Portrait of Hassan Haddane from his résumé"} width={306} height={306} sizes="(max-width: 700px) 180px, 260px" />
+    <section
+      id="about"
+      data-section
+      tabIndex={-1}
+      className="about-section section-shell section-space"
+      aria-labelledby="about-title"
+    >
+      <SectionHeading
+        number="04"
+        label={locale === "fr" ? "À PROPOS" : "ABOUT"}
+        title={words.aboutTitle[locale]}
+        id="about-title"
+      />
+      <div className="about-composition">
+        <figure className="about-portrait">
+          <div className="portrait-register" aria-hidden="true">
+            H / L
           </div>
-          <figcaption className="mono">HASSAN HADDANE <span>/</span> {locale === "fr" ? "PORTRAIT DU CV 2026" : "2026 RÉSUMÉ PORTRAIT"}</figcaption>
+          <Image
+            src="/profile/hassan-haddane-cv.png"
+            alt="Hassan Haddane"
+            width={306}
+            height={306}
+            sizes="(max-width: 700px) 170px, 250px"
+          />
+          <figcaption className="mono">
+            HASSAN HADDANE<span>RENNES, FRANCE</span>
+          </figcaption>
         </figure>
-        <div className="personal-v2-copy">
-          <p className="personal-v2-lead">{personalStory.practice[locale]}</p>
-          <div className="personal-v2-notes">
-            <div><span className="mono">01 / {locale === "fr" ? "AUDIO & COLLECTIF" : "AUDIO & COLLECTIVE"}</span><p>{personalStory.beyond[locale]} <a href={`/${locale}/work/808bloom`}>{locale === "fr" ? "Voir 808BLOOM ↗" : "Explore 808BLOOM ↗"}</a></p></div>
-            <div><span className="mono">02 / {locale === "fr" ? "CURIOSITÉ" : "CURIOSITY"}</span><p>{personalStory.curiosity[locale]}</p></div>
+        <div className="about-copy">
+          <p className="about-lead">{personalStory.introduction[locale]}</p>
+          <p>{personalStory.practice[locale]}</p>
+          <div className="about-notes">
+            <div>
+              <h3>
+                {locale === "fr"
+                  ? "Le son, l’autre langage."
+                  : "Sound, another language."}
+              </h3>
+              <p>{personalStory.beyond[locale]}</p>
+              <a className="text-link" href={`/${locale}/work/808bloom`}>
+                808BLOOM
+                <ArrowUpRight aria-hidden="true" />
+              </a>
+            </div>
+            <div>
+              <h3>
+                {locale === "fr"
+                  ? "Garder l’esprit ouvert."
+                  : "Keep an open mind."}
+              </h3>
+              <p>{personalStory.curiosity[locale]}</p>
+            </div>
           </div>
         </div>
       </div>
-
-      <div className="personal-v2-languages">
-        <span className="mono">{locale === "fr" ? "LANGUES" : "LANGUAGES"}</span>
-        <ul>{languages.map((language) => <li key={language.name.en}><strong>{language.name[locale]}</strong><span>{language.level[locale]}</span></li>)}</ul>
+      <div className="about-languages mono">
+        {languages.map((language) => (
+          <span key={language.name.en}>
+            {language.name[locale]}
+            <strong>{language.level[locale]}</strong>
+          </span>
+        ))}
       </div>
-      <svg className="personal-v2-wave" viewBox="0 0 1440 100" preserveAspectRatio="none" aria-hidden="true"><path d="M0 50 C130 50 150 12 280 50 S430 87 560 50 S710 12 840 50 S990 87 1120 50 S1290 12 1440 50" /></svg>
     </section>
   );
 }

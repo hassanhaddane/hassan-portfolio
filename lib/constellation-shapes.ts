@@ -22,7 +22,6 @@ export const stageIndex: Record<string, number> = {
   stack: 3,
   education: 4,
   about: 5,
-  lab: 5,
   contact: 6,
 };
 

@@ -1,39 +1,60 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { ArrowUpRight } from "lucide-react";
 import { usePreferences } from "@/components/system/preferences";
-import { CinematicTransition } from "./cinematic-transition";
-import { IntroControls } from "./intro-controls";
 import { useIntro } from "./intro-context";
 import { LogoReveal } from "./logo-reveal";
 
 export function Intro() {
   const { locale } = usePreferences();
   const { phase, skip } = useIntro();
-  const skipButton = useRef<HTMLButtonElement>(null);
-
+  const button = useRef<HTMLButtonElement>(null);
   useEffect(() => {
-    if (phase === "blackout" && document.documentElement.dataset.introPending === "true")
-      skipButton.current?.focus({ preventScroll: true });
+    if (
+      phase === "off" ||
+      document.documentElement.dataset.introPending !== "true"
+    )
+      return;
+    const content = document.querySelector<HTMLElement>("[data-site-content]");
+    if (content) content.inert = true;
+    button.current?.focus({ preventScroll: true });
+    return () => {
+      if (content) content.inert = false;
+    };
   }, [phase]);
-
   if (phase === "off") return null;
-
   return (
-    <aside className="cinematic-intro" data-phase={phase} aria-label={locale === "fr" ? "Introduction LOWKYZ" : "LOWKYZ introduction"}>
-      <div className="cinematic-intro__grain" aria-hidden="true" />
-      <button ref={skipButton} type="button" className="cinematic-intro__skip" onClick={skip}>
-        {locale === "fr" ? "Passer l’intro" : "Skip intro"}<span aria-hidden="true">↗</span>
-      </button>
-      <span className="cinematic-intro__corner mono" aria-hidden="true">LOWKYZ / 001</span>
+    <aside
+      role="dialog"
+      aria-modal="true"
+      aria-label={
+        locale === "fr" ? "Introduction LOWKYZ" : "LOWKYZ introduction"
+      }
+      className="cinematic-intro"
+      data-phase={phase}
+    >
+      <div className="intro-top mono">
+        <span>LOWKYZ / 001</span>
+        <button
+          ref={button}
+          onClick={skip}
+          onKeyDown={(event) => {
+            if (event.key === "Tab") event.preventDefault();
+          }}
+        >
+          {locale === "fr" ? "Passer l’intro" : "Skip intro"}
+          <ArrowUpRight aria-hidden="true" />
+        </button>
+      </div>
       <LogoReveal />
-      <CinematicTransition />
-      <div className="cinematic-intro__footer">
-        <span className="cinematic-intro__status mono" aria-hidden="true">
-          {locale === "fr" ? "INITIALISATION DU SIGNAL" : "INITIALIZING SIGNAL"}
-          <i /><i /><i />
+      <div className="intro-bottom mono">
+        <span>HASSAN HADDANE</span>
+        <span>
+          {locale === "fr"
+            ? "DÉVELOPPEMENT × CRÉATION"
+            : "DEVELOPMENT × CREATION"}
         </span>
-        {phase === "choice" && <IntroControls />}
       </div>
     </aside>
   );
