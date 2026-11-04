@@ -1,0 +1,86 @@
+{
+  "mobile": {
+    "url": "http://localhost:3101/fr",
+    "fetchTime": "2026-11-04T18:49:29.538Z",
+    "lighthouseVersion": "13.6.0",
+    "throttlingMethod": "simulate",
+    "throttling": {
+      "rttMs": 150,
+      "throughputKbps": 1638.4,
+      "requestLatencyMs": 562.5,
+      "downloadThroughputKbps": 1474.5600000000002,
+      "uploadThroughputKbps": 675,
+      "cpuSlowdownMultiplier": 4
+    },
+    "scores": {
+      "performance": 99,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100
+    },
+    "metrics": {
+      "largest-contentful-paint": {
+        "value": 994.72675,
+        "unit": "millisecond",
+        "display": "1.0 s"
+      },
+      "total-blocking-time": {
+        "value": 97.5,
+        "unit": "millisecond",
+        "display": "100 ms"
+      },
+      "cumulative-layout-shift": {
+        "value": 0.01734553175009084,
+        "unit": "unitless",
+        "display": "0.017"
+      },
+      "speed-index": {
+        "value": 3116.4608859998675,
+        "unit": "millisecond",
+        "display": "3.1 s"
+      }
+    }
+  },
+  "desktop": {
+    "url": "http://localhost:3101/fr",
+    "fetchTime": "2026-11-04T18:48:23.813Z",
+    "lighthouseVersion": "13.6.0",
+    "throttlingMethod": "simulate",
+    "throttling": {
+      "rttMs": 40,
+      "throughputKbps": 10240,
+      "requestLatencyMs": 0,
+      "downloadThroughputKbps": 0,
+      "uploadThroughputKbps": 0,
+      "cpuSlowdownMultiplier": 1
+    },
+    "scores": {
+      "performance": 99,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100
+    },
+    "metrics": {
+      "largest-contentful-paint": {
+        "value": 257.66900000000004,
+        "unit": "millisecond",
+        "display": "0.3 s"
+      },
+      "total-blocking-time": {
+        "value": 0,
+        "unit": "millisecond",
+        "display": "0 ms"
+      },
+      "cumulative-layout-shift": {
+        "value": 0.0247838647781595,
+        "unit": "unitless",
+        "display": "0.025"
+      },
+      "speed-index": {
+        "value": 1134.598817800405,
+        "unit": "millisecond",
+        "display": "1.1 s"
+      }
+    }
+  }
+}

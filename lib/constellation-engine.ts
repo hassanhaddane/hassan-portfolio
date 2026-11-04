@@ -8,11 +8,11 @@ export type SceneState = {
   x: number;
   y: number;
   scrollSpeed: number;
-  introProgress: number;
-  workStage: number;
-  contactStrength: number;
-  contactX: number;
-  contactY: number;
+};
+
+export type ConstellationController = {
+  dispose: () => void;
+  setVisible: (visible: boolean) => void;
 };
 
 export type ConstellationQuality = "high" | "normal";
@@ -22,7 +22,7 @@ export function createConstellation(
   canvas: HTMLCanvasElement,
   state: { current: SceneState },
   quality: ConstellationQuality = "normal",
-) {
+): ConstellationController {
   const renderer = new THREE.WebGLRenderer({
     canvas,
     alpha: true,
@@ -110,6 +110,7 @@ export function createConstellation(
   const lines = new THREE.LineSegments(lineGeometry, lineMaterial);
   lines.frustumCulled = false;
   group.add(lines);
+  let visible = true;
   let running = true,
     raf = 0,
     last = 0,
@@ -124,7 +125,10 @@ export function createConstellation(
   };
   const resize = () => {
     renderer.setPixelRatio(
-      Math.min(devicePixelRatio, downgraded ? 1 : quality === "high" ? 1.5 : 1.25),
+      Math.min(
+        devicePixelRatio,
+        downgraded ? 1 : quality === "high" ? 1.5 : 1.25,
+      ),
     );
     renderer.setSize(innerWidth, innerHeight, false);
     uniforms.uDpr.value = renderer.getPixelRatio();
@@ -136,7 +140,9 @@ export function createConstellation(
   };
   resize();
   const render = (now: number) => {
-    if (!running || document.hidden) return;
+    raf = 0;
+    if (!running || document.hidden || !visible) return;
+    canvas.dataset.running = "true";
     const delta = Math.min((now - (last || now)) / 1000, 0.04);
     if (last) {
       averageFrame = averageFrame * 0.97 + (now - last) * 0.03;
@@ -157,19 +163,10 @@ export function createConstellation(
     const stageTo = Math.ceil(stage);
     const rawBlend = stage - stageFrom;
     const blend = rawBlend * rawBlend * (3 - rawBlend * 2);
-    const fromTarget = targets[stageFrom === 1 ? data.workStage : stageFrom];
-    const toTarget = targets[stageTo === 1 ? data.workStage : stageTo];
+    const fromTarget = targets[stageFrom];
+    const toTarget = targets[stageTo];
     for (let i = 0; i < positions.length; i++) {
-      let destination = fromTarget[i] + (toTarget[i] - fromTarget[i]) * blend;
-      if (stage > 5.35 && data.contactStrength > 0) {
-        const axis = i % 3;
-        const contactTarget = axis === 0
-          ? data.contactX * camera.aspect * 3.3
-          : axis === 1
-            ? -data.contactY * 2.75
-            : 0;
-        destination += (contactTarget - destination) * data.contactStrength * 0.86;
-      }
+      const destination = fromTarget[i] + (toTarget[i] - fromTarget[i]) * blend;
       positions[i] += (destination - positions[i]) * easing;
     }
     for (let i = 0; i < edges.length; i++) {
@@ -208,7 +205,8 @@ export function createConstellation(
   };
   const visibility = () => {
     cancelAnimationFrame(raf);
-    if (!document.hidden && running) {
+    canvas.dataset.running = "false";
+    if (!document.hidden && running && visible) {
       last = 0;
       raf = requestAnimationFrame(render);
     }
@@ -218,13 +216,15 @@ export function createConstellation(
     running = false;
     cancelAnimationFrame(raf);
     canvas.dataset.failed = "true";
+    canvas.dataset.running = "false";
   };
   addEventListener("resize", resize, { passive: true });
   document.addEventListener("visibilitychange", visibility);
   canvas.addEventListener("webglcontextlost", lost);
   raf = requestAnimationFrame(render);
-  return () => {
+  const dispose = () => {
     running = false;
+    canvas.dataset.running = "false";
     cancelAnimationFrame(raf);
     removeEventListener("resize", resize);
     document.removeEventListener("visibilitychange", visibility);
@@ -235,5 +235,12 @@ export function createConstellation(
     lineMaterial.dispose();
     renderer.dispose();
     renderer.forceContextLoss();
+  };
+  return {
+    dispose,
+    setVisible(next) {
+      visible = next;
+      visibility();
+    },
   };
 }

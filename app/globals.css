@@ -614,9 +614,6 @@ main:focus {
   box-shadow: 0 20px 32px #0004;
   transition: transform 600ms var(--ease-out-expo);
 }
-.work-image-link:hover > img {
-  transform: translateY(-4px);
-}
 .work-entry--greecheck .work-image-link {
   padding: 23px 80px 42px 23px;
 }
@@ -906,6 +903,9 @@ main:focus {
   margin: 0 10px;
 }
 .expertise-technologies a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
   text-decoration: underline;
   text-underline-offset: 4px;
   text-decoration-color: var(--border-strong);
@@ -1136,34 +1136,6 @@ main:focus {
   color: var(--signal);
 }
 /* Shared motion hooks, independent of visitor categories. */
-.reveal {
-  transition:
-    opacity 600ms var(--ease-out-expo),
-    transform 700ms var(--ease-out-expo);
-}
-.reveal[data-revealed="false"] {
-  opacity: 0.15;
-  transform: translateY(18px);
-}
-.reveal[data-revealed="true"] {
-  opacity: 1;
-  transform: none;
-}
-.custom-cursor {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 45;
-  width: 32px;
-  height: 32px;
-  border: 1px solid #c4f57855;
-  border-radius: 50%;
-  pointer-events: none;
-  opacity: 0;
-}
-.custom-cursor[data-hover="true"] {
-  border-color: var(--signal);
-}
 .organism-field {
   position: fixed;
   inset: 0;
@@ -1199,9 +1171,6 @@ html[data-motion="off"] *::after {
 html[data-motion="off"] .reveal {
   opacity: 1;
   transform: none;
-}
-html[data-motion="off"] .custom-cursor {
-  display: none;
 }
 
 @media (min-width: 1800px) {
@@ -1729,9 +1698,6 @@ html[data-motion="off"] .custom-cursor {
     border-top: 1px solid var(--border);
     padding-top: 10px;
   }
-  .custom-cursor {
-    display: none;
-  }
 }
 @media (max-width: 360px) {
   .hero-topline > span:last-child {
@@ -1768,11 +1734,6 @@ html[data-motion="off"] .custom-cursor {
     display: none;
   }
 }
-@media (pointer: coarse) {
-  .custom-cursor {
-    display: none;
-  }
-}
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -1782,13 +1743,6 @@ html[data-motion="off"] .custom-cursor {
   *::after {
     animation: none !important;
     transition: none !important;
-  }
-  .reveal {
-    opacity: 1 !important;
-    transform: none !important;
-  }
-  .custom-cursor {
-    display: none;
   }
 }
 

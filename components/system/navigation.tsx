@@ -64,11 +64,13 @@ export function Navigation() {
           </button>
           <a
             className="locale-switch mono"
-            href={`/${locale === "fr" ? "en" : "fr"}`}
+            href={`/${locale === "fr" ? "en" : "fr"}${activeSection === "profil" ? "" : `#${activeSection}`}`}
             hrefLang={locale === "fr" ? "en" : "fr"}
             lang={locale === "fr" ? "en" : "fr"}
             aria-label={
-              locale === "fr" ? "Switch to English" : "Passer en français"
+              locale === "fr"
+                ? "FR / EN — Switch to English"
+                : "EN / FR — Passer en français"
             }
           >
             {locale.toUpperCase()}

@@ -1,60 +1,12 @@
 "use client";
 
 import Image from "next/image";
+import { RhythmScore } from "@/components/ui/frequency-score";
 import { ArrowDown, ArrowDownToLine, ArrowUpRight } from "lucide-react";
 import { usePreferences } from "@/components/system/preferences";
 import { CreativeAction } from "@/components/ui/creative-action";
 import { experienceCopy as words } from "@/lib/experience-copy";
 import { copy, profile } from "@/lib/portfolio-data";
-
-const bars = Array.from({ length: 61 }, (_, i) => {
-  const envelope = Math.sin((i / 60) * Math.PI);
-  return {
-    x: 20 + i * 6,
-    height: Math.max(
-      6,
-      7 +
-        Math.pow(envelope, 1.5) *
-          (45 + Math.sin(i * 0.63) * 35 + Math.cos(i * 0.27) * 40),
-    ),
-  };
-});
-
-/** A deterministic score, not a playback control or simulated audio visualizer. */
-export function RhythmScore({ className = "" }: { className?: string }) {
-  return (
-    <svg
-      className={`rhythm-score ${className}`}
-      viewBox="0 0 400 220"
-      fill="none"
-      aria-hidden="true"
-    >
-      <path d="M20 110H380M200 15V205" className="score-axis" />
-      {[35, 65, 95].map((r) => (
-        <ellipse
-          key={r}
-          cx="200"
-          cy="110"
-          rx={r * 1.8}
-          ry={r}
-          className="score-orbit"
-        />
-      ))}
-      <g className="score-bars">
-        {bars.map(({ x, height }, i) => (
-          <path
-            key={i}
-            d={`M${x} ${(110 - height / 2).toFixed(2)}v${height.toFixed(2)}`}
-          />
-        ))}
-      </g>
-      <path
-        d="M20 20v8m0-4h8M380 20v8m-8-4h8M20 192v8m0-4h8M380 192v8m-8-4h8"
-        className="score-register"
-      />
-    </svg>
-  );
-}
 
 export function Hero() {
   const { locale } = usePreferences();
@@ -78,11 +30,17 @@ export function Hero() {
             id="hero-title"
             aria-label={`${profile.name} — ${profile.role[locale]}. ${words.heroCreative[locale]}`}
           >
-            <span className="hero-role">{words.heroTitle[locale]}</span>
-            <span>
-              FULL-STACK<span className="hero-period">.</span>
+            <span className="hero-role hero-arrival">
+              {words.heroTitle[locale]}
             </span>
-            <span className="hero-creative">{words.heroCreative[locale]}</span>
+            <span className="hero-title-line">
+              <span>
+                FULL-STACK<span className="hero-period">.</span>
+              </span>
+            </span>
+            <span className="hero-creative hero-title-line">
+              <span>{words.heroCreative[locale]}</span>
+            </span>
           </h1>
           <p className="hero-description">{words.heroDescription[locale]}</p>
           <div className="hero-actions">

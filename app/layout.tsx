@@ -3,6 +3,7 @@ import { GeistSans } from "@/lib/fonts";
 import localFont from "next/font/local";
 import "./globals.css";
 import "./intro-system.css";
+import "./signature-motion.css";
 import { SITE_ORIGIN, seoContent } from "@/lib/seo";
 
 const barlow = localFont({

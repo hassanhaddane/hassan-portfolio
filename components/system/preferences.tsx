@@ -10,6 +10,7 @@ import {
   type ReactNode,
 } from "react";
 import type { Locale } from "@/lib/portfolio-data";
+import { subscribeMotionFrame } from "@/lib/motion-runtime";
 import { chapters } from "@/lib/experience-copy";
 
 type Preferences = {
@@ -72,34 +73,39 @@ export function PreferencesProvider({
     const sections = chapters
       .map(({ id }) => document.getElementById(id))
       .filter((section): section is HTMLElement => !!section);
-    let frame = 0;
-    const update = () => {
-      frame = 0;
-      let id = sections[0]?.id ?? "profil";
-      for (const section of sections)
-        if (section.getBoundingClientRect().top <= innerHeight * 0.35)
-          id = section.id;
-      if (scrollY + innerHeight >= document.documentElement.scrollHeight - 4)
+    let anchors: { id: string; top: number }[] = [];
+    const measure = () => {
+      anchors = sections.map((section) => ({
+        id: section.id,
+        top: section.getBoundingClientRect().top + scrollY,
+      }));
+    };
+    measure();
+    const resizing = new ResizeObserver(measure);
+    sections.forEach((section) => resizing.observe(section));
+    const unsubscribe = subscribeMotionFrame((frame) => {
+      if (frame.resized) measure();
+      if (!frame.scrolled && !frame.resized) return;
+      let id = "profil";
+      for (const anchor of anchors)
+        if (anchor.top <= frame.scrollY + frame.height * 0.35) id = anchor.id;
+      if (
+        frame.scrollY + frame.height >=
+        document.documentElement.scrollHeight - 4
+      )
         id = "contact";
-      setActiveSection(id);
-    };
-    const schedule = () => {
-      if (!frame) frame = requestAnimationFrame(update);
-    };
+      setActiveSection((previous) => (previous === id ? previous : id));
+    });
     const keydown = (event: KeyboardEvent) => {
       if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
         event.preventDefault();
         setCommandOpen((open) => !open);
       }
     };
-    update();
-    addEventListener("scroll", schedule, { passive: true });
-    addEventListener("resize", schedule);
     addEventListener("keydown", keydown);
     return () => {
-      cancelAnimationFrame(frame);
-      removeEventListener("scroll", schedule);
-      removeEventListener("resize", schedule);
+      unsubscribe();
+      resizing.disconnect();
       removeEventListener("keydown", keydown);
     };
   }, []);

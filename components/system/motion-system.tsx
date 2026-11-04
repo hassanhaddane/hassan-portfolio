@@ -1,170 +1,207 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { subscribeMotionFrame } from "@/lib/motion-runtime";
 import { usePreferences } from "./preferences";
 
-/** Opt-in motion grammar: .reveal, [data-motion-parallax], and .magnetic. */
+type Layer = {
+  element: HTMLElement;
+  top: number;
+  height: number;
+  depth: number;
+};
+
+/** One grammar, one event-driven RAF. Layout is measured at resize, never per scroll frame. */
 export function MotionSystem() {
   const { motion } = usePreferences();
-  const cursor = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
-    const cursorElement = cursor.current;
-    if (!motion) {
-      document
-        .querySelectorAll<HTMLElement>("[data-revealed]")
-        .forEach((element) => {
-          element.removeAttribute("data-revealed");
-        });
-      if (cursorElement) cursorElement.style.opacity = "0";
-      return;
-    }
-
-    const finePointer = matchMedia("(pointer: fine) and (hover: hover)");
-    const pending = new Set<HTMLElement>();
+    if (!motion) return;
+    const root = document.documentElement;
+    const fine = matchMedia(
+      "(min-width: 901px) and (pointer: fine) and (hover: hover)",
+    );
     const reveals = [...document.querySelectorAll<HTMLElement>(".reveal")];
     const parallax = [
       ...document.querySelectorAll<HTMLElement>("[data-motion-parallax]"),
     ];
-    const observer =
-      typeof IntersectionObserver === "undefined"
-        ? null
-        : new IntersectionObserver(
-            (entries) =>
-              entries.forEach((entry) => {
-                if (!entry.isIntersecting) return;
-                entry.target.setAttribute("data-revealed", "true");
-                pending.delete(entry.target as HTMLElement);
-                observer?.unobserve(entry.target);
-              }),
-            { threshold: 0.08, rootMargin: "0px 0px -7% 0px" },
-          );
-    reveals.forEach((element) => {
-      if (element.hasAttribute("data-motion-stagger")) {
-        [...element.children].forEach((child, index) => {
-          (child as HTMLElement).style.setProperty(
-            "--stagger-index",
-            String(Math.min(index, 12)),
-          );
-        });
+    const layers: Layer[] = [];
+    let visible = true;
+    let measureFrame = 0;
+    let target: HTMLElement | null = null;
+    let targetBox: DOMRect | null = null;
+    let magnet: HTMLElement | null = null;
+    let magnetBox: DOMRect | null = null;
+    const clearPreview = () => {
+      if (target) {
+        target.style.removeProperty("--preview-x");
+        target.style.removeProperty("--preview-y");
+        delete target.dataset.pointer;
       }
-      if (
-        observer &&
-        element.getBoundingClientRect().top > innerHeight * 0.95
-      ) {
+      target = null;
+      targetBox = null;
+      magnet?.style.removeProperty("translate");
+      magnet = null;
+      magnetBox = null;
+    };
+    const measure = () => {
+      measureFrame = 0;
+      layers.length = 0;
+      parallax.forEach((element) => {
+        const box = element.getBoundingClientRect();
+        layers.push({
+          element,
+          top: box.top + scrollY,
+          height: box.height,
+          depth: Math.max(
+            -1,
+            Math.min(1, Number(element.dataset.motionParallax) || 0),
+          ),
+        });
+      });
+      clearPreview();
+    };
+    const queueMeasure = () => {
+      if (!measureFrame) measureFrame = requestAnimationFrame(measure);
+    };
+    const observer = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.setAttribute("data-revealed", "true");
+          observer.unobserve(entry.target);
+        }),
+      { threshold: 0.04, rootMargin: "0px 0px 3% 0px" },
+    );
+    reveals.forEach((element) => {
+      if (element.getBoundingClientRect().top > innerHeight * 0.96) {
         element.dataset.revealed = "false";
-        pending.add(element);
         observer.observe(element);
       }
     });
-
-    let activeMagnet: HTMLElement | null = null;
-    const revealAtViewport = () =>
-      pending.forEach((element) => {
-        const bounds = element.getBoundingClientRect();
-        if (bounds.top > innerHeight * 0.98 || bounds.bottom < 0) return;
-        element.dataset.revealed = "true";
-        pending.delete(element);
-        observer?.unobserve(element);
-      });
+    const resizing = new ResizeObserver(queueMeasure);
+    document
+      .querySelectorAll("[data-section]")
+      .forEach((section) => resizing.observe(section));
+    measure();
+    const settingsChanged = () => {
+      if (!fine.matches) {
+        clearPreview();
+        layers.forEach(({ element }) =>
+          element.style.removeProperty("--motion-parallax-y"),
+        );
+        root.style.removeProperty("--atmosphere-x");
+        root.style.removeProperty("--atmosphere-y");
+      } else queueMeasure();
+    };
+    fine.addEventListener("change", settingsChanged);
+    const visibility = () => {
+      visible = !document.hidden;
+      root.dataset.pageHidden = String(!visible);
+      if (!visible) clearPreview();
+      else queueMeasure();
+    };
+    visibility();
+    document.addEventListener("visibilitychange", visibility);
     const unsubscribe = subscribeMotionFrame((frame) => {
+      if (!visible) return;
+      if (frame.resized) queueMeasure();
       if (frame.scrolled || frame.resized) {
-        revealAtViewport();
-        for (const element of parallax) {
-          const box = element.getBoundingClientRect();
-          if (box.bottom < 0 || box.top > frame.height) continue;
-          const depth = Math.max(
-            -1,
-            Math.min(1, Number(element.dataset.motionParallax) || 0),
-          );
-          const displacement = Math.max(
-            -24,
-            Math.min(
-              24,
-              (frame.height * 0.5 - box.top - box.height * 0.5) * depth * 0.14,
-            ),
-          );
-          element.style.setProperty(
-            "--motion-parallax-y",
-            `${displacement.toFixed(2)}px`,
-          );
-        }
+        const range = Math.max(
+          1,
+          document.documentElement.scrollHeight - frame.height,
+        );
+        root.style.setProperty(
+          "--reading-progress",
+          (frame.scrollY / range).toFixed(4),
+        );
+        if (fine.matches)
+          layers.forEach(({ element, top, height, depth }) => {
+            const y = top - frame.scrollY;
+            if (y + height < -40 || y > frame.height + 40) return;
+            const displacement = Math.max(
+              -16,
+              Math.min(16, (frame.height / 2 - y - height / 2) * depth * 0.12),
+            );
+            element.style.setProperty(
+              "--motion-parallax-y",
+              `${displacement.toFixed(2)}px`,
+            );
+          });
       }
       if (!frame.pointerChanged) return;
       if (
-        !finePointer.matches ||
+        !fine.matches ||
         frame.pointerType !== "mouse" ||
         !frame.pointerInside
       ) {
-        if (cursorElement) cursorElement.style.opacity = "0";
-        if (activeMagnet) activeMagnet.style.translate = "";
-        activeMagnet = null;
+        clearPreview();
         return;
       }
-      const target =
+      root.style.setProperty(
+        "--atmosphere-x",
+        `${((frame.pointerX / frame.width - 0.5) * 9).toFixed(2)}px`,
+      );
+      root.style.setProperty(
+        "--atmosphere-y",
+        `${((frame.pointerY / frame.height - 0.5) * 6).toFixed(2)}px`,
+      );
+      const origin =
         frame.pointerTarget instanceof Element ? frame.pointerTarget : null;
-      const labelledTarget = target?.closest<HTMLElement>("[data-cursor]");
-      const label = labelledTarget?.dataset.cursor ?? "";
-      if (cursorElement) {
-        cursorElement.style.opacity = target?.closest(
-          "input, textarea, [contenteditable='true']",
-        )
-          ? "0"
-          : "1";
-        cursorElement.style.transform = `translate3d(${frame.pointerX - (label ? 31 : 16)}px,${frame.pointerY - 16}px,0)`;
-        cursorElement.dataset.hover = target?.closest("a, button, summary")
-          ? "true"
-          : "false";
-        cursorElement.dataset.label = label;
+      const next = origin?.closest<HTMLElement>(".work-image-link") ?? null;
+      if (next !== target) {
+        clearPreview();
+        target = next;
+        targetBox = next?.getBoundingClientRect() ?? null;
+        if (next) next.dataset.pointer = "true";
       }
-      const magnet =
-        target?.closest<HTMLElement>(".magnetic:not(:disabled)") ?? null;
-      if (activeMagnet && activeMagnet !== magnet)
-        activeMagnet.style.translate = "";
-      activeMagnet = magnet;
-      if (magnet) {
-        const box = magnet.getBoundingClientRect();
-        const x = Math.max(
-          -8,
-          Math.min(8, (frame.pointerX - box.left - box.width / 2) * 0.07),
+      if (target && targetBox) {
+        target.style.setProperty(
+          "--preview-x",
+          `${Math.max(-5, Math.min(5, (frame.pointerX - targetBox.left - targetBox.width / 2) * 0.018)).toFixed(2)}px`,
         );
-        const y = Math.max(
-          -6,
-          Math.min(6, (frame.pointerY - box.top - box.height / 2) * 0.09),
+        target.style.setProperty(
+          "--preview-y",
+          `${Math.max(-4, Math.min(4, (frame.pointerY - targetBox.top - targetBox.height / 2) * 0.018)).toFixed(2)}px`,
         );
-        magnet.style.translate = `${x.toFixed(2)}px ${y.toFixed(2)}px`;
       }
+      const nextMagnet = origin?.closest<HTMLElement>(".magnetic") ?? null;
+      if (magnet !== nextMagnet) {
+        magnet?.style.removeProperty("translate");
+        magnet = nextMagnet;
+        magnetBox = magnet?.getBoundingClientRect() ?? null;
+      }
+      if (magnet && magnetBox)
+        magnet.style.translate = `${Math.max(-4, Math.min(4, (frame.pointerX - magnetBox.left - magnetBox.width / 2) * 0.04)).toFixed(2)}px ${Math.max(-3, Math.min(3, (frame.pointerY - magnetBox.top - magnetBox.height / 2) * 0.04)).toFixed(2)}px`;
     });
-    const onHash = () => revealAtViewport();
+    const onHash = () => {
+      reveals.forEach((element) => {
+        if (element.dataset.revealed !== "false") return;
+        const box = element.getBoundingClientRect();
+        if (box.top < innerHeight && box.bottom > 0) {
+          element.dataset.revealed = "true";
+          observer.unobserve(element);
+        }
+      });
+    };
     addEventListener("hashchange", onHash);
     return () => {
       unsubscribe();
-      observer?.disconnect();
+      observer.disconnect();
+      resizing.disconnect();
+      cancelAnimationFrame(measureFrame);
+      fine.removeEventListener("change", settingsChanged);
+      document.removeEventListener("visibilitychange", visibility);
       removeEventListener("hashchange", onHash);
-      activeMagnet?.style.removeProperty("translate");
-      document
-        .querySelectorAll<HTMLElement>(".magnetic")
-        .forEach((element) => element.style.removeProperty("translate"));
+      clearPreview();
+      reveals.forEach((element) => element.removeAttribute("data-revealed"));
       parallax.forEach((element) =>
         element.style.removeProperty("--motion-parallax-y"),
       );
-      reveals.forEach((element) => {
-        element.removeAttribute("data-revealed");
-        [...element.children].forEach((child) =>
-          (child as HTMLElement).style.removeProperty("--stagger-index"),
-        );
-      });
-      if (cursorElement) cursorElement.style.opacity = "0";
+      ["--reading-progress", "--atmosphere-x", "--atmosphere-y"].forEach(
+        (property) => root.style.removeProperty(property),
+      );
+      delete root.dataset.pageHidden;
     };
   }, [motion]);
-
-  return (
-    <div
-      ref={cursor}
-      className="custom-cursor"
-      data-label=""
-      aria-hidden="true"
-    />
-  );
+  return null;
 }

@@ -12,14 +12,14 @@ import {
 } from "react";
 import { usePreferences } from "@/components/system/preferences";
 
-export type IntroPhase = "off" | "reveal" | "transition";
+export type IntroPhase = "off" | "signal" | "identity" | "handoff";
 type IntroState = { phase: IntroPhase; skip: () => void; replay: () => void };
 const IntroContext = createContext<IntroState | null>(null);
 const SESSION_KEY = "lowkyz.cinematic.v2";
 
 export function IntroProvider({ children }: { children: ReactNode }) {
   const { motion } = usePreferences();
-  const [phase, setPhase] = useState<IntroPhase>("reveal");
+  const [phase, setPhase] = useState<IntroPhase>("signal");
   const [replayCount, setReplayCount] = useState(0);
   const timers = useRef<number[]>([]);
   const clearTimers = useCallback(() => {
@@ -27,15 +27,24 @@ export function IntroProvider({ children }: { children: ReactNode }) {
     timers.current = [];
   }, []);
   const finish = useCallback(
-    (focusHero = true) => {
+    (focusHero = true, arrival = false) => {
       clearTimers();
       try {
         sessionStorage.setItem(SESSION_KEY, "seen");
       } catch {
         /* Optional storage. */
       }
-      document.documentElement.removeAttribute("data-intro-pending");
+      const root = document.documentElement;
+      root.removeAttribute("data-intro-pending");
+      root.removeAttribute("data-intro-phase");
+      if (arrival) {
+        root.dataset.heroArrival = "true";
+        timers.current.push(
+          window.setTimeout(() => delete root.dataset.heroArrival, 1100),
+        );
+      } else delete root.dataset.heroArrival;
       setPhase("off");
+      dispatchEvent(new Event("lowkyz:intro-complete"));
       if (focusHero)
         requestAnimationFrame(() =>
           document.getElementById("profil")?.focus({ preventScroll: true }),
@@ -48,14 +57,22 @@ export function IntroProvider({ children }: { children: ReactNode }) {
       document.documentElement.dataset.introPending !== "true" ||
       !motion ||
       document.hidden ||
+      location.hash ||
       matchMedia("(prefers-reduced-motion: reduce)").matches
     ) {
       finish(false);
       return;
     }
-    setPhase("reveal");
-    timers.current.push(window.setTimeout(() => setPhase("transition"), 1400));
-    timers.current.push(window.setTimeout(() => finish(), 1900));
+    const setStep = (next: IntroPhase) => {
+      setPhase(next);
+      document.documentElement.dataset.introPhase = next;
+    };
+    setStep("signal");
+    timers.current.push(window.setTimeout(() => setStep("identity"), 480));
+    timers.current.push(window.setTimeout(() => setStep("handoff"), 1430));
+    timers.current.push(window.setTimeout(() => finish(true, true), 2080));
+    // Independent upper bound: an interrupted animation must never lock the page.
+    timers.current.push(window.setTimeout(() => finish(false), 2600));
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") finish();
     };
@@ -65,16 +82,26 @@ export function IntroProvider({ children }: { children: ReactNode }) {
     const onScroll = () => {
       if (scrollY > 24) finish(false);
     };
+    const onHash = () => finish(false);
     addEventListener("keydown", onKey);
     addEventListener("scroll", onScroll, { passive: true });
+    addEventListener("hashchange", onHash);
     document.addEventListener("visibilitychange", onVisibility);
     return () => {
       clearTimers();
       removeEventListener("keydown", onKey);
       removeEventListener("scroll", onScroll);
+      removeEventListener("hashchange", onHash);
       document.removeEventListener("visibilitychange", onVisibility);
     };
   }, [motion, replayCount, clearTimers, finish]);
+  useEffect(
+    () => () => {
+      clearTimers();
+      delete document.documentElement.dataset.heroArrival;
+    },
+    [clearTimers],
+  );
   const replay = useCallback(() => {
     if (!motion) return;
     history.replaceState(

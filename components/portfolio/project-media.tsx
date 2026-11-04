@@ -16,6 +16,12 @@ export function ProjectMedia({
       {project.media.map((media, index) => (
         <figure key={media.src}>
           <Image
+            style={{
+              viewTransitionName:
+                index === (project.id === "tech-express" ? 1 : 0)
+                  ? `project-${project.id}`
+                  : undefined,
+            }}
             src={media.src}
             alt={media.alt[locale]}
             width={media.width}

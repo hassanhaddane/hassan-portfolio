@@ -51,7 +51,8 @@ export function generateStaticParams(): PageParams[] {
   );
 }
 
-export const dynamicParams = false;
+// Known cases stay pre-rendered; unknown slugs reach the explicit notFound guard.
+export const dynamicParams = true;
 
 export async function generateMetadata({
   params,

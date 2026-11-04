@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { projectPresentation } from "@/lib/project-presentation";
 import { ArrowUpRight } from "lucide-react";
 import { usePreferences } from "@/components/system/preferences";
 import { CreativeAction } from "@/components/ui/creative-action";
@@ -34,11 +35,11 @@ export function ProjectsV2() {
             key={project.id}
             className={`work-entry work-entry--${project.id} reveal`}
           >
-            <div className="work-visual">
+            <div className="work-visual" data-motion-parallax="0.22">
               <a
                 className="work-image-link"
                 href={`/${locale}/work/${project.slug}`}
-                aria-label={`${project.name} — ${locale === "fr" ? "étude de cas" : "case study"}`}
+                title={`${project.name} — ${locale === "fr" ? "étude de cas" : "case study"}`}
               >
                 <div className="work-image-caption mono">
                   <span>
@@ -47,6 +48,7 @@ export function ProjectsV2() {
                   <ArrowUpRight aria-hidden="true" />
                 </div>
                 <Image
+                  style={{ viewTransitionName: `project-${project.id}` }}
                   src={project.media[project.id === "tech-express" ? 1 : 0].src}
                   alt={
                     project.media[project.id === "tech-express" ? 1 : 0].alt[
@@ -55,9 +57,19 @@ export function ProjectsV2() {
                   }
                   width={1440}
                   height={900}
-                  sizes="(max-width: 760px) 92vw, 65vw"
+                  sizes={
+                    project.id === "ceo19"
+                      ? "(max-width: 700px) calc(100vw - 82px), 86vw"
+                      : project.id === "greecheck"
+                        ? "(max-width: 700px) calc(100vw - 122px), (max-width: 1100px) 40vw, 48vw"
+                        : "(max-width: 700px) calc(100vw - 84px), (max-width: 1100px) 40vw, 50vw"
+                  }
                   quality={82}
                 />
+                <span className="work-preview-note mono">
+                  <span>{projectPresentation[project.id].axis}</span>
+                  {projectPresentation[project.id].note[locale]}
+                </span>
               </a>
               {project.id === "greecheck" ? (
                 <Image
@@ -103,11 +115,7 @@ export function ProjectsV2() {
                 <CreativeAction
                   variant="secondary"
                   href={`/${locale}/work/${project.slug}`}
-                  label={
-                    locale === "fr"
-                      ? "Lire l’étude de cas"
-                      : "Read the case study"
-                  }
+                  label={locale === "fr" ? "Étude de cas" : "Case study"}
                 />
                 <div className="work-external-links">
                   {project.links.map((link) => (
@@ -129,7 +137,7 @@ export function ProjectsV2() {
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      Code
+                      {locale === "fr" ? "Code source" : "Source code"}
                       <ArrowUpRight aria-hidden="true" />
                     </a>
                   ) : null}

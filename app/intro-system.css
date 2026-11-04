@@ -1,4 +1,4 @@
-/* A short identity reveal; the document stays in place underneath. */
+/* LOWKYZ signature: score → lettering → score. No external loading dependency. */
 .cinematic-intro {
   position: fixed;
   inset: 0;
@@ -6,10 +6,31 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background: #101210;
-  color: #f2f0e6;
-  padding: 28px var(--gutter);
+  padding: 26px var(--gutter);
   overflow: hidden;
+  color: var(--foreground);
+  isolation: isolate;
+  animation: intro-failsafe 2700ms step-end forwards;
+}
+.cinematic-intro::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(circle at 50% 48%, #222a1a 0, transparent 45%), #101210;
+  transition: opacity 650ms var(--ease-in-out);
+}
+.cinematic-intro::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: radial-gradient(#c4f57830 0.65px, transparent 0.8px);
+  background-size: 19px 19px;
+  mask-image: radial-gradient(ellipse at center, black, transparent 70%);
+  opacity: 0.45;
 }
 html:not([data-intro-pending="true"]) .cinematic-intro {
   display: none;
@@ -20,60 +41,142 @@ html:not([data-intro-pending="true"]) .cinematic-intro {
   justify-content: space-between;
   align-items: center;
   gap: 20px;
-  font-size: 11px;
-  letter-spacing: 0.08em;
+  font-size: 10px;
+  letter-spacing: 0.09em;
 }
 .intro-top button {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 18px;
   min-height: 44px;
   background: none;
   border: 0;
+  border-bottom: 1px solid var(--border-strong);
   color: inherit;
+}
+.intro-top button:hover {
+  color: var(--signal);
+  border-color: var(--signal);
 }
 .intro-top svg {
   width: 16px;
+  height: 16px;
 }
-.intro-logo {
+.intro-stage {
   position: relative;
-  width: min(78vw, 850px);
+  width: min(74vw, 780px);
+  height: clamp(160px, 31vw, 370px);
   margin: auto;
-  text-align: center;
+  transform-origin: center;
 }
-.intro-logo > .lowkyz-wordmark {
-  position: relative;
+.intro-signal {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+.intro-signal .rhythm-score {
   width: 100%;
-  height: auto;
+  height: 100%;
+  overflow: visible;
+}
+.intro-signal .score-bars path {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: frequency-gather 1000ms var(--ease-out-expo) both;
+}
+.intro-signal .score-axis,
+.intro-signal .score-orbit,
+.intro-signal .score-register {
+  opacity: 0.35;
+}
+.intro-identity {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   color: var(--signal);
 }
-.intro-logo p {
-  position: relative;
-  margin-top: 35px;
-  font-size: clamp(10px, 1.1vw, 15px);
-  letter-spacing: 0.26em;
+.intro-identity > .lowkyz-wordmark {
+  width: 100%;
+  height: auto;
+  overflow: visible;
 }
-.intro-score {
+.intro-identity path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 600ms var(--ease-out-expo);
+  transition-delay: var(--glyph-delay, 0ms);
+}
+.intro-identity p {
+  text-align: center;
+  margin-top: 30px;
+  font-size: clamp(9px, 1vw, 13px);
+  letter-spacing: 0.33em;
+  opacity: 0;
+  transform: translateY(6px);
+  transition:
+    opacity 400ms,
+    transform 600ms var(--ease-out-expo);
+}
+.intro-register {
   position: absolute;
-  inset: -70% -6%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  opacity: 0.12;
+  bottom: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 9px;
+  color: var(--muted-foreground);
+  white-space: nowrap;
+  letter-spacing: 0.18em;
 }
-.intro-score i {
-  display: block;
-  width: 1px;
-  background: var(--signal);
-  transform: scaleY(0.1);
-  transition: transform 800ms var(--ease-out-expo);
+.cinematic-intro[data-phase="signal"] .intro-identity {
+  opacity: 0;
 }
-.cinematic-intro[data-phase="reveal"] .intro-score i,
-.cinematic-intro[data-phase="choice"] .intro-score i {
-  transform: scaleY(1);
+.cinematic-intro[data-phase="identity"] .intro-identity path,
+.cinematic-intro[data-phase="handoff"] .intro-identity path {
+  stroke-dashoffset: 0;
 }
-.cinematic-intro[data-phase="transition"] {
-  animation: intro-exit 500ms var(--ease-in-out) both;
+.cinematic-intro[data-phase="identity"] .intro-identity p {
+  opacity: 1;
+  transform: none;
+}
+.cinematic-intro[data-phase="identity"] .intro-signal {
+  opacity: 0.07;
+  transform: scaleY(0.12);
+  transition:
+    opacity 450ms,
+    transform 600ms var(--ease-out-expo);
+}
+.cinematic-intro[data-phase="identity"] .intro-register {
+  opacity: 0;
+  transition: opacity 250ms;
+}
+.cinematic-intro[data-phase="handoff"] {
+  pointer-events: none;
+}
+.cinematic-intro[data-phase="handoff"] .intro-top {
+  pointer-events: auto;
+}
+.cinematic-intro[data-phase="handoff"]::before,
+.cinematic-intro[data-phase="handoff"]::after {
+  opacity: 0;
+}
+.cinematic-intro[data-phase="handoff"] .intro-stage {
+  transform: translate(var(--dock-x, 0px), var(--dock-y, 0px))
+    scale(var(--dock-scale, 0.25));
+  transition: transform 650ms var(--ease-in-out);
+}
+.cinematic-intro[data-phase="handoff"] .intro-identity,
+.cinematic-intro[data-phase="handoff"] .intro-register,
+.cinematic-intro[data-phase="handoff"] .intro-bottom {
+  opacity: 0;
+  transition: opacity 220ms;
+}
+.cinematic-intro[data-phase="handoff"] .intro-signal {
+  opacity: 1;
+  transform: none;
+  transition: opacity 250ms;
 }
 .intro-replay {
   display: inline-flex;
@@ -93,18 +196,46 @@ html:not([data-intro-pending="true"]) .cinematic-intro {
 .intro-replay:hover {
   color: var(--signal);
 }
-@keyframes intro-exit {
-  to {
-    clip-path: inset(0 0 100% 0);
+@keyframes frequency-gather {
+  0% {
     opacity: 0;
+    transform: translateX(70px) scaleY(0.04);
+  }
+  42% {
+    opacity: 0.9;
+    transform: translateX(0) scaleY(1.15);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
   }
 }
-@media (max-width: 600px) {
+@keyframes intro-failsafe {
+  to {
+    visibility: hidden;
+    pointer-events: none;
+  }
+}
+@media (max-width: 700px) {
+  .intro-stage {
+    width: 82vw;
+    height: 210px;
+  }
   .intro-bottom {
-    font-size: 8px;
+    font-size: 7px;
   }
   .intro-top {
-    font-size: 10px;
+    font-size: 9px;
+  }
+  .intro-identity p {
+    letter-spacing: 0.22em;
+    margin-top: 22px;
+  }
+  .intro-register {
+    font-size: 7px;
+  }
+  .intro-signal .score-orbit {
+    display: none;
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -114,14 +245,4 @@ html:not([data-intro-pending="true"]) .cinematic-intro {
 }
 html[data-motion="off"] .cinematic-intro {
   display: none !important;
-}
-
-.cinematic-intro {
-  animation: intro-failsafe 3s step-end forwards;
-}
-@keyframes intro-failsafe {
-  to {
-    visibility: hidden;
-    pointer-events: none;
-  }
 }
