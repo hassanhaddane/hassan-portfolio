@@ -1,5 +1,3 @@
-import { useSyncExternalStore } from "react";
-
 export const technologies = [
   "React",
   "Next.js",
@@ -13,8 +11,7 @@ export const technologies = [
   "Vercel",
 ] as const;
 export type Technology = (typeof technologies)[number];
-
-const signalFamilies: Record<Technology, number> = {
+const families: Record<Technology, number> = {
   React: 0,
   "Next.js": 1,
   TypeScript: 2,
@@ -26,25 +23,10 @@ const signalFamilies: Record<Technology, number> = {
   JavaScript: 2,
   Vercel: 6,
 };
-
-export const signalFamily = (technology: Technology | null) =>
-  technology ? signalFamilies[technology] : -1;
-
-// Discrete interaction state only. Animation frames read it without rendering React.
 let active: Technology | null = null;
-const listeners = new Set<() => void>();
+export const signalFamily = (technology: Technology | null) =>
+  technology ? families[technology] : -1;
 export function setFieldSignal(value: Technology | null) {
-  if (active === value) return;
   active = value;
-  listeners.forEach((listener) => listener());
 }
 export const getFieldSignal = () => active;
-const subscribe = (listener: () => void) => {
-  listeners.add(listener);
-  return () => {
-    listeners.delete(listener);
-  };
-};
-export function useFieldSignal() {
-  return useSyncExternalStore(subscribe, getFieldSignal, () => null);
-}

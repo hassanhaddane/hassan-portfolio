@@ -35,8 +35,8 @@ void main() {
   if (r > 0.5) discard;
   float core = exp(-r * r * 60.0);
   float glow = exp(-r * r * 12.0) * 0.3;
-  vec3 blue = mix(vec3(0.08, 0.28, 1.0), vec3(0.63, 0.8, 1.0), min(vLight * 0.55, 1.0));
-  gl_FragColor = vec4(blue, (core + glow) * min(vLight, 1.0));
+  vec3 signalColor = mix(vec3(0.42, 0.64, 0.20), vec3(0.77, 0.96, 0.47), min(vLight * 0.55, 1.0));
+  gl_FragColor = vec4(signalColor, (core + glow) * min(vLight, 1.0));
 }`;
 export const filamentFragment = `
 uniform float uTime;
@@ -44,5 +44,5 @@ varying float vLight;
 varying float vPhase;
 void main() {
   float trail = pow(max(0.0, sin(vPhase * 12.0 - uTime * 0.9)), 12.0);
-  gl_FragColor = vec4(0.12, 0.32, 1.0, min(0.7, vLight * 0.3 + trail * 0.18));
+  gl_FragColor = vec4(0.62, 0.85, 0.34, min(0.7, vLight * 0.3 + trail * 0.18));
 }`;

@@ -1,69 +1,56 @@
-# LOWKYZ // Hassan Haddane — Creative V2
+# LOWKYZ / Hassan Haddane
 
-Portfolio personnel FR/EN : expériences, trois projets et études de cas, formation, compétences, About, Creative Lab et contact. Next.js 15.5.25, React 19, TypeScript strict ; validé sur Node 22 et pnpm 10.8.1.
+Portfolio personnel FR/EN : code, rythme et craft. Next.js 15 / App Router, React 19, TypeScript strict, Tailwind CSS 4 et moteur Three.js existant. Node 22, pnpm 10.8.1.
 
-## Installation
+## Développement
 
 ```sh
-corepack enable
 pnpm install --frozen-lockfile
-pnpm dev                 # http://localhost:3000/fr
+pnpm dev
 pnpm lint
 pnpm typecheck
 pnpm test
 pnpm build
-pnpm start               # production locale après build
+pnpm start
 ```
 
-Aucune variable d’environnement requise. Autre port : `pnpm dev --port 3100`. Le build génère les types de routes Next sur un checkout vierge. Aucun script ne pousse ni ne déploie.
+Aucune variable d’environnement requise. `/` redirige vers `/fr`. Les pages `/fr`, `/en` et les huit études de cas sont pré-rendues. Aucun script ne pousse ni ne déploie.
 
 ## Architecture
 
-- `/` redirige vers `/fr` ; `/fr` et `/en` sont pré-rendus.
-- `app/[locale]/work/[slug]` génère six études de cas FR/EN (GreeCheck, 808BLOOM, Tech Express), autres slugs en 404.
-- `components/portfolio/portfolio-experience.tsx` compose `Hero`, `ProjectsV2`, `JourneyExpertiseV2`, `AboutV2`, `CreativeLabV2`, `ContactV2` et le JSON-LD.
-- `components/system` : unique fournisseur de préférences, navigation responsive, palette Ctrl/Cmd+K, fond et mouvement. `components/intro` : états, logo, transition et contrôle d’entrée.
-- `lib/motion-runtime.ts` : événements et RAF DOM partagés. `constellation-engine.ts`, `field-shaders.ts`, `field-signal.ts` : unique moteur Three.js et signaux du contenu.
-- `lib/fonts.ts`, `app/fonts` : polices locales. Geist utilise `font-display: optional` pour garder le fallback si son chargement manque le premier rendu.
-- CSS : tokens et couches existantes `app/*system.css`, puis Work, Journey, Personal/Lab/Contact et modes. Les feuilles historiques non importées ne sont pas transférées.
+- `components/portfolio/portfolio-experience.tsx` compose une seule expérience : accueil, projets, expérience, expertise, à propos, contact.
+- `lib/portfolio-data.ts` : identité, coordonnées et provenance. `work-data.ts` : expériences, quatre projets et études de cas. `knowledge-data.ts` : compétences, relations documentées et formation. `personal-data.ts` et `experience-copy.ts` : contenu bilingue.
+- `components/system` : navigation sticky, menu mobile Radix, commandes Ctrl/Cmd+K, accessibilité et mouvement partagé.
+- `components/intro` : signature « Enter the frequency », signal SVG partagé avec le hero, lettrage tracé puis transfert vers le hero en 2,08 s. Skip, Échap, replay, garde-fous et retour du focus ; pas d’audio. Ancres et mouvement réduit : contenu direct.
+- `components/ui/wordmark.tsx` : lettrage vectoriel original ; aucune image générée.
+- `app/globals.css` : tokens et compositions ; `intro-system.css` : entrée ; `signature-motion.css` : langage de mouvement ; `work-showcase.css` : études de cas. `lib/frequency.ts` centralise la géométrie du signal et du wordmark.
+- `lib/motion-runtime.ts` : événements et RAF partagés ; `constellation-engine.ts` : moteur Three.js conservé, importé après l’intro, uniquement sur desktop à pointeur fin, avec au moins huit cœurs logiques et 8 Go de mémoire annoncés, hors économie de données. Le rendu GPU est suspendu hors des scènes accueil/expertise. Fallback SVG, réduction du mouvement, pause lorsque l’onglet est caché et destruction des ressources.
+- Polices locales ; captures authentiques dans `public/projects` ; portrait original du CV.
 
-## Modes et animations
+Le scroll et les ancres restent natifs. Aucun verrouillage de section. Les animations ordinaires et les liens entre technologies et réalisations sont disponibles pour tous. Seul le choix d’accessibilité « réduire le mouvement » est conservé dans `lowkyz.accessibility.v2` ; la préférence système est prioritaire. Les anciennes préférences de présentation sont supprimées.
 
-Recruteur est le mode initial : contenu complet, fond SVG/CSS statique, CV et contact directs. Explore enrichit le même document avec parallax, reveals, signal vivant et Lab interactif. Le changement conserve la section.
+## Sources et statuts
 
-Intro visuelle uniquement, sans moteur audio ni contrôle de son. Elle apparaît pour une première visite Explore sans ancre ; accès direct en Recruteur. Replay, Skip et bouton d’entrée unique disponibles.
+Le CV dans `public/cv-hassan-haddane.pdf` est identique au PDF fourni le 4 novembre 2026 (SHA-256 contrôlé par `pnpm test`). Sa mention de l’ancien domaine reste intacte. Les dates, diplômes et compétences viennent du CV ; aucun pourcentage de maîtrise ni résultat chiffré ajouté.
 
-Préférences locales : mode, langue, thème, mouvement. Mouvement réduit système prioritaire ; thème système sans choix manuel. WebGL différé sur desktop capable, DPR plafonné à 1–1,5, adaptation, pause d’onglet, destruction des ressources/contexte. Fallback sur appareils tactiles/modestes. Canvas du Lab suspendu hors écran. Scroll natif libre.
+GreeCheck : produit personnel et stockage local. 808BLOOM : travail web et engagement audio associatif distincts. Tech Express : interfaces de démonstration EN/AR ; aucune intégration commerciale affirmée. CEO1.9 : site public recontrôlé le 4 novembre 2026, capture réelle ajoutée ; l’ancien constat d’indisponibilité est dépassé. La boutique et les paiements ne sont pas validés par cet audit.
 
-## Contenus
+Voir [les décisions de phase 01](docs/phase-01.md) et [le rapport QA de phase 02](docs/phase-02/QA.md). Les documents et captures `docs/creative-v2` constituent les archives de la version précédente ; leurs mesures et descriptions ne décrivent pas nécessairement cette version.
 
-| Source | Usage |
-| --- | --- |
-| `lib/portfolio-data.ts` | Identité, coordonnées, types, provenance |
-| `lib/work-data.ts` | Expériences, projets, preuves, rôles, captures, liens et études de cas |
-| `lib/knowledge-data.ts` | Compétences, relations documentées, formation, certification, langues |
-| `lib/personal-data.ts` | About, Lab, Contact bilingues |
-| `lib/seo.ts` | Origine `https://lowkyz.dev`, métadonnées FR/EN |
-| `public/cv-hassan-haddane.pdf` | CV 2026 fourni, conservé à l’identique |
-| `public/projects/` | Captures authentiques documentées |
+## Livraison
 
-Modifier ces sources typées, conserver les traductions et les statuts : alternance iAudiogram, stage Santé Respiratoire France, stage puis CDD Biosency. 808BLOOM distingue web et engagement associatif/audio. Tech Express V1/V2 sont des démos GitHub Pages. CEO1.9 reste une exploration avec dépôt et démo en pause.
+La branche de production est `master`, reliée au projet Vercel existant `hassan-portfolio`. Le domaine `lowkyz.dev` redirige en HTTPS vers `www.lowkyz.dev` ; les métadonnées, le sitemap et les données structurées utilisent cette adresse principale. La protection des previews est conservée.
 
-Pour changer le CV : fournir un PDF approuvé, remplacer le fichier, vérifier texte/rendu et téléchargement. L’original joint mentionne encore `www.lowkyz.xyz` : cette mention nécessite une nouvelle version approuvée ; le site utilise `.dev`.
+Les deux phases possèdent des commits distincts. Le rapport QA décrit le build vérifié avant publication ; la validation du déploiement public se fait après le push sur `master`.
 
-## Qualité et limites
+## Tests navigateur
 
-[PRODUCTION_QA.md](docs/creative-v2/PRODUCTION_QA.md) : mesures, liens, limites et points manuels. [VISUAL_QA.md](docs/creative-v2/VISUAL_QA.md) : captures et corrections. [MASTERPLAN.md](docs/creative-v2/MASTERPLAN.md) : plan et état livré.
+```sh
+pnpm exec playwright install chromium
+pnpm build
+pnpm start --port 3101
+# Dans un second terminal :
+pnpm test:e2e
+```
 
-Les scores locaux ne sont pas des données utilisateurs ; aucun INP terrain ni garantie de fluidité universelle. Les tests contrôlent artefacts/traductions et complètent les tests navigateur. Des composants/styles historiques restent dans le dépôt : les anciens `Projects`, `KnowledgeSystem`, `About`, `Contact` ne sont pas montés par V2. Deux dépendances uniquement liées aux toggles inactifs ont été retirées.
-
-## Procédure Vercel manuelle
-
-1. Relire la PR vers `master`, autoriser explicitement le push. Une intégration Vercel existante peut déclencher une Preview dès le push.
-2. Vérifier racine du dépôt, preset Next.js, Node 22, `pnpm install --frozen-lockfile`, build `pnpm build`, sortie par défaut du preset. Pas d’export statique : `next/image` utilise le runtime Next/Vercel.
-3. Garder `master` en production ; tester une Preview : FR/EN, six études de cas, PDF, images, console.
-4. Configurer `lowkyz.dev` comme domaine primaire, `www` redirigé vers l’apex pour les canonical. La redirection observée pendant le QA va dans l’autre sens.
-5. Après validation humaine, autoriser séparément merge/promotion. Vérifier HTTPS, robots, sitemap, canonical, OG et soumission du sitemap. Prévoir le retour au déploiement précédent.
-6. Choisir et autoriser une mesure Web Vitals en production pour obtenir des données terrain.
-
-Sources officielles : [déploiements Git](https://vercel.com/docs/git), [builds](https://vercel.com/docs/builds). Aucun push, merge, changement de domaine ou déploiement effectué pendant cette passe.
+`PLAYWRIGHT_BASE_URL` permet d’exécuter la même suite contre une autre origine, dont la production. Les captures, traces d’échec et rapports JSON sont écrits dans `output/phase-02/` (ignoré par Git). Les images de contrôle retenues figurent dans `docs/phase-02/`. Playwright est une dépendance de développement uniquement. Les transitions natives entre documents restent une amélioration progressive : les liens fonctionnent aussi sans leur prise en charge.

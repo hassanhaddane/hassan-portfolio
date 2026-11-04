@@ -3,17 +3,11 @@ import { Navigation } from "@/components/system/navigation";
 import { CommandPalette } from "@/components/system/command-palette";
 import { Constellation } from "@/components/system/constellation";
 import { MotionSystem } from "@/components/system/motion-system";
-import { EasterEggs } from "@/components/system/easter-eggs";
 import { Hero } from "@/components/portfolio/hero";
 import { ProjectsV2 } from "@/components/portfolio/projects-v2";
-import "@/app/work-showcase.css";
 import { JourneyExpertiseV2 } from "@/components/portfolio/journey-expertise-v2";
-import "@/app/journey-expertise-v2.css";
 import { AboutV2 } from "@/components/portfolio/about-v2";
-import { CreativeLabV2 } from "@/components/portfolio/creative-lab-v2";
 import { ContactV2 } from "@/components/portfolio/contact-v2";
-import "@/app/personal-lab-contact-v2.css";
-import "@/app/presentation-modes-v2.css";
 import { profile, type Locale } from "@/lib/portfolio-data";
 import { education } from "@/lib/knowledge-data";
 import { greeCheck } from "@/lib/work-data";
@@ -77,27 +71,28 @@ export function PortfolioExperience({ locale }: { locale: Locale }) {
 
   return (
     <div lang={locale} data-portfolio-root>
-      <script dangerouslySetInnerHTML={{ __html: "try{var p=JSON.parse(localStorage.getItem('lowkyz.preferences.v1')||'{}');var m=p.mode==='explore'?'explore':'recruiter';var r=matchMedia('(prefers-reduced-motion: reduce)').matches;var t=p.theme==='light'||p.theme==='dark'?p.theme:matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';document.documentElement.dataset.theme=t;document.documentElement.style.colorScheme=t;document.documentElement.dataset.mode=m;document.documentElement.dataset.motion=p.motion===false||r?'off':'on';document.documentElement.dataset.expressiveMotion=m==='explore'&&p.motion!==false&&!r?'on':'off';if(m==='recruiter')document.documentElement.removeAttribute('data-intro-pending')}catch(e){document.documentElement.dataset.mode='recruiter';document.documentElement.dataset.expressiveMotion='off';document.documentElement.removeAttribute('data-intro-pending')}" }} />
       <PreferencesProvider initialLocale={locale}>
         <IntroProvider>
           <script
             type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, "\\u003c") }}
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify(structuredData).replace(/</g, "\\u003c"),
+            }}
           />
-          <Constellation />
-          <MotionSystem />
-          <EasterEggs />
-          <Navigation />
           <Intro />
-          <main id="main" tabIndex={-1}>
-            <Hero />
-            <ProjectsV2 />
-            <JourneyExpertiseV2 />
-            <AboutV2 />
-            <CreativeLabV2 />
-            <ContactV2 />
-          </main>
-          <CommandPalette />
+          <div data-site-content>
+            <Constellation />
+            <MotionSystem />
+            <Navigation />
+            <main id="main" tabIndex={-1}>
+              <Hero />
+              <ProjectsV2 />
+              <JourneyExpertiseV2 />
+              <AboutV2 />
+              <ContactV2 />
+            </main>
+            <CommandPalette />
+          </div>
         </IntroProvider>
       </PreferencesProvider>
     </div>
