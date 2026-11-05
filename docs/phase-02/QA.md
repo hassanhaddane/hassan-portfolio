@@ -1,6 +1,6 @@
 # LOWKYZ — QA phase 02 / 4 novembre 2026
 
-Ce rapport concerne le build local avant publication. Le résultat réel du déploiement public est contrôlé après le commit et communiqué dans le compte rendu de livraison. Un build local ne prouve pas une publication.
+Ce rapport distingue les validations locales du 4 novembre et les contrôles sur le domaine public des 4 et 5 novembre 2026.
 
 ## Validations automatisées
 
@@ -49,8 +49,15 @@ Le PDF et les données de phase 01 sont préservés. Son ancien domaine n’est 
 
 Non couverts : appareils physiques, Safari/Firefox, lecteur d’écran réel, INP terrain, paiement/boutiques des projets externes et envoi d’un véritable email. L’état masqué de l’onglet a été relu dans le code ; les tests de cycle de vie GPU portent sur la visibilité des scènes et le mouvement réduit.
 
-## Contrôle de publication
+## Production vérifiée
 
-GitHub indique `master` comme branche principale. Le projet Vercel existant `hassan-portfolio` est relié à ce dépôt ; sa production précédemment Ready provient de `master`. Les deux domaines sont vérifiés. `https://lowkyz.dev` redirige en 308 vers `https://www.lowkyz.dev` : canonical, hreflang, sitemap, robots, OG et JSON-LD sont alignés sur cette adresse. Les protections de preview et réglages de confidentialité sont conservés.
+Le push de `master` a déclenché le déploiement de production `dpl_BCRW1HD2viyTkzUQe5zcmwA6QsvH`, passé à **Ready** avec le SHA d’intégration `a1ae94d2e5de7f05113fb64313b61bb802a0cfd5`. Les deux domaines publics pointent vers ce déploiement. HTTP redirige en 308 vers HTTPS, puis le domaine racine redirige en 308 vers `www`, avec conservation du chemin. La page `/fr` répond 200 avec canonical vers `https://www.lowkyz.dev/fr`. Le CV public répond 200 avec le type `application/pdf`. [Déploiement Vercel](https://vercel.com/hassanhaddane33s-gmailcoms-projects/hassan-portfolio/BCRW1HD2viyTkzUQe5zcmwA6QsvH)
 
-Après le push autorisé, vérifier Ready, le SHA réellement déployé et les aliases, puis exécuter la même suite avec `PLAYWRIGHT_BASE_URL=https://lowkyz.dev`. Contrôler séparément HTTPS, redirection, PDF et rendu public mobile/desktop. Le résultat réel est fourni dans le compte rendu de livraison.
+La suite Playwright corrigée passe **24/24** sur `https://lowkyz.dev`. Le premier passage avait échoué sur la casse du nom du CV, que Vercel indique en minuscules dans `Content-Disposition`. Le test vérifie désormais le nom sans tenir compte de la casse et contrôle le SHA-256 du fichier effectivement téléchargé. Les captures publiques à 390 et 1440 px montrent la même composition que le build local. L’émulation tactile iPhone 13 dans Chromium confirme l’ouverture du menu, l’ancre Projets et l’accès à l’étude de cas GreeCheck. Les previews protégées n’ont pas fait l’objet d’une passe distincte.
+
+Lighthouse 13.6.0 sur `https://www.lowkyz.dev/fr`, une mesure de laboratoire par profil le 5 novembre.
+
+| Profil | Performance | Accessibilité | Bonnes pratiques | SEO | LCP | TBT | CLS |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| Mobile | 94 | 100 | 100 | 100 | 1,1 s | 240 ms | 0 |
+| Desktop | 100 | 100 | 100 | 100 | 0,3 s | 0 ms | 0 |

@@ -41,7 +41,7 @@ Voir [les décisions de phase 01](docs/phase-01.md) et [le rapport QA de phase 0
 
 La branche de production est `master`, reliée au projet Vercel existant `hassan-portfolio`. Le domaine `lowkyz.dev` redirige en HTTPS vers `www.lowkyz.dev` ; les métadonnées, le sitemap et les données structurées utilisent cette adresse principale. La protection des previews est conservée.
 
-Les deux phases possèdent des commits distincts. Le rapport QA décrit le build vérifié avant publication ; la validation du déploiement public se fait après le push sur `master`.
+Les deux phases possèdent des commits distincts. Le rapport QA consigne les vérifications locales et les résultats sur le domaine public après publication depuis `master`.
 
 ## Tests navigateur
 

@@ -1,5 +1,6 @@
 import { test, expect, type Page } from "@playwright/test";
 import { createHash } from "node:crypto";
+import { readFile } from "node:fs/promises";
 
 const slugs = ["greecheck", "808bloom", "tech-express", "ceo19"];
 const widths = [320, 390, 768, 1024, 1440, 1920];
@@ -202,11 +203,11 @@ test("mobile menu, keyboard, contact, clipboard, PDF and reduced motion", async 
     .getByRole("navigation", { name: "Professional links" })
     .getByRole("link", { name: "Download my résumé" })
     .click();
-  expect((await download).suggestedFilename()).toBe("CV-Hassan-Haddane.pdf");
-  const pdf = await page.request.get("/cv-hassan-haddane.pdf");
+  const pdf = await download;
+  expect(pdf.suggestedFilename().toLowerCase()).toBe("cv-hassan-haddane.pdf");
   expect(
     createHash("sha256")
-      .update(await pdf.body())
+      .update(await readFile(await pdf.path()))
       .digest("hex"),
   ).toBe(cvHash);
   await page
