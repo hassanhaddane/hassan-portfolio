@@ -55,6 +55,8 @@ Le push de `master` a déclenché le déploiement de production `dpl_BCRW1HD2viy
 
 La suite Playwright corrigée passe **24/24** sur `https://lowkyz.dev`. Le premier passage avait échoué sur la casse du nom du CV, que Vercel indique en minuscules dans `Content-Disposition`. Le test vérifie désormais le nom sans tenir compte de la casse et contrôle le SHA-256 du fichier effectivement téléchargé. Les captures publiques à 390 et 1440 px montrent la même composition que le build local. L’émulation tactile iPhone 13 dans Chromium confirme l’ouverture du menu, l’ancre Projets et l’accès à l’étude de cas GreeCheck. Les previews protégées n’ont pas fait l’objet d’une passe distincte.
 
+Le contrôle de l’historique utilise le mouvement réduit pour isoler la restauration native de la position. Après le changement de langue, le test attend que la navigation signale la section active avant d’envoyer Ctrl+K. Ce scénario passe trois fois de suite sur le domaine public.
+
 Lighthouse 13.6.0 sur `https://www.lowkyz.dev/fr`, une mesure de laboratoire par profil le 5 novembre.
 
 | Profil | Performance | Accessibilité | Bonnes pratiques | SEO | LCP | TBT | CLS |

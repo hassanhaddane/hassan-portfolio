@@ -135,6 +135,8 @@ test("desktop anchors, active navigation, history, language and commands", async
 }) => {
   const errors = monitor(page);
   await page.setViewportSize({ width: 1440, height: 1000 });
+  // Keep history assertions independent of native smooth scrolling.
+  await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/fr#profil");
   for (const [label, id] of [
     ["Projets", "projets"],
@@ -152,14 +154,21 @@ test("desktop anchors, active navigation, history, language and commands", async
   }
   await page.goBack();
   await expect(page).toHaveURL(/#about$/);
+  await expect(page.locator("#about")).toBeInViewport({ ratio: 0.5 });
   await page.goForward();
   await expect(page).toHaveURL(/#contact$/);
-  await expect(
-    page.getByRole("link", { name: /Switch to English/ }),
-  ).toHaveAttribute("href", "/en#contact");
-  await page.getByRole("link", { name: /Switch to English/ }).click();
+  await expect(page.locator("#contact")).toBeInViewport({ ratio: 0.5 });
+  await page
+    .getByRole("link", { name: /Switch to English/ })
+    .and(page.locator('a[href="/en#contact"]'))
+    .click();
   await expect(page.locator("html")).toHaveAttribute("lang", "en");
   await expect(page).toHaveURL(/\/en#contact$/);
+  await expect(
+    page
+      .getByRole("navigation", { name: "Main navigation" })
+      .getByRole("link", { name: "Contact", exact: true }),
+  ).toHaveAttribute("aria-current", "location");
   await page.keyboard.press("Control+k");
   await page.getByRole("combobox").fill("Work");
   await page.getByRole("option", { name: "Work", exact: true }).click();
