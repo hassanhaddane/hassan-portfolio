@@ -9,12 +9,11 @@ import {
   Copy,
 } from "lucide-react";
 import { usePreferences } from "@/components/system/preferences";
-import { ReplayIntro } from "@/components/intro/intro-controls";
 import { Wordmark } from "@/components/ui/wordmark";
 import { experienceCopy as words } from "@/lib/experience-copy";
 import { profile } from "@/lib/portfolio-data";
 
-export function ContactV2() {
+export function Contact() {
   const { locale, motion, systemReduced, toggleMotion } = usePreferences();
   const [copyStatus, setCopyStatus] = useState<"copied" | "error" | null>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -118,7 +117,6 @@ export function ContactV2() {
         </a>
         <span className="mono">© 2026 · HASSAN HADDANE</span>
         <div className="footer-tools">
-          <ReplayIntro />
           <button
             onClick={toggleMotion}
             disabled={systemReduced}

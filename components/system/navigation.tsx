@@ -12,7 +12,6 @@ import {
 import { Wordmark } from "@/components/ui/wordmark";
 import { chapters } from "@/lib/experience-copy";
 import { profile } from "@/lib/portfolio-data";
-import { ReplayIntro } from "@/components/intro/intro-controls";
 import { useActiveSection, useCommand, usePreferences } from "./preferences";
 
 export function Navigation() {
@@ -33,7 +32,7 @@ export function Navigation() {
           aria-label="LOWKYZ — Hassan Haddane"
         >
           <Wordmark />
-          <span className="brand-dot" />
+          <span className="brand-caption mono">— THE LIVING SIGNAL</span>
         </a>
         <nav
           className="masthead-links"
@@ -161,7 +160,6 @@ export function Navigation() {
                         ? "Activer les animations"
                         : "Enable motion"}
                 </button>
-                <ReplayIntro mobile onReplay={() => setMenuOpen(false)} />
               </div>
             </DialogContent>
           </Dialog>

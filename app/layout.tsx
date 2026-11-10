@@ -2,8 +2,6 @@ import type { Metadata, Viewport } from "next";
 import { GeistSans } from "@/lib/fonts";
 import localFont from "next/font/local";
 import "./globals.css";
-import "./intro-system.css";
-import "./signature-motion.css";
 import { SITE_ORIGIN, seoContent } from "@/lib/seo";
 
 const barlow = localFont({
@@ -26,8 +24,8 @@ export const metadata: Metadata = {
   category: "technology",
 };
 export const viewport: Viewport = {
-  themeColor: "#101210",
-  colorScheme: "dark",
+  themeColor: "#eeece4",
+  colorScheme: "light",
 };
 export default function RootLayout({
   children,
@@ -38,7 +36,7 @@ export default function RootLayout({
         <script
           dangerouslySetInnerHTML={{
             __html:
-              "try{var l=location.pathname.split('/')[1];if(l==='fr'||l==='en')document.documentElement.lang=l;var p=JSON.parse(localStorage.getItem('lowkyz.accessibility.v2')||'{}');document.documentElement.dataset.motion=p.motion===false||matchMedia('(prefers-reduced-motion: reduce)').matches?'off':'on';if(['/fr','/en','/fr/','/en/'].includes(location.pathname)&&!sessionStorage.getItem('lowkyz.cinematic.v2')&&!location.hash&&document.documentElement.dataset.motion==='on'&&!navigator.connection?.saveData)document.documentElement.dataset.introPending='true'}catch(e){}",
+              "try{var l=location.pathname.split('/')[1];if(l==='fr'||l==='en')document.documentElement.lang=l;var p=JSON.parse(localStorage.getItem('lowkyz.accessibility.v2')||'{}');document.documentElement.dataset.motion=p.motion===false||matchMedia('(prefers-reduced-motion: reduce)').matches?'off':'on'}catch(e){}",
           }}
         />
       </head>

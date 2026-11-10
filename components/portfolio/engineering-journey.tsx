@@ -1,8 +1,4 @@
-"use client";
-
 import { ArrowUpRight, Plus } from "lucide-react";
-import { usePreferences } from "@/components/system/preferences";
-import { setFieldSignal } from "@/lib/field-signal";
 import { SectionHeading } from "./section-heading";
 import { education, certifications, skillGroups } from "@/lib/knowledge-data";
 import {
@@ -18,8 +14,7 @@ function relatedHref(id: EvidenceTargetId, locale: Locale) {
   return project ? `/${locale}/work/${project.slug}` : `#${id}`;
 }
 
-function ExperienceJourney() {
-  const { locale } = usePreferences();
+function ExperienceJourney({ locale }: { locale: Locale }) {
   return (
     <section
       id="experience"
@@ -29,7 +24,7 @@ function ExperienceJourney() {
       aria-labelledby="experience-title"
     >
       <SectionHeading
-        number="02"
+        number="03"
         label={locale === "fr" ? "PARCOURS" : "EXPERIENCE"}
         title={words.journeyTitle[locale]}
         id="experience-title"
@@ -40,7 +35,7 @@ function ExperienceJourney() {
             key={work.id}
             id={work.id}
             tabIndex={-1}
-            className="experience-entry reveal"
+            className="experience-entry"
           >
             <div className="experience-date">
               <span className="mono">
@@ -74,8 +69,9 @@ function ExperienceJourney() {
                   <li key={item.statement.en}>{item.statement[locale]}</li>
                 ))}
               </ul>
+              {/* Native open state can be restored by browser history before hydration. */}
               {work.contributions.length > 2 ? (
-                <details>
+                <details suppressHydrationWarning>
                   <summary>
                     {locale === "fr"
                       ? "Qualité, livraison et collaboration"
@@ -125,8 +121,7 @@ function ExperienceJourney() {
   );
 }
 
-function Expertise() {
-  const { locale } = usePreferences();
+function Expertise({ locale }: { locale: Locale }) {
   return (
     <section
       id="stack"
@@ -136,8 +131,8 @@ function Expertise() {
       aria-labelledby="expertise-title"
     >
       <SectionHeading
-        number="03"
-        label="EXPERTISE"
+        number="02"
+        label="ENGINEERING"
         title={words.expertiseTitle[locale]}
         id="expertise-title"
       >
@@ -151,7 +146,7 @@ function Expertise() {
             ...new Set(group.skills.flatMap((skill) => skill.relations)),
           ].slice(0, 3);
           return (
-            <article key={group.id} className="expertise-group reveal">
+            <article key={group.id} className="expertise-group">
               <span className="mono expertise-index">0{index + 1} /</span>
               <h3>{group.label[locale]}</h3>
               <p>{group.description[locale]}</p>
@@ -159,15 +154,7 @@ function Expertise() {
                 {group.skills.map((skill) => (
                   <li key={skill.name}>
                     {skill.relations.length ? (
-                      <a
-                        href={relatedHref(skill.relations[0], locale)}
-                        onPointerEnter={() =>
-                          setFieldSignal(skill.signal ?? null)
-                        }
-                        onPointerLeave={() => setFieldSignal(null)}
-                        onFocus={() => setFieldSignal(skill.signal ?? null)}
-                        onBlur={() => setFieldSignal(null)}
-                      >
+                      <a href={relatedHref(skill.relations[0], locale)}>
                         {skill.label?.[locale] ?? skill.name}
                       </a>
                     ) : (
@@ -196,11 +183,11 @@ function Expertise() {
   );
 }
 
-export function JourneyExpertiseV2() {
+export function EngineeringJourney({ locale }: { locale: Locale }) {
   return (
     <>
-      <ExperienceJourney />
-      <Expertise />
+      <Expertise locale={locale} />
+      <ExperienceJourney locale={locale} />
     </>
   );
 }

@@ -1,7 +1,6 @@
-import type { CSSProperties } from "react";
 import { wordmarkGlyphs } from "@/lib/frequency";
 
-/** Original LOWKYZ lettering. Separate strokes also serve the signature reveal. */
+/** Original geometric LOWKYZ lettering. */
 export function Wordmark({ className = "" }: { className?: string }) {
   return (
     <svg
@@ -16,13 +15,8 @@ export function Wordmark({ className = "" }: { className?: string }) {
         strokeLinejoin="miter"
         strokeLinecap="square"
       >
-        {wordmarkGlyphs.map((d, index) => (
-          <path
-            key={d}
-            d={d}
-            pathLength="1"
-            style={{ "--glyph-delay": `${index * 45}ms` } as CSSProperties}
-          />
+        {wordmarkGlyphs.map((d) => (
+          <path key={d} d={d} />
         ))}
       </g>
     </svg>

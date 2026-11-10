@@ -1,16 +1,16 @@
 /* Indexable, server-rendered project pages. */
 .case-study {
-  --case-accent: #c4f578;
+  --case-accent: #b73517;
   min-height: 100vh;
   overflow: clip;
   background: var(--background);
   color: var(--foreground);
 }
 .case-study--bloom {
-  --case-accent: #f57966;
+  --case-accent: #b73517;
 }
 .case-study--tech-express {
-  --case-accent: #5dbcec;
+  --case-accent: #b73517;
 }
 .case-skip {
   position: fixed;

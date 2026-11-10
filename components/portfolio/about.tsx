@@ -1,15 +1,12 @@
-"use client";
-
+import type { Locale } from "@/lib/portfolio-data";
 import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
-import { usePreferences } from "@/components/system/preferences";
 import { languages } from "@/lib/knowledge-data";
 import { personalStory } from "@/lib/personal-data";
 import { experienceCopy as words } from "@/lib/experience-copy";
 import { SectionHeading } from "./section-heading";
 
-export function AboutV2() {
-  const { locale } = usePreferences();
+export function About({ locale }: { locale: Locale }) {
   return (
     <section
       id="about"
@@ -27,14 +24,14 @@ export function AboutV2() {
       <div className="about-composition">
         <figure className="about-portrait">
           <div className="portrait-register" aria-hidden="true">
-            H / L
+            LOWKYZ
           </div>
           <Image
             src="/profile/hassan-haddane-cv.png"
             alt="Hassan Haddane"
             width={306}
             height={306}
-            sizes="(max-width: 700px) 170px, 250px"
+            sizes="(max-width: 700px) 65vw, 30vw"
           />
           <figcaption className="mono">
             HASSAN HADDANE<span>RENNES, FRANCE</span>

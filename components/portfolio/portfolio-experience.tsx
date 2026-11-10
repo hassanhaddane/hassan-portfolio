@@ -1,19 +1,16 @@
 import { PreferencesProvider } from "@/components/system/preferences";
 import { Navigation } from "@/components/system/navigation";
 import { CommandPalette } from "@/components/system/command-palette";
-import { Constellation } from "@/components/system/constellation";
-import { MotionSystem } from "@/components/system/motion-system";
+import { LivingSignal } from "@/components/system/living-signal";
 import { Hero } from "@/components/portfolio/hero";
-import { ProjectsV2 } from "@/components/portfolio/projects-v2";
-import { JourneyExpertiseV2 } from "@/components/portfolio/journey-expertise-v2";
-import { AboutV2 } from "@/components/portfolio/about-v2";
-import { ContactV2 } from "@/components/portfolio/contact-v2";
+import { SelectedWork } from "@/components/portfolio/selected-work";
+import { EngineeringJourney } from "@/components/portfolio/engineering-journey";
+import { About } from "@/components/portfolio/about";
+import { Contact } from "@/components/portfolio/contact";
 import { profile, type Locale } from "@/lib/portfolio-data";
 import { education } from "@/lib/knowledge-data";
 import { greeCheck } from "@/lib/work-data";
 import { SITE_ORIGIN } from "@/lib/seo";
-import { IntroProvider } from "@/components/intro/intro-context";
-import { Intro } from "@/components/intro/intro";
 
 export function PortfolioExperience({ locale }: { locale: Locale }) {
   const personId = `${SITE_ORIGIN}/#person`;
@@ -72,28 +69,24 @@ export function PortfolioExperience({ locale }: { locale: Locale }) {
   return (
     <div lang={locale} data-portfolio-root>
       <PreferencesProvider initialLocale={locale}>
-        <IntroProvider>
-          <script
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{
-              __html: JSON.stringify(structuredData).replace(/</g, "\\u003c"),
-            }}
-          />
-          <Intro />
-          <div data-site-content>
-            <Constellation />
-            <MotionSystem />
-            <Navigation />
-            <main id="main" tabIndex={-1}>
-              <Hero />
-              <ProjectsV2 />
-              <JourneyExpertiseV2 />
-              <AboutV2 />
-              <ContactV2 />
-            </main>
-            <CommandPalette />
-          </div>
-        </IntroProvider>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(structuredData).replace(/</g, "\\u003c"),
+          }}
+        />
+        <div data-site-content>
+          <Navigation />
+          <LivingSignal />
+          <main id="main" tabIndex={-1}>
+            <Hero locale={locale} />
+            <SelectedWork locale={locale} />
+            <EngineeringJourney locale={locale} />
+            <About locale={locale} />
+            <Contact />
+          </main>
+          <CommandPalette />
+        </div>
       </PreferencesProvider>
     </div>
   );

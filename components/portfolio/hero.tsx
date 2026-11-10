@@ -1,15 +1,10 @@
-"use client";
-
-import Image from "next/image";
-import { RhythmScore } from "@/components/ui/frequency-score";
-import { ArrowDown, ArrowDownToLine, ArrowUpRight } from "lucide-react";
-import { usePreferences } from "@/components/system/preferences";
+import type { Locale } from "@/lib/portfolio-data";
+import { ArrowDown, ArrowUpRight } from "lucide-react";
 import { CreativeAction } from "@/components/ui/creative-action";
-import { experienceCopy as words } from "@/lib/experience-copy";
 import { copy, profile } from "@/lib/portfolio-data";
+import { SignalArtwork } from "./signal-artwork";
 
-export function Hero() {
-  const { locale } = usePreferences();
+export function Hero({ locale }: { locale: Locale }) {
   return (
     <section
       id="profil"
@@ -18,99 +13,69 @@ export function Hero() {
       className="hero section-shell"
       aria-labelledby="hero-title"
     >
-      <div className="hero-topline mono">
-        <span>
-          HASSAN HADDANE <span className="text-muted">/ LOWKYZ</span>
-        </span>
-        <span>CODE × RHYTHM × CRAFT</span>
-      </div>
-      <div className="hero-composition">
-        <div className="hero-main">
-          <h1
-            id="hero-title"
-            aria-label={`${profile.name} — ${profile.role[locale]}. ${words.heroCreative[locale]}`}
-          >
-            <span className="hero-role hero-arrival">
-              {words.heroTitle[locale]}
-            </span>
-            <span className="hero-title-line">
-              <span>
-                FULL-STACK<span className="hero-period">.</span>
-              </span>
-            </span>
-            <span className="hero-creative hero-title-line">
-              <span>{words.heroCreative[locale]}</span>
-            </span>
-          </h1>
-          <p className="hero-description">{words.heroDescription[locale]}</p>
-          <div className="hero-actions">
-            <CreativeAction
-              className="magnetic"
-              href="#projets"
-              label={
-                locale === "fr" ? "Explorer mes projets" : "Explore my work"
-              }
-              icon={<ArrowDown aria-hidden="true" />}
-            />
-            <CreativeAction
-              variant="secondary"
-              href={profile.cv}
-              download="CV-Hassan-Haddane.pdf"
-              label={copy.download[locale]}
-              icon={<ArrowDownToLine aria-hidden="true" />}
-            />
-            <a className="text-link hero-contact" href="#contact">
-              {locale === "fr" ? "Me contacter" : "Contact me"}
-              <ArrowUpRight aria-hidden="true" />
-            </a>
-          </div>
-        </div>
-        <aside
-          className="hero-aside"
-          aria-label={
-            locale === "fr" ? "Profil en bref" : "Profile at a glance"
-          }
+      <div className="hero-identity">
+        <h1
+          id="hero-title"
+          aria-label={`${profile.alias} — ${profile.name}, ${profile.role[locale]}`}
         >
-          <div className="hero-art" data-motion-parallax="0.18">
-            <div className="score-caption mono">
-              <span>COMPOSITION / 001</span>
-              <span>H × L</span>
-            </div>
-            <RhythmScore />
-            <div className="score-caption mono">
-              <span>PRECISION</span>
-              <span>FEELING</span>
-            </div>
-          </div>
-          <div className="hero-profile">
-            <Image
-              src="/profile/hassan-haddane-cv.png"
-              alt="Hassan Haddane"
-              width={306}
-              height={306}
-              priority
-              sizes="80px"
-            />
-            <div>
-              <strong>Hassan Haddane</strong>
-              <span>{profile.location[locale]}</span>
-              <a className="text-link" href="#about">
-                {locale === "fr" ? "Derrière le code" : "Behind the code"}
-                <ArrowUpRight aria-hidden="true" />
-              </a>
-            </div>
-          </div>
-          <p className="hero-specialty">{words.heroSpecialty[locale]}</p>
-        </aside>
+          <span>LOWKYZ</span>
+        </h1>
+        <p className="hero-subtitle mono">— THE LIVING SIGNAL</p>
       </div>
-      <div className="hero-bottom">
-        <span className="mono">{profile.experience[locale]}</span>
-        <span className="hero-mobility">
-          {locale === "fr" ? "Mobilité" : "Open to opportunities in"} —{" "}
-          {profile.mobility[locale]}
-        </span>
-        <a className="mono text-link" href="#projets">
-          SELECTED WORK <ArrowDown aria-hidden="true" />
+      <div className="hero-statement">
+        <h2>
+          {locale === "fr" ? (
+            <>
+              La précision du code.
+              <br />
+              L’instinct du son.
+            </>
+          ) : (
+            <>
+              The precision of code.
+              <br />
+              The instinct of sound.
+            </>
+          )}
+        </h2>
+        <p className="hero-description">
+          {locale === "fr"
+            ? "Je développe des produits solides et des expériences numériques qui ont du rythme."
+            : "I build thoughtful software and digital experiences with a sense of rhythm."}
+        </p>
+        <div className="hero-actions">
+          <CreativeAction
+            href="#projets"
+            label={locale === "fr" ? "Explorer les projets" : "Explore my work"}
+            icon={<ArrowDown aria-hidden="true" />}
+          />
+          <a
+            className="text-link"
+            href={profile.cv}
+            download="CV-Hassan-Haddane.pdf"
+          >
+            {copy.download[locale]}
+            <ArrowUpRight aria-hidden="true" />
+          </a>
+        </div>
+      </div>
+      <div className="hero-art">
+        <SignalArtwork />
+        <div className="hero-signature">
+          <strong>
+            HASSAN HADDANE <span>/</span>
+          </strong>
+          <span className="mono">{profile.role[locale]}</span>
+        </div>
+      </div>
+      <div className="hero-bottom mono">
+        <span>{profile.experience[locale]}</span>
+        <span>{profile.location[locale]}</span>
+        <a href="#contact" className="text-link">
+          {locale === "fr"
+            ? "Parlons de votre projet"
+            : "Let’s talk about your project"}
+          <ArrowUpRight aria-hidden="true" />
         </a>
       </div>
     </section>
