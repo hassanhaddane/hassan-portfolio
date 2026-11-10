@@ -1,6 +1,6 @@
 import type { Locale } from "@/lib/portfolio-data";
 import Image from "next/image";
-import { ArrowUpRight } from "lucide-react";
+import { PracticeSwitch } from "./practice-switch";
 import { languages } from "@/lib/knowledge-data";
 import { personalStory } from "@/lib/personal-data";
 import { experienceCopy as words } from "@/lib/experience-copy";
@@ -39,28 +39,12 @@ export function About({ locale }: { locale: Locale }) {
         </figure>
         <div className="about-copy">
           <p className="about-lead">{personalStory.introduction[locale]}</p>
-          <p>{personalStory.practice[locale]}</p>
-          <div className="about-notes">
-            <div>
-              <h3>
-                {locale === "fr"
-                  ? "Le son, l’autre langage."
-                  : "Sound, another language."}
-              </h3>
-              <p>{personalStory.beyond[locale]}</p>
-              <a className="text-link" href={`/${locale}/work/808bloom`}>
-                808BLOOM
-                <ArrowUpRight aria-hidden="true" />
-              </a>
-            </div>
-            <div>
-              <h3>
-                {locale === "fr"
-                  ? "Garder l’esprit ouvert."
-                  : "Keep an open mind."}
-              </h3>
-              <p>{personalStory.curiosity[locale]}</p>
-            </div>
+          <PracticeSwitch locale={locale} />
+          <div className="about-curiosity">
+            <span className="mono">
+              {locale === "fr" ? "HORS ÉCRAN" : "OFF SCREEN"}
+            </span>
+            <p>{personalStory.curiosity[locale]}</p>
           </div>
         </div>
       </div>

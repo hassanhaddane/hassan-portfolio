@@ -15,6 +15,15 @@ export const sceneColors = [
   [32, 34, 31],
   [242, 82, 41],
 ] as const;
+export const caseSceneColors = [
+  [32, 34, 31],
+  [32, 34, 31],
+  [238, 236, 228],
+  [221, 221, 207],
+  [32, 34, 31],
+  [242, 82, 41],
+] as const;
+export type ScenePalette = readonly (readonly [number, number, number])[];
 export const sceneWords = [
   "LOWKYZ",
   "WORK",
@@ -30,6 +39,7 @@ export function narrativeAt(
   height: number,
   maxScroll: number,
   chapters: ChapterBounds[],
+  palette: ScenePalette = sceneColors,
 ) {
   const progress = clamp(scroll / Math.max(1, maxScroll));
   // A shared viewport-sized overlap replaces hard scene cuts at section borders.
@@ -59,8 +69,8 @@ export function narrativeAt(
   if (scroll >= maxScroll - 4) active = chapters.length - 1;
   const chapter = chapters[active];
   const local = clamp((focus - chapter.top) / Math.max(1, chapter.height));
-  const from = sceneColors[scene];
-  const to = sceneColors[Math.min(scene + 1, sceneColors.length - 1)];
+  const from = palette[scene];
+  const to = palette[Math.min(scene + 1, palette.length - 1)];
   const color = from.map((channel, i) => mix(channel, to[i], blend));
   // Pick the higher-contrast ink rather than fading text through illegible mid-grey.
   const luminance = color.reduce((sum, channel, i) => {

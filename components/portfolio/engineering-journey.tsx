@@ -1,18 +1,10 @@
-import { ArrowUpRight, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import { SectionHeading } from "./section-heading";
-import { education, certifications, skillGroups } from "@/lib/knowledge-data";
-import {
-  evidenceTargetName,
-  professionalWork,
-  projects,
-} from "@/lib/work-data";
+import { education, certifications } from "@/lib/knowledge-data";
+import { professionalWork } from "@/lib/work-data";
+import { EngineeringSystem } from "./engineering-system";
 import { experienceCopy as words } from "@/lib/experience-copy";
-import type { EvidenceTargetId, Locale } from "@/lib/portfolio-data";
-
-function relatedHref(id: EvidenceTargetId, locale: Locale) {
-  const project = projects.find((item) => item.id === id);
-  return project ? `/${locale}/work/${project.slug}` : `#${id}`;
-}
+import type { Locale } from "@/lib/portfolio-data";
 
 function ExperienceJourney({ locale }: { locale: Locale }) {
   return (
@@ -29,11 +21,79 @@ function ExperienceJourney({ locale }: { locale: Locale }) {
         title={words.journeyTitle[locale]}
         id="experience-title"
       />
+      <svg
+        className="journey-score"
+        viewBox="0 0 600 175"
+        role="img"
+        aria-label={
+          locale === "fr"
+            ? "Chronologie des expériences et de la formation, de 2020 à 2026"
+            : "Work and education timeline, from 2020 to 2026"
+        }
+      >
+        {[2020, 2021, 2022, 2023, 2024, 2025, 2026].map((year, i) => (
+          <g key={year}>
+            <path d={`M${i * 100} 20 V150`} />
+            <text x={Math.min(575, i * 100)} y="170">
+              {year}
+            </text>
+          </g>
+        ))}
+        {professionalWork.map((work, i) => {
+          const month = (date: string) =>
+            Number(date.slice(0, 4)) + (Number(date.slice(5, 7)) - 1) / 12;
+          const x = (month(work.start) - 2020) * 100;
+          return (
+            <a key={work.id} href={`#${work.id}`}>
+              <title>{`${work.company} — ${work.period[locale]}`}</title>
+              <rect
+                x={x}
+                y={22 + i * 32}
+                width={Math.max(5, (month(work.end) - month(work.start)) * 100)}
+                height="12"
+              />
+              <text x={x + 5} y={18 + i * 32}>
+                {work.company}
+              </text>
+            </a>
+          );
+        })}
+        <a href="#education">
+          <title>EPSI / 2020—2025</title>
+          <rect x="0" y="122" width="500" height="12" />
+          <text x="5" y="118">
+            EPSI / 2020—2025
+          </text>
+        </a>
+      </svg>
+      <nav
+        className="journey-index mono"
+        aria-label={
+          locale === "fr" ? "Explorer le parcours" : "Explore the journey"
+        }
+      >
+        {professionalWork.map((work) => (
+          <a key={work.id} href={`#${work.id}`}>
+            <span>
+              {work.start.slice(0, 4)}
+              {work.start.slice(0, 4) !== work.end.slice(0, 4)
+                ? `—${work.end.slice(0, 4)}`
+                : ""}
+            </span>
+            {work.company}
+            <span aria-hidden="true">↘</span>
+          </a>
+        ))}
+        <a href="#education">
+          <span>2020—2025</span>EPSI<span aria-hidden="true">↘</span>
+        </a>
+      </nav>
       <div className="experience-ledger">
         {professionalWork.map((work, index) => (
           <article
             key={work.id}
             id={work.id}
+            data-story-mode={index % 3}
             tabIndex={-1}
             className="experience-entry"
           >
@@ -52,6 +112,9 @@ function ExperienceJourney({ locale }: { locale: Locale }) {
               </p>
             </div>
             <div className="experience-company">
+              <span className="journey-mark" aria-hidden="true">
+                0{index + 1}
+              </span>
               <h3>{work.company}</h3>
               {work.product ? (
                 <p>
@@ -140,45 +203,7 @@ function Expertise({ locale }: { locale: Locale }) {
           ? "Relier les couches, soigner les usages et vérifier ce qui est livré."
           : "Connect the layers, care for the experience and verify what ships."}
       </SectionHeading>
-      <div className="expertise-grid">
-        {skillGroups.map((group, index) => {
-          const relations = [
-            ...new Set(group.skills.flatMap((skill) => skill.relations)),
-          ].slice(0, 3);
-          return (
-            <article key={group.id} className="expertise-group">
-              <span className="mono expertise-index">0{index + 1} /</span>
-              <h3>{group.label[locale]}</h3>
-              <p>{group.description[locale]}</p>
-              <ul className="expertise-technologies">
-                {group.skills.map((skill) => (
-                  <li key={skill.name}>
-                    {skill.relations.length ? (
-                      <a href={relatedHref(skill.relations[0], locale)}>
-                        {skill.label?.[locale] ?? skill.name}
-                      </a>
-                    ) : (
-                      (skill.label?.[locale] ?? skill.name)
-                    )}
-                  </li>
-                ))}
-              </ul>
-              <div className="expertise-evidence">
-                {relations.map((id) => (
-                  <a
-                    className="text-link"
-                    key={id}
-                    href={relatedHref(id, locale)}
-                  >
-                    {evidenceTargetName(id)}
-                    <ArrowUpRight aria-hidden="true" />
-                  </a>
-                ))}
-              </div>
-            </article>
-          );
-        })}
-      </div>
+      <EngineeringSystem locale={locale} />
     </section>
   );
 }

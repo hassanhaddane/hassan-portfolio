@@ -3,6 +3,7 @@ import { GeistSans } from "@/lib/fonts";
 import localFont from "next/font/local";
 import "./globals.css";
 import "./cinematic-scroll.css";
+import "./storytelling.css";
 import { SITE_ORIGIN, seoContent } from "@/lib/seo";
 
 const barlow = localFont({
@@ -37,7 +38,7 @@ export default function RootLayout({
         <script
           dangerouslySetInnerHTML={{
             __html:
-              "try{var l=location.pathname.split('/')[1];if(l==='fr'||l==='en')document.documentElement.lang=l;var p=JSON.parse(localStorage.getItem('lowkyz.accessibility.v2')||'{}');document.documentElement.dataset.motion=p.motion===false||matchMedia('(prefers-reduced-motion: reduce)').matches?'off':'on'}catch(e){}",
+              "document.documentElement.dataset.js='on';try{var l=location.pathname.split('/')[1];if(l==='fr'||l==='en')document.documentElement.lang=l;var p=JSON.parse(localStorage.getItem('lowkyz.accessibility.v2')||'{}');document.documentElement.dataset.motion=p.motion===false||matchMedia('(prefers-reduced-motion: reduce)').matches?'off':'on'}catch(e){}",
           }}
         />
       </head>

@@ -1,5 +1,6 @@
 import type { MotionFrame } from "./motion-runtime";
 import { invalidateMotionFrame } from "./motion-runtime";
+import type { StorySignal } from "./story-signal";
 import type {
   SignalUniverse,
   UniverseInput,
@@ -50,6 +51,17 @@ export function createUniverseSession(
     invalidateMotionFrame();
   };
   button?.addEventListener("click", change);
+  const story = (event: Event) => {
+    const signal = (event as CustomEvent<StorySignal>).detail;
+    if (signal.mode !== undefined) intent = signal.mode;
+    pulse = 1;
+    root.style.setProperty(
+      "--signal-intent-amplitude",
+      String([1, 0.68, 1.24][intent]),
+    );
+    invalidateMotionFrame();
+  };
+  root.addEventListener("story-signal", story);
   if (button) button.disabled = false;
   const projectOf = (target: EventTarget | null) =>
     target instanceof Element
@@ -71,6 +83,14 @@ export function createUniverseSession(
   };
   const focusIn = (event: FocusEvent) => {
     focus = projectOf(event.target);
+    const chapter =
+      event.target instanceof Element
+        ? event.target.closest<HTMLElement>("[data-story-mode]")
+        : null;
+    if (chapter) {
+      intent = Number(chapter.dataset.storyMode);
+      pulse = 1;
+    }
     invalidateMotionFrame();
   };
   const focusOut = (event: FocusEvent) => {
@@ -173,7 +193,21 @@ export function createUniverseSession(
   }
   return {
     update(frame, input) {
-      const project = focus >= 0 ? focus : hover >= 0 ? hover : input.project;
+      const authored = projects.indexOf(
+        root.dataset.project ||
+          (input.stage > 0.6 && input.stage < 1.6
+            ? root.dataset.galleryProject
+            : root.dataset.storyProject || root.dataset.galleryProject) ||
+          "",
+      );
+      const project =
+        authored >= 0
+          ? authored
+          : focus >= 0
+            ? focus
+            : hover >= 0
+              ? hover
+              : input.project;
       if (project !== selected) {
         selected = project;
         root.dataset.signalProject = projects[project];
@@ -197,6 +231,7 @@ export function createUniverseSession(
     dispose() {
       disposed = true;
       button?.removeEventListener("click", change);
+      root.removeEventListener("story-signal", story);
       if (button) button.disabled = true;
       root.removeEventListener("pointerover", over);
       root.removeEventListener("pointerout", out);

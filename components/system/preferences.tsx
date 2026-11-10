@@ -29,9 +29,11 @@ const KEY = "lowkyz.accessibility.v2";
 export function PreferencesProvider({
   children,
   initialLocale = "fr",
+  enableCommands = true,
 }: {
   children: ReactNode;
   initialLocale?: Locale;
+  enableCommands?: boolean;
 }) {
   const [motionEnabled, setMotionEnabled] = useState(true);
   const [systemReduced, setSystemReduced] = useState(false);
@@ -69,6 +71,7 @@ export function PreferencesProvider({
     }
   }, [initialLocale, motion, motionEnabled, ready]);
   useEffect(() => {
+    if (!enableCommands) return;
     const keydown = (event: KeyboardEvent) => {
       if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
         event.preventDefault();
@@ -79,7 +82,7 @@ export function PreferencesProvider({
     return () => {
       removeEventListener("keydown", keydown);
     };
-  }, []);
+  }, [enableCommands]);
   useScrollNarrative(motion, setActiveSection);
   const value = useMemo(
     () => ({ locale: initialLocale, motion, systemReduced, toggleMotion }),

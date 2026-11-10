@@ -120,7 +120,7 @@ test("pointer inertia, keyboard modulation and project selection drive the same 
     "greecheck",
   );
   await expect.poll(() => canvas.getAttribute("data-project")).toBe("0");
-  await page.locator("#tech-express h3 a").focus();
+  await page.locator('.gallery-index a[href="#tech-express"]').focus();
   await expect(page.locator(root)).toHaveAttribute(
     "data-signal-project",
     "tech-express",

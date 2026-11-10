@@ -16,6 +16,7 @@ export type UniverseInput = {
   intent: number;
   pulse: number;
   visible: boolean;
+  docked?: boolean;
 };
 export type UniverseStatus = "webgl" | "lost" | "failed";
 export type SignalUniverse = {
@@ -459,13 +460,18 @@ export function createSignalUniverse(
       camera.updateMatrixWorld();
       const engineering =
         1 - THREE.MathUtils.smoothstep(Math.abs(input.stage - 2), 0.05, 0.8);
+      const screenWork = input.docked ? 0 : work;
       const screenX = mix(
-        mix(input.x, frame.width * (frame.width <= 760 ? 0.76 : 0.78), work),
-        frame.width * (frame.width <= 760 ? 0.5 : 0.68),
+        mix(
+          input.x,
+          frame.width * (frame.width <= 760 ? 0.76 : 0.78),
+          screenWork,
+        ),
+        input.x,
         final,
       );
       const screenY = mix(
-        mix(input.y, frame.height * 0.22, work),
+        mix(input.y, frame.height * 0.22, screenWork),
         frame.height * 0.79,
         engineering,
       );

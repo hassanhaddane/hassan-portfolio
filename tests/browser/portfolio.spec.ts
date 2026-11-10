@@ -75,9 +75,9 @@ for (const locale of ["fr", "en"]) {
         await page.locator("#" + id).scrollIntoViewIfNeeded();
         await noOverflow(page);
       }
-      for (const image of await page
-        .locator(".work-image-stage img, .about-portrait img")
-        .all()) {
+      for (const slug of slugs) {
+        await page.locator(`.gallery-index a[href="#${slug}"]`).click();
+        const image = page.locator(`[id="${slug}"] .work-image-stage img`);
         await image.scrollIntoViewIfNeeded();
         await expect(image).toHaveJSProperty("complete", true);
         expect(
@@ -86,6 +86,9 @@ for (const locale of ["fr", "en"]) {
           ),
         ).toBeGreaterThan(0);
       }
+      const portrait = page.locator(".about-portrait img");
+      await portrait.scrollIntoViewIfNeeded();
+      await expect(portrait).toHaveJSProperty("complete", true);
       expect(errors).toEqual([]);
     });
   }

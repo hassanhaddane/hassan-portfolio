@@ -10,6 +10,7 @@ import {
   smooth,
   narrativeAt,
   sceneWords,
+  caseSceneColors,
   type ChapterBounds,
 } from "./scroll-narrative";
 
@@ -47,9 +48,12 @@ export function useScrollNarrative(
       document.documentElement.dataset.motion !== "off" &&
       !matchMedia("(prefers-reduced-motion: reduce)").matches;
     let disposed = false;
-    const sections = chapters
-      .map((chapter) => root.querySelector<HTMLElement>(`#${chapter.id}`))
-      .filter((section): section is HTMLElement => !!section);
+    const caseStudy = root.dataset.experience === "case";
+    const sections = caseStudy
+      ? Array.from(root.querySelectorAll<HTMLElement>("[data-scene-section]"))
+      : chapters
+          .map((chapter) => root.querySelector<HTMLElement>(`#${chapter.id}`))
+          .filter((section): section is HTMLElement => !!section);
     if (sections.length !== chapters.length) return;
     const washes = Array.from(
       root.querySelectorAll<HTMLElement>("[data-scene-wash]"),
@@ -64,7 +68,18 @@ export function useScrollNarrative(
     );
     const meter = root.querySelector<HTMLElement>("[data-scroll-meter]");
     const readout = root.querySelector<HTMLElement>("[data-scroll-readout]");
-    const dock = root.querySelector<SVGSVGElement>(".hero-art > .signal-score");
+    const dock = root.querySelector<SVGSVGElement>(
+      ".hero-art > .signal-score, .case-signal-dock > .signal-score",
+    );
+    const signature = root.querySelector<HTMLElement>(
+      ".contact-signature-dock",
+    );
+    let signatureBox: {
+      left: number;
+      top: number;
+      width: number;
+      height: number;
+    } | null = null;
     let projectBounds: { top: number; height: number }[] = [];
     const projectEntries = Array.from(
       root.querySelectorAll<HTMLElement>(".work-entry"),
@@ -104,18 +119,33 @@ export function useScrollNarrative(
           element.dataset.cinema = kind;
         });
     }
-    collect(".hero-identity", "identity", 0);
-    collect("h2", "title", 1);
-    collect(".work-image-link", "media", 1, ".work-entry");
-    collect(".work-copy", "copy", 1, ".work-entry");
-    collect(".section-heading h2", "title", 2);
-    collect(".expertise-group", "skill", 2, ".expertise-group");
-    collect(".section-heading h2", "title", 3);
-    collect(".experience-content", "timeline", 3, ".experience-entry");
-    collect(".section-heading h2", "title", 4);
-    collect(".about-portrait", "portrait", 4);
-    collect(".about-copy", "about", 4);
-    collect(".contact-composition h2", "contact", 5);
+    if (caseStudy) {
+      collect(".case-hero h1", "identity", 0);
+      collect(".case-visual", "media", 0, ".case-visual");
+      for (let scene = 1; scene < 6; scene++) {
+        collect(".case-scene-heading h2, #links h2", "title", scene);
+        collect(".case-chapter", "copy", scene, ".case-chapter");
+        collect(
+          ".case-gallery figure, .case-detail-capture",
+          "media",
+          scene,
+          "figure",
+        );
+      }
+    } else {
+      collect(".hero-identity", "identity", 0);
+      collect("h2", "title", 1);
+      collect(".work-image-link", "media", 1, ".work-entry");
+      collect(".work-copy", "copy", 1, ".work-entry");
+      collect(".section-heading h2", "title", 2);
+      collect(".expertise-group", "skill", 2, ".expertise-group");
+      collect(".section-heading h2", "title", 3);
+      collect(".experience-content", "timeline", 3, ".experience-entry");
+      collect(".section-heading h2", "title", 4);
+      collect(".about-portrait", "portrait", 4);
+      collect(".about-copy", "about", 4);
+      collect(".contact-composition h2", "contact", 5);
+    }
 
     // offset geometry is independent of animated transforms and sticky visual positions.
     const layoutTop = (element: HTMLElement) => {
@@ -155,6 +185,13 @@ export function useScrollNarrative(
           height: rect.height,
         };
       }
+      if (signature)
+        signatureBox = {
+          left: signature.getBoundingClientRect().left,
+          top: layoutTop(signature),
+          width: signature.offsetWidth,
+          height: signature.offsetHeight,
+        };
       dirty = false;
     };
     const invalidate = () => {
@@ -184,6 +221,7 @@ export function useScrollNarrative(
           frame.height,
           maxScroll,
           bounds,
+          caseStudy ? caseSceneColors : undefined,
         );
         const id = bounds[state.active].id;
         if (active !== id) {
@@ -194,6 +232,15 @@ export function useScrollNarrative(
         root.style.setProperty("--scroll-progress", fixed(state.progress));
         root.dataset.scrollProgress = fixed(state.progress);
         root.dataset.chapterProgress = fixed(state.local);
+        root.style.setProperty("--chapter-progress", fixed(state.local));
+        root.style.setProperty(
+          "--pointer-x",
+          fixed((frame.pointerX / Math.max(1, frame.width)) * 2 - 1),
+        );
+        root.style.setProperty(
+          "--pointer-y",
+          fixed((frame.pointerY / Math.max(1, frame.height)) * 2 - 1),
+        );
         const nextPercentage = Math.round(state.progress * 100);
         if (percentage !== nextPercentage) {
           percentage = nextPercentage;
@@ -286,9 +333,17 @@ export function useScrollNarrative(
             squash: 1.12,
           },
           {
-            x: frame.width * 0.78,
-            y: frame.height * 0.48,
-            size: mobile ? 0.88 : 1.4,
+            x: signatureBox
+              ? signatureBox.left + signatureBox.width / 2
+              : frame.width * 0.65,
+            y: signatureBox
+              ? signatureBox.top - frame.scrollY + signatureBox.height / 2
+              : frame.height * 0.48,
+            size: signatureBox
+              ? Math.min(signatureBox.width / 600, signatureBox.height / 180)
+              : mobile
+                ? 0.88
+                : 1.4,
             rotate: 430,
             alpha: 0.18,
             squash: 0.75,
@@ -328,11 +383,21 @@ export function useScrollNarrative(
           );
           thread.style.opacity = fixed(scene === 0 ? t * 0.18 : 0.18);
         }
-        const label = sceneWords[scene];
+        const labels = caseStudy
+          ? [
+              root.dataset.project?.toUpperCase() || "WORK",
+              "INTENT",
+              "MAKING",
+              "EXPERIENCE",
+              "RESULT",
+              "LOWKYZ",
+            ]
+          : sceneWords;
+        const label = labels[scene];
         if (word) {
           if (label !== sceneWord) {
             word.textContent = label;
-            if (nextWord) nextWord.textContent = sceneWords[next];
+            if (nextWord) nextWord.textContent = labels[next];
             sceneWord = label;
           }
           word.style.transform = `translate3d(${fixed((t - 0.5) * -12)}%,${fixed(Math.sin(phase) * 7)}px,0) rotate(${fixed(mix(-6, 4, t))}deg) scaleX(${fixed(mix(1.1, 0.88, t))})`;
@@ -357,7 +422,8 @@ export function useScrollNarrative(
           }
         });
         universe.update(frame, {
-          stage: scene + t,
+          stage: caseStudy ? 1 + (scene + t) * 0.8 : scene + t,
+          docked: caseStudy,
           progress: state.progress,
           x,
           y,

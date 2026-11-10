@@ -57,6 +57,10 @@ export function Contact() {
             </span>
           </div>
         </div>
+        <div className="contact-signature-dock" aria-hidden="true">
+          <Wordmark />
+          <span className="mono">LOWKYZ / THE LIVING SIGNAL</span>
+        </div>
         <div className="contact-email-row">
           <a href={`mailto:${profile.email}`} className="contact-email">
             {profile.email}

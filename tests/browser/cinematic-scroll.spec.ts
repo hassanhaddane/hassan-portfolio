@@ -279,12 +279,13 @@ test("wheel, keyboard, reflow and route changes retain native control", async ({
   await expect(page.locator("#iaudiogram details")).toHaveAttribute("open", "");
   await page.locator('.living-signal a[href="#contact"]').click();
   await expect(page.locator(root)).toHaveAttribute("data-chapter", "contact");
+  await anchored(page, "contact");
   await page.locator("a.locale-switch").click();
   await ready(page);
   await expect(page).toHaveURL(/\/en#contact$/);
   await expect(page.locator(root)).toHaveAttribute("data-chapter", "contact");
   await page.goto("/en/work/greecheck");
-  await expect(page.locator(".narrative-environment")).toHaveCount(0);
+  await expect(page.locator(".narrative-environment")).toHaveCount(1);
   await page
     .getByRole("navigation", { name: "Case study navigation" })
     .getByRole("link", { name: /Back to work/ })
@@ -306,9 +307,9 @@ test("editorial pins hold their frame and the project reveal travels horizontall
     .locator("#stack")
     .evaluate((e) => e.getBoundingClientRect().top + scrollY);
   const heading = page.locator("#stack .section-heading");
-  await scroll(page, engineering + 300);
+  await scroll(page, engineering + 200);
   const first = await heading.boundingBox();
-  await scroll(page, engineering + 500);
+  await scroll(page, engineering + 350);
   const second = await heading.boundingBox();
   expect(first).not.toBeNull();
   expect(second).not.toBeNull();

@@ -1,11 +1,15 @@
 import { SignalArtwork } from "@/components/portfolio/signal-artwork";
-import { sceneColors } from "@/lib/scroll-narrative";
+import { sceneColors, caseSceneColors } from "@/lib/scroll-narrative";
 
 /** Decorative layers remain separate from semantic, anchored document content. */
-export function NarrativeEnvironment() {
+export function NarrativeEnvironment({
+  caseStudy = false,
+}: {
+  caseStudy?: boolean;
+}) {
   return (
     <div className="narrative-environment" aria-hidden="true">
-      {sceneColors.map((color, index) => (
+      {(caseStudy ? caseSceneColors : sceneColors).map((color, index) => (
         <div
           key={index}
           className="narrative-wash"

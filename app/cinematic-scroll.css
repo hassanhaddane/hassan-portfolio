@@ -114,11 +114,7 @@
   background: var(--scene-backdrop);
 }
 [data-narrative="on"]
-  :is(
-    .living-signal a[aria-current],
-    .work-actions > a:first-child,
-    .about-notes h3
-  ) {
+  :is(.living-signal a[aria-current], .work-actions > a:first-child) {
   color: var(--scene-ink);
 }
 [data-narrative="on"] :is(.work-heading h2, .portrait-register) {
