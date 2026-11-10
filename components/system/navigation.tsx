@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { ArrowUpRight, Menu, Search } from "lucide-react";
+import { ArrowUpRight, Menu, Search, Waves } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -18,6 +18,8 @@ export function Navigation() {
   const { locale, motion, toggleMotion, systemReduced } = usePreferences();
   const { setCommandOpen } = useCommand();
   const activeSection = useActiveSection();
+  const current =
+    chapters.find((chapter) => chapter.id === activeSection) ?? chapters[0];
   const [menuOpen, setMenuOpen] = useState(false);
   const destination = useRef<string | null>(null);
   return (
@@ -30,7 +32,7 @@ export function Navigation() {
         <a
           className="brand"
           href="#profil"
-          aria-label="LOWKYZ — Hassan Haddane"
+          aria-label="LOWKYZ — Hassan Haddane — THE LIVING SIGNAL"
         >
           <Wordmark />
           <span className="brand-caption mono">— THE LIVING SIGNAL</span>
@@ -51,7 +53,33 @@ export function Navigation() {
             </a>
           ))}
         </nav>
+        <span className="masthead-chapter mono" aria-hidden="true">
+          <i />
+          {current.label[locale]}
+        </span>
         <div className="masthead-utilities">
+          <button
+            type="button"
+            className="icon-control motion-trigger"
+            onClick={toggleMotion}
+            disabled={systemReduced}
+            aria-pressed={!motion}
+            aria-label={
+              locale === "fr"
+                ? systemReduced
+                  ? "Animations réduites par le système"
+                  : motion
+                    ? "Animations : réduire"
+                    : "Animations : réactiver"
+                : systemReduced
+                  ? "Motion reduced by system"
+                  : motion
+                    ? "Motion: reduce"
+                    : "Motion: enable"
+            }
+          >
+            <Waves aria-hidden="true" />
+          </button>
           <button
             className="icon-control search-trigger"
             data-command-trigger
@@ -94,7 +122,11 @@ export function Navigation() {
                 event.preventDefault();
                 const id = destination.current;
                 destination.current = null;
-                requestAnimationFrame(() => {
+                if (id === "commands") {
+                  setCommandOpen(true);
+                  return;
+                }
+                queueMicrotask(() => {
                   const target = document.getElementById(id);
                   target?.scrollIntoView();
                   target?.focus({ preventScroll: true });
@@ -137,8 +169,8 @@ export function Navigation() {
                 </a>
                 <button
                   onClick={() => {
+                    destination.current = "commands";
                     setMenuOpen(false);
-                    requestAnimationFrame(() => setCommandOpen(true));
                   }}
                 >
                   {locale === "fr" ? "Rechercher" : "Search"}

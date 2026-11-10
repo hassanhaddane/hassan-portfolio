@@ -3,8 +3,6 @@
 import { chapters } from "@/lib/experience-copy";
 import { useActiveSection, usePreferences } from "./preferences";
 
-const labels = ["Intro", "Work", "Engineering", "Journey", "About", "Contact"];
-
 /** Always present; the score's highlighted node follows the current chapter. */
 export function LivingSignal() {
   const active = useActiveSection();
@@ -49,22 +47,16 @@ export function LivingSignal() {
           <li key={chapter.id}>
             <a
               href={`#${chapter.id}`}
-              aria-label={`${String(index + 1).padStart(2, "0")} ${chapter.label[locale]}`}
               aria-current={active === chapter.id ? "location" : undefined}
             >
-              <span className="signal-node" />
+              <span className="signal-node" aria-hidden="true" />
               <span className="mono">
-                0{index + 1}
-                <span>{labels[index]}</span>
+                0{index + 1} <span>{chapter.label[locale]}</span>
               </span>
             </a>
           </li>
         ))}
       </ol>
-      <span className="signal-mobile-caption mono">
-        {labels[chapters.findIndex((chapter) => chapter.id === active)]} / THE
-        LIVING SIGNAL
-      </span>
     </aside>
   );
 }

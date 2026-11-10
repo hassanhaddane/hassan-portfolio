@@ -141,10 +141,10 @@ export function SelectedWork({ locale }: { locale: Locale }) {
               >
                 <a
                   className="work-image-link"
+                  data-cursor="view"
                   href={`/${locale}/work/${project.slug}`}
-                  aria-label={`${project.name} — ${fr ? "étude de cas" : "case study"}`}
                 >
-                  <div className="work-scene-register mono" aria-hidden="true">
+                  <div className="work-scene-register mono">
                     <span>LOWKYZ / 0{index + 1}</span>
                     <span>{project.category[locale]}</span>
                   </div>

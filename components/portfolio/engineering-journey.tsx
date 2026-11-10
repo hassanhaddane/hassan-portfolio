@@ -157,7 +157,7 @@ function ExperienceJourney({ locale }: { locale: Locale }) {
       </div>
       <div id="education" tabIndex={-1} className="education-strip">
         <div>
-          <span className="mono text-accent">
+          <span className="mono">
             {locale === "fr" ? "FORMATION" : "EDUCATION"} / 2020—2025
           </span>
           <h3>

@@ -195,6 +195,8 @@ test("one RAF clock: idle environment runs, reduced motion stops, then resumes",
   page,
 }) => {
   await page.addInitScript(() => {
+    // Isolate the vector clock; the universe tests measure live WebGL frames separately.
+    Object.defineProperty(navigator, "deviceMemory", { get: () => 1 });
     const pending = new Set<number>();
     const original = window.requestAnimationFrame.bind(window);
     const cancel = window.cancelAnimationFrame.bind(window);

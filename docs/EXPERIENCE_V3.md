@@ -6,7 +6,7 @@ Une identité entre développement Full-Stack, son et direction artistique. Le p
 
 Ivoire `#eeece4`, encre `#20221f`, orange signal `#f25229`. Barlow Condensed pour les grandes compositions éditoriales, Geist pour la lecture, monospace pour les repères. Filets, surfaces ouvertes et contrastes francs remplacent les cartes et les effets de verre.
 
-Le hero assemble une identité LOWKYZ dominante, une promesse lisible, des CTA immédiats et une sculpture 3D progressive. Sa famille de courbes lie précision mathématique et intuition musicale. Aucun écran d’attente ne bloque le contenu.
+Le hero assemble une identité LOWKYZ dominante, une promesse lisible, des CTA immédiats et une sculpture 3D progressive. Sa famille de courbes lie précision mathématique et intuition musicale. Intro réelle, passable et rejouable, sans blocage.
 
 ## Continuité
 

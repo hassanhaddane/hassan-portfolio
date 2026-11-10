@@ -1,0 +1,421 @@
+/* The acquisition score occupies the artwork dock. The SSR title and actions stay visible. */
+.signal-intro {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+html:not([data-js]) .signal-intro {
+  display: none;
+}
+.intro-replay,
+.intro-skip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 38px;
+  border: 0;
+  background: none;
+  color: inherit;
+  pointer-events: auto;
+  font-size: 10px;
+  padding: 5px 0;
+}
+.intro-replay {
+  position: absolute;
+  top: -16px;
+  right: 0;
+  z-index: 1;
+}
+.intro-replay svg,
+.intro-skip svg {
+  width: 13px;
+  height: 13px;
+}
+.intro-replay:is(:hover, :focus-visible),
+.intro-skip:is(:hover, :focus-visible) {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.intro-score {
+  position: absolute;
+  inset: 27px 0 78px;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 12px;
+  padding: 18px;
+  color: #eeece4;
+  background: #20221f;
+  border: 1px solid #5f6254;
+  pointer-events: auto;
+  transform-origin: 50% 65%;
+  transition:
+    opacity 0.54s var(--ease),
+    transform 0.54s var(--ease),
+    clip-path 0.54s var(--ease);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}
+html[data-motion="off"] [data-intro-phase="boot"] .intro-score {
+  display: none;
+}
+[data-intro-phase="release"] .intro-score {
+  animation: intro-release 0.54s var(--ease) both;
+  pointer-events: none;
+}
+@keyframes intro-release {
+  from {
+    opacity: 1;
+    transform: none;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  }
+  to {
+    opacity: 0;
+    transform: translate3d(9px, -16px, 0) scale(0.97);
+    clip-path: polygon(0 0, 100% 0, 100% 4%, 0 27%);
+  }
+}
+
+.intro-register {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 9px;
+  color: #d4d4c7;
+}
+.intro-emblem {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  place-items: center;
+  min-height: 0;
+}
+.intro-emblem .lowkyz-wordmark {
+  width: min(82%, 420px);
+  height: auto;
+  max-height: 78px;
+  color: #f98262;
+}
+.intro-wave {
+  width: 90%;
+  height: 22px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
+  color: #d4d4c7;
+}
+.intro-wave i {
+  display: block;
+  width: 1px;
+  height: 15px;
+  background: currentColor;
+  transform-origin: center;
+  animation: acquisition 0.85s ease-in-out infinite alternate;
+}
+.intro-wave i:nth-child(even) {
+  animation-direction: alternate-reverse;
+}
+.intro-wave i:nth-child(3n) {
+  height: 22px;
+}
+.intro-controls {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 18px;
+}
+.intro-progress > .mono {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 9px;
+}
+.intro-progress-track {
+  display: block;
+  height: 2px;
+  background: #5e6255;
+  margin-top: 7px;
+}
+.intro-progress-track i {
+  display: block;
+  height: 100%;
+  background: #f98262;
+  transform-origin: left;
+  transition: transform 0.18s var(--ease);
+}
+.intro-skip {
+  white-space: nowrap;
+}
+@keyframes acquisition {
+  from {
+    transform: scaleY(0.22);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+/* Persistent nav controls, tactile pressed states and one contextual desktop cursor. */
+.masthead-chapter {
+  display: none;
+}
+.masthead-utilities .motion-trigger {
+  width: 35px;
+}
+.motion-trigger[aria-pressed="true"] {
+  outline: 1px solid currentColor;
+  outline-offset: -6px;
+}
+.masthead-links a[aria-current]::after,
+.scroll-progress {
+  background: var(--scene-accent, var(--signal));
+}
+.masthead-links a::before {
+  content: "";
+  position: absolute;
+  bottom: 11px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s var(--ease);
+}
+.masthead-links a:is(:hover, :focus-visible)::before {
+  transform: scaleX(1);
+}
+.navigation-dialog[data-state="open"] {
+  animation: menu-in 0.34s var(--ease) both;
+}
+.navigation-dialog[data-state="closed"] {
+  animation: menu-out 0.2s var(--ease) both;
+}
+[data-slot="dialog-overlay"][data-state="open"] {
+  animation: veil-in 0.25s ease both;
+}
+[data-slot="dialog-overlay"][data-state="closed"] {
+  animation: veil-out 0.2s ease both;
+}
+.navigation-dialog[data-state="open"] nav > a {
+  animation: menu-row 0.42s var(--ease) both;
+}
+.navigation-dialog[data-state="open"] nav > a:nth-child(2n) {
+  animation-delay: 0.05s;
+}
+.navigation-dialog nav a:is(:hover, :focus-visible) {
+  background: #dedbd0;
+}
+.menu-secondary :is(a, button) {
+  min-height: 36px;
+}
+@keyframes menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(15px) scale(0.98);
+    clip-path: inset(0 0 12% 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    clip-path: inset(0);
+  }
+}
+@keyframes menu-out {
+  from {
+    opacity: 1;
+    transform: none;
+  }
+  to {
+    opacity: 0;
+    transform: translateY(12px) scale(0.985);
+  }
+}
+@keyframes menu-row {
+  from {
+    opacity: 0;
+    transform: translateX(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes veil-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes veil-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+.context-cursor {
+  display: none;
+}
+:where(
+  .creative-action,
+  .gallery-transport a,
+  .intro-skip,
+  .intro-replay,
+  .icon-control
+):active {
+  scale: 0.97;
+}
+.creative-action--primary {
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% calc(100% - 10px),
+    calc(100% - 10px) 100%,
+    0 100%
+  );
+}
+.creative-action--primary:focus-visible {
+  outline: 2px solid #20221f;
+  outline-offset: -4px;
+}
+:where(
+  .gallery-index a,
+  .contact-links a,
+  .engineering-evidence a,
+  .journey-index a,
+  .case-reading-nav a,
+  .case-footer a
+):hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+@media (hover: hover) and (pointer: fine) and (min-width: 1000px) {
+  [data-narrative="on"] .context-cursor[data-visible="true"] {
+    position: fixed;
+    inset: 0 auto auto 0;
+    z-index: 70;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    pointer-events: none;
+    color: #eeece4;
+    background: #20221f;
+    border: 1px solid #c1c0b4;
+    padding: 4px 8px;
+    font: 9px/1.5 var(--font-geist-mono);
+    white-space: nowrap;
+  }
+  [data-narrative="on"]
+    :is(.creative-action, [data-magnetic]):not(:focus-visible) {
+    translate: var(--magnet-x, 0) var(--magnet-y, 0);
+    transition:
+      translate 0.2s var(--ease),
+      color 0.2s,
+      background 0.2s,
+      border-color 0.2s;
+  }
+  [data-narrative="on"] .hero h1 span {
+    transform: translateX(calc(var(--pointer-x, 0) * 3px))
+      skewX(calc(var(--pointer-y, 0) * -1deg));
+    transition: transform 0.3s var(--ease);
+  }
+  html[data-motion="on"] .work-image-link:hover .work-image-stage {
+    transform: perspective(1150px) rotateY(calc(var(--pointer-x, 0) * 3deg))
+      rotateX(calc(var(--pointer-y, 0) * -2deg)) scale(1.018);
+  }
+}
+@media (max-width: 1100px) {
+  .masthead-chapter {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: auto;
+    font-size: 9px;
+    white-space: nowrap;
+  }
+  .masthead-chapter i {
+    width: 5px;
+    height: 5px;
+    background: currentColor;
+    transform: rotate(45deg);
+  }
+  .masthead-utilities {
+    margin-left: 0;
+  }
+}
+@media (max-width: 760px) {
+  .masthead-chapter {
+    font-size: 8px;
+  }
+  .masthead-utilities {
+    gap: 7px;
+  }
+  .masthead-utilities .motion-trigger {
+    width: 27px;
+  }
+  .masthead-utilities .motion-trigger svg {
+    width: 15px;
+  }
+  .masthead-utilities .locale-switch {
+    font-size: 9px;
+  }
+  .intro-replay {
+    top: -8px;
+    right: 0;
+    min-height: 28px;
+    font-size: 8px;
+  }
+  .intro-replay svg {
+    width: 11px;
+    height: 11px;
+  }
+  .intro-score {
+    inset: 22px 0 10px;
+    padding: 11px;
+    gap: 5px;
+  }
+  .intro-register,
+  .intro-progress > .mono,
+  .intro-skip {
+    font-size: 8px;
+  }
+  .intro-controls {
+    gap: 11px;
+  }
+  .intro-skip {
+    min-height: 31px;
+    gap: 5px;
+  }
+  .intro-wave {
+    height: 16px;
+  }
+}
+@media (max-width: 360px) {
+  .masthead-chapter {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-intro-phase="boot"] .intro-score {
+    display: none;
+  }
+}
+@media (max-width: 760px) {
+  .living-signal {
+    height: 24px;
+  }
+  .living-signal a {
+    min-height: 24px;
+  }
+  .living-signal ol::before {
+    top: 11px;
+  }
+  .masthead-utilities .motion-trigger {
+    width: 36px;
+  }
+}

@@ -33,6 +33,7 @@ export function ProjectMedia({
             <Dialog.Trigger asChild>
               <button
                 className="capture-open"
+                data-cursor="zoom"
                 onClick={(event) => {
                   trigger.current = event.currentTarget;
                   setActive(index);

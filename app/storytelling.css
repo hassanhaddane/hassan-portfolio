@@ -625,8 +625,8 @@ html:not([data-js]) :is(.engineering-map, .engineering-skills) {
   position: absolute;
   right: 0;
   top: 0;
-  opacity: 0.13;
-  font: 800 clamp(70px, 11vw, 170px)/1 var(--display);
+  opacity: 0.64;
+  font: 800 clamp(64px, 8vw, 112px)/1 var(--display);
 }
 .experience-content {
   grid-column: 1/-1;
@@ -1594,7 +1594,7 @@ html[data-motion="off"]
   font-size: 7px;
 }
 .experience-entry:target .journey-mark {
-  opacity: 0.35;
+  opacity: 0.8;
 }
 [data-narrative="on"] .experience-content::after {
   display: block;

@@ -8,39 +8,45 @@ export function NarrativeEnvironment({
   caseStudy?: boolean;
 }) {
   return (
-    <div className="narrative-environment" aria-hidden="true">
-      {(caseStudy ? caseSceneColors : sceneColors).map((color, index) => (
-        <div
-          key={index}
-          className="narrative-wash"
-          data-scene-wash
-          style={{ backgroundColor: `rgb(${color.join(",")})` }}
-        />
-      ))}
-      <div className="narrative-word" data-narrative-word>
-        LOWKYZ
+    <>
+      <div className="context-cursor" data-context-cursor aria-hidden="true">
+        <span>↗</span>
+        <span data-cursor-caption />
       </div>
-      <div className="narrative-word" data-narrative-next-word>
-        WORK
-      </div>
-      <div className="narrative-webgl" data-universe-host />
-      <div className="signal-vessel" data-signal-vessel>
-        <div className="signal-orbit">
-          <SignalArtwork />
+      <div className="narrative-environment" aria-hidden="true">
+        {(caseStudy ? caseSceneColors : sceneColors).map((color, index) => (
+          <div
+            key={index}
+            className="narrative-wash"
+            data-scene-wash
+            style={{ backgroundColor: `rgb(${color.join(",")})` }}
+          />
+        ))}
+        <div className="narrative-word" data-narrative-word>
+          LOWKYZ
         </div>
+        <div className="narrative-word" data-narrative-next-word>
+          WORK
+        </div>
+        <div className="narrative-webgl" data-universe-host />
+        <div className="signal-vessel" data-signal-vessel>
+          <div className="signal-orbit">
+            <SignalArtwork reference />
+          </div>
+        </div>
+        <svg
+          className="narrative-thread"
+          viewBox="0 0 1000 1000"
+          preserveAspectRatio="none"
+        >
+          <path
+            data-narrative-thread
+            fill="none"
+            stroke="currentColor"
+            strokeWidth=".7"
+          />
+        </svg>
       </div>
-      <svg
-        className="narrative-thread"
-        viewBox="0 0 1000 1000"
-        preserveAspectRatio="none"
-      >
-        <path
-          data-narrative-thread
-          fill="none"
-          stroke="currentColor"
-          strokeWidth=".7"
-        />
-      </svg>
-    </div>
+    </>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { createSensorySession } from "./sensory-session";
 import { createUniverseSession } from "./universe-session";
 import { chapters } from "@/lib/experience-copy";
 import { subscribeMotionFrame, invalidateMotionFrame } from "./motion-runtime";
@@ -71,6 +72,8 @@ export function useScrollNarrative(
     const dock = root.querySelector<SVGSVGElement>(
       ".hero-art > .signal-score, .case-signal-dock > .signal-score",
     );
+    const heroTitle = root.querySelector<HTMLElement>(".hero h1 > span");
+    let heroTitleRight = 0;
     const signature = root.querySelector<HTMLElement>(
       ".contact-signature-dock",
     );
@@ -93,6 +96,7 @@ export function useScrollNarrative(
     let backdrop = "";
     let sceneWord = "";
     let ambientTime = 0;
+    let lastReading: ReturnType<typeof narrativeAt> | null = null;
     let dockBox = { left: 0, top: 0, width: 600, height: 460 };
     const targets: Target[] = [];
     function collect(
@@ -185,6 +189,10 @@ export function useScrollNarrative(
           height: rect.height,
         };
       }
+      if (heroTitle)
+        heroTitleRight =
+          heroTitle.offsetWidth +
+          (heroTitle.closest<HTMLElement>(".hero-identity")?.offsetLeft ?? 0);
       if (signature)
         signatureBox = {
           left: signature.getBoundingClientRect().left,
@@ -211,36 +219,52 @@ export function useScrollNarrative(
     root.dataset.narrative = animated ? "on" : "off";
 
     const universe = createUniverseSession(root, animated);
+    const sensory = animated ? createSensorySession(root) : null;
     const unsubscribe = subscribeMotionFrame(
       (frame) => {
+        sensory?.update(frame);
         const geometryChanged = dirty || frame.resized;
         if (geometryChanged) measure();
         if (!animated && !frame.scrolled && !frame.resized) return;
-        const state = narrativeAt(
-          frame.scrollY,
-          frame.height,
-          maxScroll,
-          bounds,
-          caseStudy ? caseSceneColors : undefined,
-        );
+        const state =
+          lastReading && !frame.scrolled && !geometryChanged
+            ? lastReading
+            : narrativeAt(
+                frame.scrollY,
+                frame.height,
+                maxScroll,
+                bounds,
+                caseStudy ? caseSceneColors : undefined,
+              );
+        const readingChanged = state !== lastReading;
+        lastReading = state;
         const id = bounds[state.active].id;
         if (active !== id) {
           active = id;
           setChapter(id);
           root.dataset.chapter = id;
         }
-        root.style.setProperty("--scroll-progress", fixed(state.progress));
-        root.dataset.scrollProgress = fixed(state.progress);
-        root.dataset.chapterProgress = fixed(state.local);
-        root.style.setProperty("--chapter-progress", fixed(state.local));
-        root.style.setProperty(
-          "--pointer-x",
-          fixed((frame.pointerX / Math.max(1, frame.width)) * 2 - 1),
-        );
-        root.style.setProperty(
-          "--pointer-y",
-          fixed((frame.pointerY / Math.max(1, frame.height)) * 2 - 1),
-        );
+        if (readingChanged) {
+          root.style.setProperty("--scroll-progress", fixed(state.progress));
+          root.dataset.scrollProgress = fixed(state.progress);
+          root.dataset.chapterProgress = fixed(state.local);
+          root.style.setProperty("--chapter-progress", fixed(state.local));
+        }
+        if (frame.pointerChanged || geometryChanged) {
+          const fine = frame.pointerInside && frame.pointerType === "mouse";
+          root.style.setProperty(
+            "--pointer-x",
+            fixed(
+              fine ? (frame.pointerX / Math.max(1, frame.width)) * 2 - 1 : 0,
+            ),
+          );
+          root.style.setProperty(
+            "--pointer-y",
+            fixed(
+              fine ? (frame.pointerY / Math.max(1, frame.height)) * 2 - 1 : 0,
+            ),
+          );
+        }
         const nextPercentage = Math.round(state.progress * 100);
         if (percentage !== nextPercentage) {
           percentage = nextPercentage;
@@ -267,8 +291,10 @@ export function useScrollNarrative(
           theme = nextTheme;
           root.dataset.sceneTone = theme;
         }
-        root.dataset.scene = String(state.scene);
-        root.dataset.sceneBlend = fixed(state.blend);
+        if (readingChanged) {
+          root.dataset.scene = String(state.scene);
+          root.dataset.sceneBlend = fixed(state.blend);
+        }
         if (backdrop !== state.backdrop) {
           backdrop = state.backdrop;
           root.style.setProperty("--scene-backdrop", backdrop);
@@ -276,14 +302,15 @@ export function useScrollNarrative(
           root.style.setProperty("--scene-muted", state.muted);
           root.style.setProperty("--scene-accent", state.accent);
         }
-        washes.forEach((wash, i) => {
-          wash.style.opacity =
-            i === state.scene
-              ? "1"
-              : i === state.scene + 1
-                ? fixed(state.blend)
-                : "0";
-        });
+        if (readingChanged)
+          washes.forEach((wash, i) => {
+            wash.style.opacity =
+              i === state.scene
+                ? "1"
+                : i === state.scene + 1
+                  ? fixed(state.blend)
+                  : "0";
+          });
         const mobile = frame.width <= 760;
         const strength = mobile ? 0.48 : 1;
         ambientTime += frame.delta;
@@ -291,11 +318,17 @@ export function useScrollNarrative(
         const scene = state.scene;
         const next = Math.min(scene + 1, 5);
         const mainLeft = mobile ? 22 : frame.width <= 1250 ? 102 : 149;
+        const heroGap = frame.width - heroTitleRight - 22;
+        const heroDocked = !caseStudy && frame.width >= 1000 && heroGap >= 160;
         const positions = [
           {
-            x: dockBox.left + dockBox.width / 2,
+            x: heroDocked
+              ? heroTitleRight + heroGap / 2
+              : dockBox.left + dockBox.width / 2,
             y: dockBox.top - frame.scrollY + dockBox.height / 2,
-            size: dockBox.width / 600,
+            size:
+              (heroDocked ? Math.min(dockBox.width, heroGap) : dockBox.width) /
+              600,
             rotate: 0,
             alpha: 1,
             squash: 1,
@@ -309,27 +342,27 @@ export function useScrollNarrative(
             squash: 0.48,
           },
           {
-            x: frame.width * (mobile ? 0.77 : 0.3),
-            y: frame.height * 0.6,
-            size: mobile ? 0.72 : 1.25,
+            x: frame.width * (mobile ? 0.97 : 0.25),
+            y: frame.height * 0.81,
+            size: mobile ? 0.45 : 0.78,
             rotate: 168,
-            alpha: 0.15,
+            alpha: mobile ? 0.07 : 0.11,
             squash: 0.9,
           },
           {
-            x: frame.width * 0.66,
-            y: frame.height * 0.53,
-            size: mobile ? 0.55 : 1,
+            x: frame.width * (mobile ? 0.98 : 0.89),
+            y: frame.height * 0.59,
+            size: mobile ? 0.45 : 0.66,
             rotate: 270,
-            alpha: 0.12,
+            alpha: 0.075,
             squash: 0.2,
           },
           {
-            x: frame.width * (mobile ? 0.72 : 0.28),
-            y: frame.height * 0.48,
-            size: mobile ? 0.7 : 1.1,
+            x: frame.width * (mobile ? 1.02 : 0.27),
+            y: frame.height * (mobile ? 0.57 : 0.48),
+            size: mobile ? 0.46 : 1.03,
             rotate: 350,
-            alpha: 0.14,
+            alpha: mobile ? 0.08 : 0.13,
             squash: 1.12,
           },
           {
@@ -357,7 +390,7 @@ export function useScrollNarrative(
           mix(from.y, to.y, t) +
           Math.sin(phase) * 6 * (scene === 0 ? t : 1) * strength;
         const scale = mix(from.size, to.size, t);
-        if (vessel) {
+        if (vessel && (readingChanged || root.dataset.universe !== "webgl")) {
           vessel.style.transform = `translate3d(${fixed(x - 300)}px,${fixed(y - 230)}px,0) rotate(${fixed(mix(from.rotate, to.rotate, t))}deg) scale(${fixed(scale)})`;
           vessel.style.opacity = fixed(mix(from.alpha, to.alpha, t));
           vessel.style.setProperty(
@@ -373,7 +406,7 @@ export function useScrollNarrative(
             `${fixed(Math.sin(phase) * 4)}deg`,
           );
         }
-        if (thread) {
+        if (thread && (scene > 0 || t > 0 || readingChanged)) {
           const endX = clamp(x / frame.width) * 1000,
             endY = clamp(y / frame.height) * 1000;
           const bend = Math.sin(phase) * 40;
@@ -394,7 +427,7 @@ export function useScrollNarrative(
             ]
           : sceneWords;
         const label = labels[scene];
-        if (word) {
+        if (word && (scene > 0 || t > 0 || readingChanged)) {
           if (label !== sceneWord) {
             word.textContent = label;
             if (nextWord) nextWord.textContent = labels[next];
@@ -404,7 +437,7 @@ export function useScrollNarrative(
           word.style.opacity = fixed(scene === 0 ? t * 0.045 : 0.045);
           word.style.clipPath = `inset(0 ${fixed(t * 100)}% 0 0)`;
         }
-        if (nextWord) {
+        if (nextWord && (scene > 0 || t > 0 || readingChanged)) {
           nextWord.style.clipPath = `inset(0 0 0 ${fixed((1 - t) * 100)}%)`;
           nextWord.style.opacity = ".045";
           nextWord.style.transform = `translate3d(${fixed((1 - t) * 12)}%,${fixed(Math.sin(phase) * -7)}px,0) rotate(${fixed(mix(4, -2, t))}deg) scaleX(${fixed(mix(0.88, 1.1, t))})`;
@@ -530,6 +563,7 @@ export function useScrollNarrative(
       disposed = true;
       unsubscribe();
       universe.dispose();
+      sensory?.dispose();
       observer.disconnect();
       root.removeEventListener("load", invalidate, true);
       root.removeEventListener("toggle", invalidate, true);

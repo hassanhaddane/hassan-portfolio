@@ -4,6 +4,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import "./cinematic-scroll.css";
 import "./storytelling.css";
+import "./release.css";
 import { SITE_ORIGIN, seoContent } from "@/lib/seo";
 
 const barlow = localFont({

@@ -68,6 +68,8 @@ export function Contact() {
           </a>
           <button
             className="icon-control"
+            data-cursor="copy"
+            data-magnetic
             onClick={copyEmail}
             aria-label={
               locale === "fr" ? "Copier l’adresse email" : "Copy email address"

@@ -121,9 +121,6 @@ main:focus {
 .text-muted {
   color: var(--muted-foreground);
 }
-.text-accent {
-  color: var(--signal);
-}
 [data-site-content] {
   padding-left: var(--rail);
 }
@@ -261,9 +258,6 @@ main:focus {
   background: var(--signal);
   scale: 1.6;
 }
-.signal-mobile-caption {
-  display: none;
-}
 
 /* Masthead */
 .skip-link {
@@ -384,7 +378,6 @@ main:focus {
 .hero h1 span {
   display: inline-block;
   transform-origin: left center;
-  animation: identity-arrival 0.95s var(--ease) both;
 }
 .hero-subtitle {
   margin-top: 26px;
@@ -452,9 +445,6 @@ main:focus {
 .creative-action__label {
   display: block;
   position: relative;
-}
-.creative-action__label > span + span {
-  display: none;
 }
 .creative-action__icon {
   display: grid;
@@ -621,16 +611,6 @@ main:focus {
   place-items: center;
 }
 
-@keyframes identity-arrival {
-  from {
-    transform: translateY(10px) skewX(-4deg);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0) skewX(0);
-    opacity: 1;
-  }
-}
 @keyframes wave-breathe {
   from {
     transform: scaleY(0.82) skewX(-3deg);
@@ -743,9 +723,16 @@ main:focus {
     background: var(--background);
     border-bottom: 1px solid var(--border);
   }
-  .living-signal-line,
-  .living-signal a > .mono {
+  .living-signal-line {
     display: none;
+  }
+  .living-signal a > .mono {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
   .living-signal ol {
     inset: 0 22px;
@@ -777,14 +764,14 @@ main:focus {
     box-shadow: 0 0 0 3px var(--background);
   }
   .hero {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     padding-top: 40px;
     padding-bottom: 22px;
     min-height: auto;
     gap: 0;
   }
   .hero h1 {
-    font-size: 29.5vw;
+    font-size: 26vw;
     letter-spacing: -0.055em;
     line-height: 0.77;
   }

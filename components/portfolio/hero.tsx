@@ -2,6 +2,7 @@ import type { Locale } from "@/lib/portfolio-data";
 import { ArrowDown, ArrowUpRight, Waves } from "lucide-react";
 import { CreativeAction } from "@/components/ui/creative-action";
 import { copy, profile } from "@/lib/portfolio-data";
+import { SignalIntro } from "./signal-intro";
 import { SignalArtwork } from "./signal-artwork";
 
 export function Hero({ locale }: { locale: Locale }) {
@@ -61,8 +62,10 @@ export function Hero({ locale }: { locale: Locale }) {
       </div>
       <div className="hero-art">
         <SignalArtwork />
+        <SignalIntro />
         <button
           className="signal-modulate"
+          data-cursor="tune"
           data-signal-modulate
           disabled
           type="button"

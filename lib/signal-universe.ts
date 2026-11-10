@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { yieldToBrowser } from "./browser-tasks";
 import type { MotionFrame } from "./motion-runtime";
 import { surfacePoint, fieldPoint } from "./signal-forms";
 import { fieldVertex, pointFragment, lineFragment } from "./signal-shaders";
@@ -28,12 +29,12 @@ const projectColors = [0x63a779, 0xf25229, 0x819eae, 0xc4ad84];
 const cameraDepth = [8.2, 9.5, 8.8, 10, 8.4, 9.8];
 
 /** A shared scene, five draw calls, immutable morph buffers; deliberately no RAF here. */
-export function createSignalUniverse(
+export async function createSignalUniverse(
   canvas: HTMLCanvasElement,
   context: WebGL2RenderingContext,
   quality: UniverseQuality,
   status: (state: UniverseStatus) => void,
-): SignalUniverse {
+): Promise<SignalUniverse> {
   const renderer = new THREE.WebGLRenderer({
     canvas,
     context,
@@ -56,8 +57,8 @@ export function createSignalUniverse(
   const fill = new THREE.DirectionalLight(0xc5ded6, 1.9);
   fill.position.set(-3, -2, 5);
   scene.add(key, rim, fill, new THREE.HemisphereLight(0xffead3, 0x272e28, 2.4));
-  const segments = quality === "full" ? 160 : quality === "mobile" ? 96 : 64;
-  const rings = quality === "full" ? 24 : 16;
+  const segments = quality === "full" ? 160 : quality === "mobile" ? 72 : 48;
+  const rings = quality === "full" ? 24 : 12;
   const count = quality === "full" ? 1760 : quality === "mobile" ? 800 : 480;
   const uniforms = {
     uTime: { value: 0 },
@@ -108,6 +109,7 @@ export function createSignalUniverse(
       // This CPU-only helper has never been uploaded; its attributes are owned by surface.
       helper.dispose();
     }
+    await yieldToBrowser();
   }
   surface.setAttribute("uv", new THREE.BufferAttribute(uv, 2));
   surface.morphAttributes.position = morphPositions;
@@ -179,6 +181,7 @@ export function createSignalUniverse(
       shape === 0 ? "position" : `aShape${shape}`,
       new THREE.BufferAttribute(coords, 3),
     );
+    await yieldToBrowser();
   }
   field.setAttribute("aSeed", new THREE.BufferAttribute(seeds, 1));
   field.boundingSphere = new THREE.Sphere(new THREE.Vector3(), 4);
@@ -332,7 +335,7 @@ export function createSignalUniverse(
     if (!seen) canvas.dataset.running = "false";
   });
   observer.observe(canvas);
-  return {
+  const controller: SignalUniverse = {
     update(frame, input) {
       if (disposed || failed) return false;
       if (lost || !seen || document.hidden || !input.visible) {
@@ -570,4 +573,11 @@ export function createSignalUniverse(
       canvas.remove();
     },
   };
+  try {
+    await renderer.compileAsync(scene, camera);
+    return controller;
+  } catch (error) {
+    controller.dispose();
+    throw error;
+  }
 }

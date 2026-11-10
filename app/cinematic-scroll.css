@@ -130,9 +130,6 @@
   animation: none;
   transform: scaleY(var(--signal-breath, 1)) skewX(var(--signal-shear, 0deg));
 }
-[data-narrative="on"] .hero h1 span {
-  animation: none;
-}
 [data-narrative="on"] [data-cinema] {
   transform: var(--cinema-transform, none);
   transform-origin: center;
@@ -259,12 +256,14 @@ html[data-motion="off"] .narrative-environment {
 }
 .narrative-webgl {
   opacity: 0;
+  transition: opacity 0.32s var(--ease);
 }
 [data-universe="webgl"] .narrative-webgl {
   opacity: 1;
 }
-[data-universe="webgl"] .signal-vessel {
-  visibility: hidden;
+[data-universe="webgl"] .signal-vessel .signal-orbit {
+  opacity: 0;
+  transition: opacity 0.32s var(--ease);
 }
 .signal-modulate {
   position: absolute;

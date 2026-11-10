@@ -1,3 +1,4 @@
+import { whenIdle } from "./browser-tasks";
 import type { MotionFrame } from "./motion-runtime";
 import { invalidateMotionFrame } from "./motion-runtime";
 import type { StorySignal } from "./story-signal";
@@ -141,8 +142,12 @@ export function createUniverseSession(
       root.dataset.universeLoading = "true";
       const currentCanvas = canvas,
         context = pendingContext;
-      import("./signal-universe")
-        .then(({ createSignalUniverse }) => {
+      document.fonts.ready
+        .then(whenIdle)
+        .then(() => (disposed ? null : import("./signal-universe")))
+        .then(async (module) => {
+          if (!module) return;
+          const { createSignalUniverse } = module;
           if (disposed) return;
           if (
             !root.isConnected ||
@@ -155,7 +160,9 @@ export function createUniverseSession(
           }
           host.appendChild(currentCanvas);
           try {
-            controller = createSignalUniverse(
+            // Preparation owns the context; a retired preparation disposes on settlement.
+            pendingContext = null;
+            const prepared = await createSignalUniverse(
               currentCanvas,
               context,
               quality,
@@ -165,13 +172,15 @@ export function createUniverseSession(
                 root.dataset.universeState = state;
               },
             );
+            if (disposed || !root.isConnected) prepared.dispose();
+            else controller = prepared;
             pendingContext = null;
           } catch {
             context.getExtension("WEBGL_lose_context")?.loseContext();
             currentCanvas.remove();
             pendingContext = null;
             canvas = undefined;
-            root.dataset.universeState = "unavailable";
+            if (!disposed) root.dataset.universeState = "unavailable";
           }
         })
         .catch(() => {
@@ -179,7 +188,7 @@ export function createUniverseSession(
             context.getExtension("WEBGL_lose_context")?.loseContext();
             pendingContext = null;
             canvas = undefined;
-            root.dataset.universeState = "unavailable";
+            if (!disposed) root.dataset.universeState = "unavailable";
           }
         })
         .finally(() => {

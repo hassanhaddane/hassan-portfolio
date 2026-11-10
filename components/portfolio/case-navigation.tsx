@@ -87,6 +87,7 @@ export function CaseNavigation({
           <a
             key={id}
             href={`#${id}`}
+            aria-label={`${String(index + 1).padStart(2, "0")} ${title}`}
             aria-current={active === id ? "location" : undefined}
           >
             <span className="mono">0{index + 1}</span>
