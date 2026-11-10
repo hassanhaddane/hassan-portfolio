@@ -14,6 +14,28 @@ async function ready(page: Page) {
   await expect(page.locator(root)).toHaveAttribute("data-narrative", "on");
   await page.evaluate(() => document.fonts.ready);
 }
+async function anchored(page: Page, id: string) {
+  // Active-chapter thresholds are crossed before a native smooth scroll finishes.
+  // Save history positions only after the browser reaches the actual anchor.
+  await expect
+    .poll(() =>
+      page.evaluate((id) => {
+        const target = document.getElementById(id)!;
+        const padding = parseFloat(
+          getComputedStyle(document.documentElement).scrollPaddingTop,
+        );
+        const destination = Math.max(
+          0,
+          Math.min(
+            scrollY + target.getBoundingClientRect().top - padding,
+            document.documentElement.scrollHeight - innerHeight,
+          ),
+        );
+        return Math.abs(scrollY - destination);
+      }, id),
+    )
+    .toBeLessThan(2);
+}
 async function scroll(page: Page, y: number) {
   await page.evaluate(
     (top) => window.scrollTo({ top, behavior: "instant" }),
@@ -135,17 +157,20 @@ for (const width of [390, 1440]) {
       const link = page.locator(`.living-signal a[href="#${id}"]`);
       await link.click();
       await expect(page).toHaveURL(new RegExp(`#${id}$`));
+      await anchored(page, id);
       await expect(page.locator(root)).toHaveAttribute("data-chapter", id);
       await expect(link).toHaveAttribute("aria-current", "location");
       await expect(page.locator("#" + id)).toBeInViewport();
     }
     for (let i = ids.length - 2; i >= 0; i--) {
       await page.goBack();
+      await anchored(page, ids[i]);
       await expect(page.locator(root)).toHaveAttribute("data-chapter", ids[i]);
       await expect(page.locator(`#${ids[i]}`)).toBeInViewport();
     }
     for (let i = 1; i < ids.length; i++) {
       await page.goForward();
+      await anchored(page, ids[i]);
       await expect(page.locator(root)).toHaveAttribute("data-chapter", ids[i]);
     }
     await page.setViewportSize({
@@ -153,6 +178,7 @@ for (const width of [390, 1440]) {
       height: 844,
     });
     await page.locator('.living-signal a[href="#contact"]').click();
+    await anchored(page, "contact");
     await expect(page.locator(root)).toHaveAttribute("data-chapter", "contact");
     const afterResize = await state(page);
     expect(afterResize.overflow).toBeLessThanOrEqual(1);

@@ -19,6 +19,7 @@ export function NarrativeEnvironment() {
       <div className="narrative-word" data-narrative-next-word>
         WORK
       </div>
+      <div className="narrative-webgl" data-universe-host />
       <div className="signal-vessel" data-signal-vessel>
         <div className="signal-orbit">
           <SignalArtwork />

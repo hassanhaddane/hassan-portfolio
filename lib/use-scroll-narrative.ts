@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { createUniverseSession } from "./universe-session";
 import { chapters } from "@/lib/experience-copy";
 import { subscribeMotionFrame, invalidateMotionFrame } from "./motion-runtime";
 import {
@@ -64,6 +65,10 @@ export function useScrollNarrative(
     const meter = root.querySelector<HTMLElement>("[data-scroll-meter]");
     const readout = root.querySelector<HTMLElement>("[data-scroll-readout]");
     const dock = root.querySelector<SVGSVGElement>(".hero-art > .signal-score");
+    let projectBounds: { top: number; height: number }[] = [];
+    const projectEntries = Array.from(
+      root.querySelectorAll<HTMLElement>(".work-entry"),
+    );
     let bounds: ChapterBounds[] = [];
     let maxScroll = 1;
     let dirty = true;
@@ -129,6 +134,10 @@ export function useScrollNarrative(
         top: layoutTop(element),
         height: element.offsetHeight,
       }));
+      projectBounds = projectEntries.map((element) => ({
+        top: layoutTop(element),
+        height: element.offsetHeight,
+      }));
       maxScroll = Math.max(
         1,
         document.documentElement.scrollHeight - innerHeight,
@@ -164,6 +173,7 @@ export function useScrollNarrative(
     measure();
     root.dataset.narrative = animated ? "on" : "off";
 
+    const universe = createUniverseSession(root, animated);
     const unsubscribe = subscribeMotionFrame(
       (frame) => {
         const geometryChanged = dirty || frame.resized;
@@ -191,7 +201,20 @@ export function useScrollNarrative(
           if (readout)
             readout.textContent = `${String(percentage).padStart(3, "0")}%`;
         }
-        if (!animated) return;
+        if (!animated) {
+          universe.update(frame, {
+            stage: 0,
+            progress: state.progress,
+            x: 0,
+            y: 0,
+            scale: 1,
+            opacity: 0,
+            darkInk: state.darkInk,
+            project: 0,
+            visible: false,
+          });
+          return;
+        }
         const nextTheme = state.darkInk ? "light" : "dark";
         if (nextTheme !== theme) {
           theme = nextTheme;
@@ -322,6 +345,33 @@ export function useScrollNarrative(
           nextWord.style.transform = `translate3d(${fixed((1 - t) * 12)}%,${fixed(Math.sin(phase) * -7)}px,0) rotate(${fixed(mix(4, -2, t))}deg) scaleX(${fixed(mix(0.88, 1.1, t))})`;
         }
 
+        let project = 0,
+          nearest = Infinity;
+        projectBounds.forEach((box, index) => {
+          const distance = Math.abs(
+            box.top + box.height / 2 - frame.scrollY - frame.height * 0.55,
+          );
+          if (distance < nearest) {
+            nearest = distance;
+            project = index;
+          }
+        });
+        universe.update(frame, {
+          stage: scene + t,
+          progress: state.progress,
+          x,
+          y,
+          scale,
+          opacity: mix(from.alpha, to.alpha, t),
+          darkInk: state.darkInk,
+          project,
+          visible:
+            x + 360 * scale > 0 &&
+            x - 360 * scale < frame.width &&
+            y + 300 * scale > 0 &&
+            y - 300 * scale < frame.height,
+        });
+
         if (!frame.scrolled && !geometryChanged) return;
         targets.forEach((target) => {
           const relative = target.top - frame.scrollY;
@@ -413,6 +463,7 @@ export function useScrollNarrative(
     return () => {
       disposed = true;
       unsubscribe();
+      universe.dispose();
       observer.disconnect();
       root.removeEventListener("load", invalidate, true);
       root.removeEventListener("toggle", invalidate, true);

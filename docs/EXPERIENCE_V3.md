@@ -6,7 +6,7 @@ Une identité personnelle à la croisée du développement Full-Stack, du son et
 
 Ivoire `#eeece4`, encre `#20221f`, orange signal `#f25229`. Barlow Condensed pour les grandes compositions éditoriales, Geist pour la lecture, monospace pour les repères. Filets, surfaces ouvertes et contrastes francs remplacent les cartes et les effets de verre.
 
-Le hero assemble une identité LOWKYZ dominante, une promesse lisible, des CTA immédiats et une partition vectorielle originale. Sa famille de courbes lie précision mathématique et intuition musicale. Aucun écran d’attente ne bloque le contenu.
+Le hero assemble une identité LOWKYZ dominante, une promesse lisible, des CTA immédiats et une sculpture 3D progressive. Sa famille de courbes lie précision mathématique et intuition musicale. Aucun écran d’attente ne bloque le contenu.
 
 ## Continuité
 
@@ -20,6 +20,6 @@ Le moteur `lib/use-scroll-narrative.ts` centralise progression, jonctions et env
 
 Conserver les données sourcées, les quatre projets, les routes FR/EN et leurs études de cas, les liens, le CV original et les métadonnées SEO. Toute nouvelle affirmation doit être vérifiable.
 
-Concevoir le mobile séparément : ordre de lecture, dimensions des médias, navigation modale et actions tactiles. Préserver le clavier, le focus, les liens natifs, le contenu sans JavaScript et la réduction des mouvements. Les animations restent décoratives ; ni WebGL ni lecture audio automatique ne sont nécessaires.
+Concevoir le mobile séparément : ordre de lecture, dimensions des médias, navigation modale et actions tactiles. Préserver le clavier, le focus, les liens natifs, le contenu sans JavaScript et la réduction des mouvements. Three.js partage le runtime ; chargement dynamique, ressources réutilisées et fallback SVG. Aucun son automatique.
 
 Pas de Lab, mode recruteur, statistiques inventées, badges décoratifs ou grilles SaaS. Étendre cette grammaire avant d’ajouter des composants.
