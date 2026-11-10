@@ -26,13 +26,15 @@ export function About({ locale }: { locale: Locale }) {
           <div className="portrait-register" aria-hidden="true">
             LOWKYZ
           </div>
-          <Image
-            src="/profile/hassan-haddane-cv.png"
-            alt="Hassan Haddane"
-            width={306}
-            height={306}
-            sizes="(max-width: 700px) 65vw, 30vw"
-          />
+          <div className="portrait-frame">
+            <Image
+              src="/profile/hassan-haddane-portrait.png"
+              alt="Hassan Haddane"
+              width={1414}
+              height={2000}
+              sizes="(max-width: 480px) 105vw, (max-width: 760px) 500px, 43vw"
+            />
+          </div>
           <figcaption className="mono">
             HASSAN HADDANE<span>RENNES, FRANCE</span>
           </figcaption>

@@ -748,13 +748,21 @@ html:not([data-js]) :is(.engineering-map, .engineering-skills) {
   letter-spacing: -0.04em;
   color: var(--signal);
 }
-.about-portrait img {
-  display: block;
-  width: 100%;
-  height: auto;
-  filter: grayscale(1);
-  background: #b8b8aa;
+.portrait-frame {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 1;
+  background: #fdfdfd;
   margin-top: -8px;
+}
+.portrait-frame img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 138%;
+  max-width: none;
+  height: auto;
+  transform: translate(-50%, -50%);
 }
 .about-portrait figcaption {
   display: flex;
