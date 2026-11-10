@@ -14,6 +14,8 @@ Intro → Work → Engineering → Journey → About → Contact. Les ancres his
 
 Les projets utilisent leurs vraies captures dans des compositions de proportions différentes. Engineering privilégie l’index, Journey la chronologie, About le portrait et les deux pratiques, Contact une surface orange directe.
 
+Le moteur `lib/use-scroll-narrative.ts` centralise progression, jonctions et environnement via l’unique boucle de `lib/motion-runtime.ts`.
+
 ## Contrats des prochaines phases
 
 Conserver les données sourcées, les quatre projets, les routes FR/EN et leurs études de cas, les liens, le CV original et les métadonnées SEO. Toute nouvelle affirmation doit être vérifiable.

@@ -26,6 +26,7 @@ export function Navigation() {
         {locale === "fr" ? "Aller au contenu" : "Skip to content"}
       </a>
       <header className="site-masthead">
+        <span className="scroll-progress" aria-hidden="true" />
         <a
           className="brand"
           href="#profil"

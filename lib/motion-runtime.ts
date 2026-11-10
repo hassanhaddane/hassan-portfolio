@@ -1,4 +1,4 @@
-/** One event/RAF pipeline for decorative DOM motion. WebGL owns its render loop. */
+/** The only event/RAF pipeline. Continuous subscribers stop with page visibility. */
 export type MotionFrame = Readonly<{
   time: number;
   delta: number;
@@ -19,6 +19,7 @@ export type MotionFrame = Readonly<{
 
 type Listener = (frame: MotionFrame) => void;
 const listeners = new Set<Listener>();
+const continuous = new Set<Listener>();
 let raf = 0;
 let watching = false;
 let lastTime = 0;
@@ -52,15 +53,26 @@ function tick(time: number) {
     if (Math.abs(velocity) < 0.008) velocity = 0;
   }
   const frame: MotionFrame = {
-    time, delta, scrollY: currentScroll, velocity, direction,
-    width: innerWidth, height: innerHeight,
-    pointerX, pointerY, pointerType, pointerTarget, pointerInside,
-    scrolled, resized: resizeDirty, pointerChanged: pointerDirty,
+    time,
+    delta,
+    scrollY: currentScroll,
+    velocity,
+    direction,
+    width: innerWidth,
+    height: innerHeight,
+    pointerX,
+    pointerY,
+    pointerType,
+    pointerTarget,
+    pointerInside,
+    scrolled,
+    resized: resizeDirty,
+    pointerChanged: pointerDirty,
   };
   resizeDirty = false;
   pointerDirty = false;
   listeners.forEach((listener) => listener(frame));
-  if (velocity !== 0) schedule();
+  if (velocity !== 0 || continuous.size > 0) schedule();
 }
 
 function onPointer(event: PointerEvent) {
@@ -134,12 +146,17 @@ function stop() {
   document.removeEventListener("visibilitychange", onVisibility);
 }
 
-export function subscribeMotionFrame(listener: Listener) {
+export function subscribeMotionFrame(
+  listener: Listener,
+  options: { continuous?: boolean } = {},
+) {
   listeners.add(listener);
+  if (options.continuous) continuous.add(listener);
   start();
   schedule();
   return () => {
     listeners.delete(listener);
+    continuous.delete(listener);
     if (!listeners.size) stop();
   };
 }

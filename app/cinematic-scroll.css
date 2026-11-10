@@ -1,0 +1,253 @@
+/* Progressive enhancement: the native document is the complete reduced-motion fallback. */
+[data-portfolio-root] {
+  isolation: isolate;
+  --scroll-progress: 0;
+}
+.narrative-environment {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: clip;
+  contain: strict;
+}
+.narrative-wash {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+}
+.narrative-wash:first-child {
+  opacity: 1;
+}
+.signal-vessel {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 600px;
+  height: 460px;
+  transform-origin: center;
+  will-change: transform;
+}
+.signal-orbit {
+  transform: scaleY(var(--signal-squash, 1));
+  transform-origin: center;
+}
+.narrative-word {
+  position: absolute;
+  left: -4%;
+  top: 36%;
+  width: 120%;
+  font-family: var(--display);
+  font-size: clamp(120px, 30vw, 600px);
+  line-height: 0.8;
+  letter-spacing: -0.06em;
+  white-space: nowrap;
+  opacity: 0;
+}
+.narrative-thread {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.4;
+}
+.scroll-progress {
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 100%;
+  height: 2px;
+  background: var(--signal);
+  transform-origin: left;
+  transform: scaleX(var(--scroll-progress));
+  pointer-events: none;
+}
+.scroll-meter {
+  position: absolute;
+  bottom: -23px;
+  left: 32px;
+}
+.scroll-meter .mono {
+  font-size: 9px;
+  letter-spacing: 0;
+}
+.living-signal-line .signal-track {
+  opacity: 0.25;
+}
+.living-signal-line .signal-trace {
+  stroke: var(--signal);
+  stroke-width: 2;
+  /* A viewport mask stays accurate with non-scaling strokes and anisotropic SVG sizing. */
+  clip-path: inset(0 -3px calc((1 - var(--scroll-progress)) * 100%) -3px);
+}
+
+[data-narrative="on"] {
+  --scene-ink: #20221f;
+  --scene-muted: #62635b;
+  --scene-rule: #999b90;
+  --scene-backdrop: #eeece4;
+  color: var(--scene-ink);
+  overflow-x: clip;
+}
+[data-narrative="on"][data-scene-tone="dark"] {
+  --scene-ink: #eeece4;
+  --scene-muted: #c4c4b9;
+  --scene-rule: #8b8d80;
+}
+[data-narrative="on"] .narrative-environment {
+  display: block;
+  color: var(--scene-ink);
+}
+[data-narrative="on"]
+  :is([data-section], .site-masthead, .site-footer, .living-signal) {
+  --foreground: var(--scene-ink);
+  --text-secondary: var(--scene-muted);
+  --muted-foreground: var(--scene-muted);
+  --border: var(--scene-rule);
+  --border-strong: var(--scene-rule);
+  color: var(--scene-ink);
+  background: transparent;
+}
+[data-narrative="on"] .site-masthead::before,
+[data-narrative="on"] .living-signal {
+  background: var(--scene-backdrop);
+}
+[data-narrative="on"]
+  :is(
+    .living-signal a[aria-current],
+    .work-actions > a:first-child,
+    .about-notes h3
+  ) {
+  color: var(--scene-ink);
+}
+[data-narrative="on"] :is(.work-heading h2, .portrait-register) {
+  color: var(--scene-accent, var(--signal));
+}
+[data-narrative="on"] .creative-action--primary {
+  color: #20221f;
+}
+[data-narrative="on"] .hero-art > .signal-score {
+  visibility: hidden;
+}
+[data-narrative="on"] .signal-waves {
+  animation: none;
+  transform: scaleY(var(--signal-breath, 1)) skewX(var(--signal-shear, 0deg));
+}
+[data-narrative="on"] .hero h1 span {
+  animation: none;
+}
+[data-narrative="on"] [data-cinema] {
+  transform: var(--cinema-transform, none);
+  transform-origin: center;
+}
+[data-narrative="on"] [data-cinema="identity"] {
+  transform-origin: left center;
+}
+[data-narrative="on"] :is([data-cinema="title"], [data-cinema="contact"]) {
+  /* Preserve ink overshoot and descenders when a reveal reaches its endpoint. */
+  clip-path: inset(-0.14em -0.1em calc(var(--cinema-clip, 0%) - 0.14em) -0.1em);
+}
+[data-narrative="on"] [data-cinema="timeline"] {
+  clip-path: inset(0 0 var(--cinema-clip, 0%) 0);
+}
+[data-narrative="on"] [data-cinema="media"] {
+  clip-path: polygon(0 var(--cinema-clip, 0%), 100% 0, 100% 100%, 0 100%);
+  transform-origin: 50% 60%;
+}
+[data-narrative="on"] [data-cinema="portrait"] {
+  clip-path: polygon(
+    var(--cinema-clip, 0%) 0,
+    100% 0,
+    100% 100%,
+    0 100%,
+    0 var(--cinema-clip, 0%)
+  );
+}
+[data-narrative="on"] .selected-work {
+  perspective: 1400px;
+}
+[data-narrative="on"] .work-heading {
+  border-color: transparent;
+}
+[data-narrative="on"] .expertise-section {
+  perspective: 1200px;
+}
+[data-narrative="on"] .journey-section {
+  border-top-color: transparent;
+}
+[data-narrative="on"] .experience-content {
+  border-left-color: transparent;
+}
+[data-narrative="on"] .experience-content::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1px;
+  height: 100%;
+  background: var(--scene-rule);
+  transform-origin: top;
+  transform: scaleY(var(--line-progress, 1));
+}
+[data-narrative="on"] .contact-section {
+  --ring: var(--scene-ink);
+}
+[data-narrative="on"] .contact-email-row {
+  border-color: var(--scene-rule);
+}
+[data-narrative="on"] .contact-links > a {
+  border-color: var(--scene-rule);
+}
+@media (min-width: 1001px) {
+  [data-narrative="on"] .about-portrait {
+    position: sticky;
+    top: 130px;
+  }
+  [data-narrative="on"] .expertise-section .section-heading {
+    top: 130px;
+  }
+}
+@media (max-width: 760px) {
+  .narrative-word {
+    top: 46%;
+    font-size: 48vw;
+  }
+  .scroll-meter {
+    bottom: 1px;
+    left: auto;
+    right: 4px;
+    height: 12px;
+    background: var(--background);
+  }
+  .scroll-meter .mono {
+    font-size: 7px;
+    line-height: 12px;
+  }
+  .living-signal ol {
+    right: 39px;
+  }
+  [data-narrative="on"] .scroll-meter {
+    background: var(--scene-backdrop);
+  }
+  [data-narrative="on"] .signal-node {
+    box-shadow: 0 0 0 3px var(--scene-backdrop);
+  }
+  [data-narrative="on"] .contact-links > a {
+    border-color: var(--scene-rule);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .narrative-environment {
+    display: none !important;
+  }
+}
+html[data-motion="off"] .narrative-environment {
+  display: none !important;
+}
+
+/* Native keyboard focus always exposes the complete interactive surface. */
+[data-narrative="on"]
+  :is([data-cinema="media"], [data-cinema="timeline"]):focus-within {
+  clip-path: none;
+}

@@ -10,8 +10,7 @@ import {
   type ReactNode,
 } from "react";
 import type { Locale } from "@/lib/portfolio-data";
-import { subscribeMotionFrame } from "@/lib/motion-runtime";
-import { chapters } from "@/lib/experience-copy";
+import { useScrollNarrative } from "@/lib/use-scroll-narrative";
 
 type Preferences = {
   locale: Locale;
@@ -70,32 +69,6 @@ export function PreferencesProvider({
     }
   }, [initialLocale, motion, motionEnabled, ready]);
   useEffect(() => {
-    const sections = chapters
-      .map(({ id }) => document.getElementById(id))
-      .filter((section): section is HTMLElement => !!section);
-    let anchors: { id: string; top: number }[] = [];
-    const measure = () => {
-      anchors = sections.map((section) => ({
-        id: section.id,
-        top: section.getBoundingClientRect().top + scrollY,
-      }));
-    };
-    measure();
-    const resizing = new ResizeObserver(measure);
-    sections.forEach((section) => resizing.observe(section));
-    const unsubscribe = subscribeMotionFrame((frame) => {
-      if (frame.resized) measure();
-      if (!frame.scrolled && !frame.resized) return;
-      let id = "profil";
-      for (const anchor of anchors)
-        if (anchor.top <= frame.scrollY + frame.height * 0.35) id = anchor.id;
-      if (
-        frame.scrollY + frame.height >=
-        document.documentElement.scrollHeight - 4
-      )
-        id = "contact";
-      setActiveSection((previous) => (previous === id ? previous : id));
-    });
     const keydown = (event: KeyboardEvent) => {
       if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
         event.preventDefault();
@@ -104,11 +77,10 @@ export function PreferencesProvider({
     };
     addEventListener("keydown", keydown);
     return () => {
-      unsubscribe();
-      resizing.disconnect();
       removeEventListener("keydown", keydown);
     };
   }, []);
+  useScrollNarrative(motion, setActiveSection);
   const value = useMemo(
     () => ({ locale: initialLocale, motion, systemReduced, toggleMotion }),
     [initialLocale, motion, systemReduced, toggleMotion],

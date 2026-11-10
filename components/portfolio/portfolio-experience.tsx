@@ -1,6 +1,7 @@
 import { PreferencesProvider } from "@/components/system/preferences";
 import { Navigation } from "@/components/system/navigation";
 import { CommandPalette } from "@/components/system/command-palette";
+import { NarrativeEnvironment } from "@/components/system/narrative-environment";
 import { LivingSignal } from "@/components/system/living-signal";
 import { Hero } from "@/components/portfolio/hero";
 import { SelectedWork } from "@/components/portfolio/selected-work";
@@ -77,6 +78,7 @@ export function PortfolioExperience({ locale }: { locale: Locale }) {
         />
         <div data-site-content>
           <Navigation />
+          <NarrativeEnvironment />
           <LivingSignal />
           <main id="main" tabIndex={-1}>
             <Hero locale={locale} />

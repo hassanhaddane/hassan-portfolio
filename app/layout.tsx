@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { GeistSans } from "@/lib/fonts";
 import localFont from "next/font/local";
 import "./globals.css";
+import "./cinematic-scroll.css";
 import { SITE_ORIGIN, seoContent } from "@/lib/seo";
 
 const barlow = localFont({
